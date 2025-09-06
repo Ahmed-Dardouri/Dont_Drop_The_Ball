@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1sbp12c5s0n0"]
+
+[ext_resource type="Script" uid="uid://36riehw34na8" path="res://scripts/player.gd" id="1_3vyb7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
+
+[node name="player" type="CharacterBody2D"]
+scale = Vector2(0.639999, 0.639999)
+slide_on_ceiling = false
+script = ExtResource("1_3vyb7")
+
+[node name="groundcast" type="ShapeCast2D" parent="."]
+position = Vector2(0, -3.12501)
+scale = Vector2(1.617, 0.961)
+shape = SubResource("RectangleShape2D_g2els")
+target_position = Vector2(0, 0)
+max_results = 1
+
+[node name="ceilingcast" type="ShapeCast2D" parent="."]
+position = Vector2(0, -28.125)
+shape = SubResource("RectangleShape2D_g2els")
+target_position = Vector2(0, 0)
+max_results = 1
+
+[node name="PolygonCollider2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(1.10515, 1.29146)
+polygon = PackedVector2Array(0, -28.0963, -2.6, -28.003, -6.116, -27.599, -8.824, -27.102, -11.431, -26.439, -14.431, -25.568, -14.4476, 4.14856, 14.4476, 4.14856, 14.4307, -25.5678, 11.4306, -26.4387, 8.82363, -27.1018, 6.11638, -27.599, 2.62683, -28.0028)
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+scale = Vector2(1.10684, 1.31903)
+polygon = PackedVector2Array(0.0116186, -28.0303, -2.62683, -28.0028, -9.1939, -26.9656, -15.5285, -26.0609, -14.4476, 4.14856, 14.4476, 4.14856, 15.5285, -26.0609, 9.1939, -26.9656, 2.62683, -28.0028)
+
+[node name="Camera2D" type="Camera2D" parent="."]

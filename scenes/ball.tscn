@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://ddkwcva4w8fu5"]
+
+[ext_resource type="Texture2D" uid="uid://dauyf7rg7mh8y" path="res://sprites/acorn.png" id="1_7s4qf"]
+[ext_resource type="Script" uid="uid://3ft3e7fctn7q" path="res://scripts/ball.gd" id="1_cxlvu"]
+[ext_resource type="PackedScene" uid="uid://v3r6fyokxtxr" path="res://scenes/trail.tscn" id="3_f7cbr"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cxlvu"]
+bounce = 0.8
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
+custom_solver_bias = 0.735
+radius = 15.0
+
+[node name="ball" type="RigidBody2D"]
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_cxlvu")
+gravity_scale = 0.95
+script = ExtResource("1_cxlvu")
+max_speed = 1000.0
+fall_speed = 550.0
+air_friction = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_n1dj2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-0.342665, -2.23669)
+scale = Vector2(0.039, 0.039)
+texture = ExtResource("1_7s4qf")
+
+[node name="Trail" parent="." node_paths=PackedStringArray("main_body") instance=ExtResource("3_f7cbr")]
+default_color = Color(1, 1, 1, 1)
+main_body = NodePath("..")

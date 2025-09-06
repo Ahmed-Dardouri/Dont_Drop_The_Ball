@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://gdpcp3xup1lv"]
+
+[ext_resource type="PackedScene" uid="uid://g6dvsvhwvvtc" path="res://scenes/physics_player.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://bxy82qrpua865" path="res://scenes/static.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://ddkwcva4w8fu5" path="res://scenes/ball.tscn" id="3_lnu2h"]
+
+[node name="game" type="Node2D"]
+position = Vector2(-6, 34)
+
+[node name="static" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(592, 607)
+scale = Vector2(60.56, 1)
+
+[node name="static2" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(1145, 436)
+rotation = 1.5708
+scale = Vector2(60.56, 1)
+
+[node name="static3" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(8, 401)
+rotation = 1.5708
+scale = Vector2(60.236, 1.00971)
+
+[node name="ball" parent="." instance=ExtResource("3_lnu2h")]
+position = Vector2(581, 121)
+
+[node name="PhysicsPlayer" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(575, 469)
+lock_rotation = true
+
+[node name="static6" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(569, -44.9999)
+scale = Vector2(60.56, 1)
