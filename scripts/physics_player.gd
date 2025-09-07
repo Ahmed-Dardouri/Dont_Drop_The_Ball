@@ -72,10 +72,7 @@ func _physics_process(delta: float) -> void:
 	
 	CheckCeiling()
 	ApplyMovement(delta)
-	ApplyVelocity()
-	print("actual: " + str(linear_velocity.x))
-	
-
+	ApplyVelocity()	
 
 
 
@@ -164,7 +161,6 @@ func ApplyHorizontalMovement(delta: float):
 	else:
 		_targetHorizontalVelocity = move_toward(linear_velocity.x, 0, SPEED)
 	
-	print(_targetHorizontalVelocity)
 
 func ApplyMovement(delta: float):
 	if abs(_frameVelocity.x) < max_speed:

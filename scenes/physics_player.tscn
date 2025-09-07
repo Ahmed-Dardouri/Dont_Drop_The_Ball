@@ -1,9 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://g6dvsvhwvvtc"]
+[gd_scene load_steps=5 format=3 uid="uid://g6dvsvhwvvtc"]
 
 [ext_resource type="Script" uid="uid://dthkj057831er" path="res://scripts/physics_player.gd" id="1_5evuk"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_jgnsu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5evuk"]
-friction = 0.05
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lvk83"]
 
@@ -26,12 +26,20 @@ target_position = Vector2(0, 0)
 max_results = 1
 
 [node name="PolygonCollider2D" type="CollisionPolygon2D" parent="."]
-scale = Vector2(1.10515, 1.29146)
-polygon = PackedVector2Array(0, -28.0963, -2.6, -28.003, -6.116, -27.599, -8.824, -27.102, -11.431, -26.439, -14.431, -25.568, -14.4476, 4.14856, 14.4476, 4.14856, 14.4307, -25.5678, 11.4306, -26.4387, 8.82363, -27.1018, 6.11638, -27.599, 2.62683, -28.0028)
+scale = Vector2(1.40781, 1.21094)
+polygon = PackedVector2Array(0, -28.0963, -2.6, -28.003, -6.116, -27.599, -8.824, -27.102, -11.431, -26.439, -14.431, -25.568, -15.6271, -21.4709, -9.94452, 3.75736, 9.94452, 3.75736, 15.6271, -21.4709, 14.4307, -25.5678, 11.4306, -26.4387, 8.82363, -27.1018, 6.11638, -27.599, 2.62683, -28.0028)
 
 [node name="Polygon2D2" type="Polygon2D" parent="."]
 scale = Vector2(0.972005, 1.1723)
+color = Color(0, 1, 1, 1)
 polygon = PackedVector2Array(0.0116186, -28.0303, -2.62683, -28.0028, -9.1939, -26.9656, -15.5285, -26.0609, -14.4476, 4.14856, 14.4476, 4.14856, 15.5285, -26.0609, 9.1939, -26.9656, 2.62683, -28.0028)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.765, 0.765)
+editor_draw_limits = true
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_jgnsu")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"

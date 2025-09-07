@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bxy82qrpua865"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ea6k4"]
-friction = 0.0
+friction = 20.95
 bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ea6k4"]
