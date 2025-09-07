@@ -22,10 +22,10 @@ rotation = 1.5708
 scale = Vector2(60.236, 1.00971)
 
 [node name="ball" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(581, 121)
+position = Vector2(43, 580)
 
 [node name="PhysicsPlayer" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(575, 469)
+position = Vector2(584, 573)
 lock_rotation = true
 
 [node name="static6" parent="." instance=ExtResource("2_yqjtg")]

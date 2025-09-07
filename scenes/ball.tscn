@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://v3r6fyokxtxr" path="res://scenes/trail.tscn" id="3_f7cbr"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cxlvu"]
-bounce = 0.8
+bounce = 0.6
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
 custom_solver_bias = 0.735
@@ -31,3 +31,5 @@ texture = ExtResource("1_7s4qf")
 [node name="Trail" parent="." node_paths=PackedStringArray("main_body") instance=ExtResource("3_f7cbr")]
 default_color = Color(1, 1, 1, 1)
 main_body = NodePath("..")
+
+[node name="Collision_detector_RayCast2D" type="RayCast2D" parent="."]
