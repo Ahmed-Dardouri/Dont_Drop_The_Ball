@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddkwcva4w8fu5"]
+[gd_scene load_steps=7 format=3 uid="uid://ddkwcva4w8fu5"]
 
 [ext_resource type="Texture2D" uid="uid://dauyf7rg7mh8y" path="res://sprites/acorn.png" id="1_7s4qf"]
 [ext_resource type="Script" uid="uid://3ft3e7fctn7q" path="res://scripts/ball.gd" id="1_cxlvu"]
@@ -8,7 +8,9 @@
 bounce = 0.6
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
-custom_solver_bias = 0.735
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f7cbr"]
 radius = 15.0
 
 [node name="ball" type="RigidBody2D"]
@@ -32,4 +34,5 @@ texture = ExtResource("1_7s4qf")
 default_color = Color(1, 1, 1, 1)
 main_body = NodePath("..")
 
-[node name="Collision_detector_RayCast2D" type="RayCast2D" parent="."]
+[node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+shape = SubResource("CircleShape2D_f7cbr")

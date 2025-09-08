@@ -1,18 +1,14 @@
 extends RigidBody2D
 
+@onready var shape_cast: ShapeCast2D = $ShapeCast2D 
 
 @export var skin := 0.5
 
-@onready var coll_detector : RayCast2D = $Collision_detector_RayCast2D
-
 @export_range(0.0, 10000.0, 10.0) var max_speed := 1500.0
-
 @export_range(0.0, 10000.0, 10.0) var fall_speed := 1500.0
-
 @export_range(0.0, 100, 1) var air_friction := 1
 
 var _prev_pos := Vector2.ZERO
-var _next_pos := Vector2.ZERO
 
 
 # Called when the node enters the scene tree for the first time.
@@ -36,6 +32,7 @@ func _physics_process(delta: float) -> void:
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	check_CCD(state)
+	# check_CCD_aux(state)
 
 func clamp_max_speed():
 	if max_speed > 0.0:
@@ -74,4 +71,23 @@ func check_CCD(state: PhysicsDirectBodyState2D):
 
 	_prev_pos = state.transform.origin
 		
+func check_CCD_aux(state: PhysicsDirectBodyState2D) -> void:
+	var dt := state.step
+	var curr := state.transform.origin
+
+	# sweep from previous center -> current center (prev→curr)
+	shape_cast.global_position = _prev_pos
+	shape_cast.target_position = shape_cast.to_local(curr)
+	# ensure mask matches what the ball should hit
+	shape_cast.collision_mask = collision_mask
+	shape_cast.exclude_parent = true
+	shape_cast.force_shapecast_update()
+
+	if shape_cast.is_colliding():
+		var p := shape_cast.get_collision_point(0)
+		var n := shape_cast.get_collision_normal(0)
+		# place at impact with a tiny skin; the shape-cast already accounts for radius
+		state.transform.origin = p - n * skin
+
+	_prev_pos = state.transform.origin
 	pass
