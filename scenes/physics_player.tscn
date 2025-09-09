@@ -31,7 +31,7 @@ polygon = PackedVector2Array(0, -28.0963, -2.6, -28.003, -6.116, -27.599, -8.824
 
 [node name="Polygon2D2" type="Polygon2D" parent="."]
 scale = Vector2(0.972005, 1.1723)
-color = Color(0, 1, 1, 1)
+color = Color(0, 0.207029, 0.207029, 1)
 polygon = PackedVector2Array(0.0116186, -28.0303, -2.62683, -28.0028, -9.1939, -26.9656, -15.5285, -26.0609, -14.4476, 4.14856, 14.4476, 4.14856, 15.5285, -26.0609, 9.1939, -26.9656, 2.62683, -28.0028)
 
 [node name="Camera2D" type="Camera2D" parent="."]

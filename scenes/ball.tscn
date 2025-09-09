@@ -17,6 +17,9 @@ radius = 15.0
 mass = 20.0
 physics_material_override = SubResource("PhysicsMaterial_cxlvu")
 gravity_scale = 0.95
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 50
 script = ExtResource("1_cxlvu")
 max_speed = 1000.0
 fall_speed = 550.0
@@ -36,3 +39,5 @@ main_body = NodePath("..")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
 shape = SubResource("CircleShape2D_f7cbr")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
