@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://b38pqy0ombawy"]
+
+[ext_resource type="Script" uid="uid://ddo0421hkrs5x" path="res://scripts/game_over_screen.gd" id="1_iwahs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4vnjk"]
+
+[node name="game_over_screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iwahs")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.26
+anchor_top = 0.255
+anchor_right = 0.76
+anchor_bottom = 0.753
+offset_left = 0.47998
+offset_top = -0.240021
+offset_right = -0.520081
+offset_bottom = 0.0559998
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 106
+text = "Game Over"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+theme_override_styles/separator = SubResource("StyleBoxEmpty_4vnjk")
+
+[node name="ReplayButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 86
+text = "Replay"
+
+[connection signal="pressed" from="VBoxContainer/ReplayButton" to="." method="_on_replay_button_pressed"]

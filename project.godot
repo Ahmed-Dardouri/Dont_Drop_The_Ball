@@ -18,10 +18,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+Events="*res://addons/dynamic_event_manager/src/event_manager.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
+enabled=PackedStringArray("res://addons/dynamic_event_manager/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
 
 [input]
 

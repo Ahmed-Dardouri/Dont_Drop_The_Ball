@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bidigt5l6xf0n"]
+
+[ext_resource type="Texture2D" uid="uid://rn6t3ofi0ave" path="res://addons/dynamic_event_manager/icon.png" id="1_pasy8"]
+[ext_resource type="Script" path="res://addons/dynamic_event_manager/example_scene/test.gd" id="2_36oj7"]
+
+[node name="Test" type="Sprite2D"]
+texture_filter = 1
+position = Vector2(596, 310)
+scale = Vector2(5, 5)
+texture = ExtResource("1_pasy8")
+script = ExtResource("2_36oj7")

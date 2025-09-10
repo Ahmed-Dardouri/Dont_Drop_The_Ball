@@ -1,3 +1,7 @@
-[gd_scene format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=2 format=3 uid="uid://7st5pqg6mdke"]
+
+[ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="1_ahhtf"]
 
 [node name="HUD" type="CanvasLayer"]
+
+[node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
