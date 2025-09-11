@@ -1,7 +1,35 @@
-[gd_scene load_steps=2 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=4 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="1_ahhtf"]
+[ext_resource type="Script" uid="uid://ce7e7qwpuktdd" path="res://scripts/controls.gd" id="2_oo0fn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ahhtf"]
 
 [node name="HUD" type="CanvasLayer"]
 
 [node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
+
+[node name="controls" type="Node2D" parent="."]
+script = ExtResource("2_oo0fn")
+
+[node name="right_touch_button" type="TouchScreenButton" parent="controls"]
+position = Vector2(899, 507)
+scale = Vector2(25.5347, -14.2309)
+shape = SubResource("RectangleShape2D_ahhtf")
+
+[node name="left_touch_button" type="TouchScreenButton" parent="controls"]
+position = Vector2(273, 506)
+scale = Vector2(-28.1725, 14.1388)
+shape = SubResource("RectangleShape2D_ahhtf")
+
+[node name="jump_touch_button" type="TouchScreenButton" parent="controls"]
+position = Vector2(572, 139)
+scale = Vector2(57.7725, 14.6224)
+shape = SubResource("RectangleShape2D_ahhtf")
+
+[connection signal="pressed" from="controls/right_touch_button" to="controls" method="_on_right_touch_button_pressed"]
+[connection signal="released" from="controls/right_touch_button" to="controls" method="_on_right_touch_button_released"]
+[connection signal="pressed" from="controls/left_touch_button" to="controls" method="_on_left_touch_button_pressed"]
+[connection signal="released" from="controls/left_touch_button" to="controls" method="_on_left_touch_button_released"]
+[connection signal="pressed" from="controls/jump_touch_button" to="controls" method="_on_jump_touch_button_pressed"]
+[connection signal="released" from="controls/jump_touch_button" to="controls" method="_on_jump_touch_button_released"]

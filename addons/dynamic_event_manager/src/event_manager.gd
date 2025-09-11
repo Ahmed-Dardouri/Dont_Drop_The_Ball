@@ -19,16 +19,11 @@ var _events := {}
 ##[/codeblock]
 ##[br][b]Using scripts that do not inherit from the [Event] class will cause unexpected behaviour.[/b]
 func add_listener(event_type: GDScript, function: Callable) -> void:
-	
-	 
 	if !_events.has(event_type):
 		_events[event_type] = []
 	
-	if !_events[event_type].has(function):
-		if _events[event_type].size() != 0:
-			pass
-		_events[event_type].push_front(function)
-		print(_events)
+	_events[event_type].push_front(function)
+
 ## Remove a previously added listener function from a specific event type. 
 func remove_listener(event_type: GDScript, function: Callable) -> void:
 	if !_events.has(event_type):
@@ -45,7 +40,7 @@ func remove_listener(event_type: GDScript, function: Callable) -> void:
 ## This method also supports removing the listeners of this event type while invoking, using [method remove_listener].
 func invoke(event: Event) -> void:
 	var event_type = event.get_script()
-
+	
 	if !_events.has(event_type):
 		return
 	
@@ -55,4 +50,3 @@ func invoke(event: Event) -> void:
 			await listeners[i].call(event)
 		else:
 			listeners.erase(listeners[i])
-		pass

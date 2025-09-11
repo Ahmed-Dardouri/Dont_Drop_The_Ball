@@ -56,6 +56,7 @@ var _timeJumpWasReleased : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Events.add_listener(MoveEvent, handle_move_event)
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_RAY
 	pass # Replace with function body.
 
@@ -169,23 +170,23 @@ func ApplyMovement(delta: float):
 		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, acceleration * delta)
 
 func _input(event: InputEvent) -> void:
+	pass
+
+func handle_move_event(event: MoveEvent) -> void:
 	
-	if event.is_action_pressed("Jump"):
-		_JumpHeld = true
+	if event._move == PlayerMoves.JUMP:
+		if event._pressed == true:
+			_JumpHeld = true
+		else:
+			_JumpHeld = false
+			_timeJumpWasReleased = Time.get_ticks_msec()
+		
+		
+	if event._move == PlayerMoves.LEFT:
+		_leftHeld == event._pressed
 	
-	if event.is_action_released("Jump"):
-		_JumpHeld = false
-		_timeJumpWasReleased = Time.get_ticks_msec()
-	
-	if event.is_action_pressed("Left"):
-		_leftHeld = true
-	if event.is_action_released("Left"):
-		_leftHeld = false
-	
-	if event.is_action_pressed("Right"):
-		_rightHeld = true
-	if event.is_action_released("Right"):
-		_rightHeld = false
+	if event._move == PlayerMoves.RIGHT:
+		_rightHeld == event._pressed
 		
 		
 	if _leftHeld:
