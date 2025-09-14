@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 
 # Called when the node enters the scene tree for the first time.
@@ -37,4 +37,4 @@ func _on_jump_touch_button_released() -> void:
 	
 	
 func hide_controls(game_over_event: GameOverEvent):
-	visible = true
+	visible = false

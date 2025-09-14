@@ -1,14 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=11 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://ce7e7qwpuktdd" path="res://scripts/controls.gd" id="2_oo0fn"]
+[ext_resource type="Texture2D" uid="uid://dj5ls2yxusw85" path="res://sprites/right_semi_transparent.png" id="3_5pdws"]
 [ext_resource type="Texture2D" uid="uid://i1er83q1ufry" path="res://sprites/transparent.png" id="3_5ysmq"]
+[ext_resource type="Texture2D" uid="uid://cpj3ooiq06oxa" path="res://sprites/right_semi_solid.png" id="4_hd3ao"]
+[ext_resource type="Texture2D" uid="uid://bag4tdsdf1l18" path="res://sprites/left_semi_transparent.png" id="4_uo2fv"]
+[ext_resource type="Texture2D" uid="uid://dyvle2c4krphw" path="res://sprites/left_semi_solid.png" id="5_047uy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ysmq"]
-size = Vector2(570, 500)
+size = Vector2(169, 169)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6fi6k"]
-size = Vector2(570, 500)
+size = Vector2(169, 169)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uo2fv"]
 size = Vector2(570, 500)
@@ -18,24 +22,30 @@ layer = 5
 
 [node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
 
-[node name="controls" type="Node2D" parent="."]
+[node name="controls" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2_oo0fn")
 
 [node name="right_touch_button" type="TouchScreenButton" parent="controls"]
-position = Vector2(578, 355)
-scale = Vector2(1, 0.569201)
-texture_normal = ExtResource("3_5ysmq")
+position = Vector2(196, 450)
+texture_normal = ExtResource("3_5pdws")
+texture_pressed = ExtResource("4_hd3ao")
 shape = SubResource("RectangleShape2D_5ysmq")
 
 [node name="left_touch_button" type="TouchScreenButton" parent="controls"]
-position = Vector2(-1, 358)
-scale = Vector2(1, 0.559454)
-texture_normal = ExtResource("3_5ysmq")
+position = Vector2(15, 448)
+texture_normal = ExtResource("4_uo2fv")
+texture_pressed = ExtResource("5_047uy")
 shape = SubResource("RectangleShape2D_6fi6k")
 
 [node name="jump_touch_button" type="TouchScreenButton" parent="controls"]
-position = Vector2(-6, -16)
-scale = Vector2(2.04712, 0.639376)
+position = Vector2(543, -108)
+scale = Vector2(2.74894, 1.8125)
 texture_normal = ExtResource("3_5ysmq")
 shape = SubResource("RectangleShape2D_uo2fv")
 

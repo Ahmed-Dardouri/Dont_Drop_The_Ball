@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Events="*res://addons/dynamic_event_manager/src/event_manager.gd"
 
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dynamic_event_manager/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
@@ -49,6 +54,10 @@ Jump={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[physics]
+
+common/physics_interpolation=true
 
 [rendering]
 
