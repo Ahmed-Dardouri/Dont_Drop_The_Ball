@@ -38,7 +38,7 @@ func remove_listener(event_type: GDScript, function: Callable) -> void:
 ## This method supports await calls, meaning you can pause execution between events, 
 ## in order to do animations or other time based operations. 
 ## This method also supports removing the listeners of this event type while invoking, using [method remove_listener].
-func invoke(event: Event) -> void:
+func invoke(event: Event) -> void: 
 	var event_type = event.get_script()
 	
 	if !_events.has(event_type):

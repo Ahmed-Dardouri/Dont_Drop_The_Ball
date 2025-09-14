@@ -57,6 +57,7 @@ var _timeJumpWasReleased : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Events.add_listener(MoveEvent, handle_move_event)
+	print(Events._events)
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_RAY
 	pass # Replace with function body.
 
@@ -146,7 +147,7 @@ func canCoyote() -> bool:
 
 func ApplyHorizontalMovement(delta: float):
 	var prev_direction = _direction
-	_direction = Input.get_axis("ui_left", "ui_right")
+	_direction = _move.x
 	
 	if prev_direction == 0 and _direction != 0:
 		_timeMoveWasPressed = Time.get_ticks_msec()
@@ -169,10 +170,39 @@ func ApplyMovement(delta: float):
 	else:
 		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, acceleration * delta)
 
-func _input(event: InputEvent) -> void:
-	pass
-
+'func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Jump"):
+		_JumpHeld = true
+	
+	if event.is_action_released("Jump"):
+		_JumpHeld = false
+		_timeJumpWasReleased = Time.get_ticks_msec()
+	
+	if event.is_action_pressed("Left"):
+		_leftHeld = true
+	if event.is_action_released("Left"):
+		_leftHeld = false
+	
+	if event.is_action_pressed("Right"):
+		_rightHeld = true
+	if event.is_action_released("Right"):
+		_rightHeld = false
+		
+	if _leftHeld:
+		_move.x = -1
+	elif _rightHeld:
+		_move.x = 1
+	else:
+		_move.x = 0	
+		
+	if !_JumpHeldPrev && _JumpHeld:
+		_jumpToConsume = true
+		_timeJumpWasPressed = Time.get_ticks_msec()
+	
+	_JumpHeldPrev = _JumpHeld'
+	
 func handle_move_event(event: MoveEvent) -> void:
+	
 	
 	if event._move == PlayerMoves.JUMP:
 		if event._pressed == true:
@@ -181,13 +211,11 @@ func handle_move_event(event: MoveEvent) -> void:
 			_JumpHeld = false
 			_timeJumpWasReleased = Time.get_ticks_msec()
 		
-		
 	if event._move == PlayerMoves.LEFT:
-		_leftHeld == event._pressed
+		_leftHeld = event._pressed
 	
 	if event._move == PlayerMoves.RIGHT:
-		_rightHeld == event._pressed
-		
+		_rightHeld = event._pressed
 		
 	if _leftHeld:
 		_move.x = -1
@@ -202,3 +230,4 @@ func handle_move_event(event: MoveEvent) -> void:
 	
 	_JumpHeldPrev = _JumpHeld
 	
+	pass
