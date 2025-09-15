@@ -11,6 +11,8 @@
 mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_5evuk")
 script = ExtResource("1_5evuk")
+jump_power = -700
+max_speed = 50
 
 [node name="groundcast" type="ShapeCast2D" parent="."]
 position = Vector2(0, -3.12501)

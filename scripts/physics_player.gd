@@ -57,7 +57,6 @@ var _timeJumpWasReleased : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Events.add_listener(MoveEvent, handle_move_event)
-	print(Events._events)
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_RAY
 	pass # Replace with function body.
 

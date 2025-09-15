@@ -41,15 +41,15 @@ rotation = 1.5708
 scale = Vector2(2759.56, 3216.31)
 
 [node name="static6" parent="statics" instance=ExtResource("1_71j4m")]
-position = Vector2(12582, -31613)
+position = Vector2(12497, -32310)
 rotation = 3.14159
-scale = Vector2(6323.9, -3159.89)
+scale = Vector2(6322.4, -3159.89)
 
 [node name="ground" parent="." instance=ExtResource("1_qfnet")]
 position = Vector2(1, -35)
 
 [node name="ball" parent="." instance=ExtResource("2_qfnet")]
-position = Vector2(558, 355)
+position = Vector2(603, -569)
 mass = 1.0
 
 [node name="PhysicsPlayer" parent="." instance=ExtResource("3_i7141")]
