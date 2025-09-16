@@ -25,7 +25,6 @@ layer = 5
 [node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
 
 [node name="button_controls" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,6 +52,7 @@ texture_normal = ExtResource("3_5ysmq")
 shape = SubResource("RectangleShape2D_uo2fv")
 
 [node name="joystick_controls" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -77,6 +77,8 @@ shape = SubResource("RectangleShape2D_uo2fv")
 visible = false
 z_index = 200
 position = Vector2(353, 314)
+deadzone = 10
+maxLength = 150
 
 [connection signal="pressed" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_pressed"]
 [connection signal="released" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_released"]

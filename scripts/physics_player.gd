@@ -147,6 +147,8 @@ func ApplyMovement(delta: float):
 		if abs(_frameVelocity.x) < initial_move_speed:
 			_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, initial_move_acceleration * delta)
 		else:
+			if sign(_frameVelocity.x * _move.x) == -1:
+				_frameVelocity.x = 0
 			_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, move_acceleration * delta)
 	else:
 		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * 0, move_deceleration * delta)

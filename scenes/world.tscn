@@ -55,21 +55,23 @@ mass = 1.0
 [node name="PhysicsPlayer" parent="." instance=ExtResource("3_i7141")]
 position = Vector2(584, 573)
 lock_rotation = true
+jump_power = -600
 initial_move_speed = 250
 move_acceleration = 1500.0
-initial_move_acceleration = 7000.0
+initial_move_acceleration = 4000.0
 
 [node name="PhantomCamera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target")]
 top_level = true
-position = Vector2(584, 409)
+position = Vector2(584, 413)
 script = ExtResource("4_4mrxx")
 follow_mode = 5
 follow_target = NodePath("../PhysicsPlayer")
+zoom = Vector2(1.175, 1.175)
 frame_preview = false
 tween_resource = SubResource("Resource_qfnet")
 tween_on_load = false
 inactive_update_mode = 1
-follow_offset = Vector2(0, -164)
+follow_offset = Vector2(0, -160)
 follow_damping = true
 dead_zone_width = 0.071
 dead_zone_height = 1.0

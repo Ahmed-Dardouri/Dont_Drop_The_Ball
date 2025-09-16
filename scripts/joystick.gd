@@ -32,9 +32,7 @@ func calculateVector():
 
 func _on_button_pressed() -> void:
 	pressing = true
-	print("press")
 
 
 func _on_button_released() -> void:
 	pressing = false
-	print("pressnt")
