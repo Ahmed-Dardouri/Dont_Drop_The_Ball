@@ -55,6 +55,9 @@ mass = 1.0
 [node name="PhysicsPlayer" parent="." instance=ExtResource("3_i7141")]
 position = Vector2(584, 573)
 lock_rotation = true
+initial_move_speed = 250
+move_acceleration = 1500.0
+initial_move_acceleration = 7000.0
 
 [node name="PhantomCamera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target")]
 top_level = true

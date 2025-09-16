@@ -77,7 +77,6 @@ shape = SubResource("RectangleShape2D_uo2fv")
 visible = false
 z_index = 200
 position = Vector2(353, 314)
-maxLength = 50
 
 [connection signal="pressed" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_pressed"]
 [connection signal="released" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_released"]

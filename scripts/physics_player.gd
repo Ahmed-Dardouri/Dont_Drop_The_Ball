@@ -5,25 +5,18 @@ extends RigidBody2D
 @onready var ground_cast := $groundcast
 @onready var ceiling_cast := $ceilingcast
 
-@export var horizontal_speed_multiplier : float = 0.7
 @export var jump_power : int = -600
-@export var max_speed : int = 300
-@export var end_jump_early_timeout : float = 300
+@export var initial_move_speed : int = 300
 @export var coyote_timeout : float = 150
 @export var jump_buffer_timeout : float = 150
 @export var grounding_force : float = 1.5
 @export var fall_acceleration : float = 1800.0
 @export var max_fall_speed : float = 800
 @export var Jump_ended_early_gravity_modifier : float = 3.0
-@export var gravity : float = 9.8
-@export var acceleration : float = 10000
+@export var move_acceleration : float = 600
+@export var initial_move_acceleration : float = 10000
+@export var move_deceleration : float = 10000
 @export var stop_on_ceiled : bool = false
-
-
-@export var header_strength: float = 10000.0     # base kick power
-@export var inherit_factor: float = 0.1        # how much of player velocity is passed to the ball
-
-const SPEED = 300.0
 
 
 
@@ -37,16 +30,14 @@ var _JumpHeldPrev : bool = false
 var _jumpToConsume : bool = false
 var _bufferedJumpUsable : bool = false
 var _coyoteUsable : bool = false
-var _direction : float = 0
 var _targetHorizontalVelocity : float = 0
-
+var _addedHorizontalVelocity : float = 0
 
 
 
 var _move : Vector2 = Vector2.ZERO
 var _frameVelocity : Vector2 = Vector2.ZERO
 var _timeJumpWasPressed : int = 0
-var _timeMoveWasPressed : int = 0
 var _timeLeftGround : int = 0
 var _timeJumpWasReleased : int = 0
 
@@ -74,7 +65,7 @@ func _physics_process(delta: float) -> void:
 	CheckCeiling()
 	ApplyMovement(delta)
 	ApplyVelocity()	
-
+	# print("linear velocity : " + str(linear_velocity.x))
 
 
 func HandleJump() -> void:
@@ -104,7 +95,6 @@ func HandleGravity(delta: float):
 			inAirGravity *= Jump_ended_early_gravity_modifier
 		_frameVelocity.y = move_toward(_frameVelocity.y, max_fall_speed, inAirGravity * delta)
 			
-
 
 
 func CheckCeiling():
@@ -144,65 +134,26 @@ func canCoyote() -> bool:
 		coyotable = true
 	return coyotable
 
+
 func ApplyHorizontalMovement(delta: float):
-	var prev_direction = _direction
-	_direction = _move.x
-	
-	if prev_direction == 0 and _direction != 0:
-		_timeMoveWasPressed = Time.get_ticks_msec()
-	
-	var curr_time = Time.get_ticks_msec()
-	var time_diff = curr_time - _timeMoveWasPressed
-	if time_diff > 500:
-		time_diff = 500
-		
-	if _direction:
-		_targetHorizontalVelocity = SPEED + time_diff * horizontal_speed_multiplier
-		
+	if _move.x:
+		_targetHorizontalVelocity = _addedHorizontalVelocity + initial_move_speed
 	else:
-		_targetHorizontalVelocity = move_toward(linear_velocity.x, 0, SPEED)
+		_targetHorizontalVelocity = 0
 	
 
 func ApplyMovement(delta: float):
-	if abs(_frameVelocity.x) < max_speed:
-		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * max_speed, acceleration * delta)
+	if _targetHorizontalVelocity != 0:
+		if abs(_frameVelocity.x) < initial_move_speed:
+			_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, initial_move_acceleration * delta)
+		else:
+			_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, move_acceleration * delta)
 	else:
-		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, acceleration * delta)
-
-'func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Jump"):
-		_JumpHeld = true
+		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * 0, move_deceleration * delta)
 	
-	if event.is_action_released("Jump"):
-		_JumpHeld = false
-		_timeJumpWasReleased = Time.get_ticks_msec()
 	
-	if event.is_action_pressed("Left"):
-		_leftHeld = true
-	if event.is_action_released("Left"):
-		_leftHeld = false
-	
-	if event.is_action_pressed("Right"):
-		_rightHeld = true
-	if event.is_action_released("Right"):
-		_rightHeld = false
-		
-	if _leftHeld:
-		_move.x = -1
-	elif _rightHeld:
-		_move.x = 1
-	else:
-		_move.x = 0	
-		
-	if !_JumpHeldPrev && _JumpHeld:
-		_jumpToConsume = true
-		_timeJumpWasPressed = Time.get_ticks_msec()
-	
-	_JumpHeldPrev = _JumpHeld'
 	
 func handle_move_event(event: MoveEvent) -> void:
-	
-	
 	if event._move == PlayerMoves.JUMP:
 		if event._pressed == true:
 			_JumpHeld = true
@@ -218,14 +169,21 @@ func handle_move_event(event: MoveEvent) -> void:
 		
 	if _leftHeld:
 		_move.x = -1
+		_addedHorizontalVelocity = event._power
+		
 	elif _rightHeld:
 		_move.x = 1
+		_addedHorizontalVelocity = event._power
+		
 	else:
 		_move.x = 0	
+		_addedHorizontalVelocity = 0
 		
 	if !_JumpHeldPrev && _JumpHeld:
 		_jumpToConsume = true
 		_timeJumpWasPressed = Time.get_ticks_msec()
+	
+	
 	
 	_JumpHeldPrev = _JumpHeld
 	
