@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=14 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="1_ahhtf"]
+[ext_resource type="Script" uid="uid://8yeyiy4oilrx" path="res://scripts/hud.gd" id="1_mphia"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://dj5ls2yxusw85" path="res://sprites/right_semi_transparent.png" id="3_5pdws"]
 [ext_resource type="Texture2D" uid="uid://i1er83q1ufry" path="res://sprites/transparent.png" id="3_5ysmq"]
@@ -21,10 +22,12 @@ size = Vector2(570, 500)
 
 [node name="HUD" type="CanvasLayer"]
 layer = 5
+script = ExtResource("1_mphia")
 
 [node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
 
 [node name="button_controls" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,6 +83,11 @@ position = Vector2(353, 314)
 deadzone = 10
 maxLength = 150
 
+[node name="CheckButton" type="CheckButton" parent="."]
+offset_right = 44.0
+offset_bottom = 24.0
+scale = Vector2(5.28, 5.28)
+
 [connection signal="pressed" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_pressed"]
 [connection signal="released" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_released"]
 [connection signal="pressed" from="button_controls/left_touch_button" to="button_controls" method="_on_left_touch_button_pressed"]
@@ -90,3 +98,4 @@ maxLength = 150
 [connection signal="released" from="joystick_controls/jump_touch_button" to="joystick_controls" method="_on_jump_touch_button_released"]
 [connection signal="pressed" from="joystick_controls/Joystick_touch_button" to="joystick_controls" method="_on_joystick_touch_button_pressed"]
 [connection signal="released" from="joystick_controls/Joystick_touch_button" to="joystick_controls" method="_on_joystick_touch_button_released"]
+[connection signal="toggled" from="CheckButton" to="." method="_on_check_button_toggled"]
