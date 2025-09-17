@@ -60,7 +60,7 @@ func get_joystick_action():
 		
 		var posVectorX = joystick.posVector.x
 		
-		var move_power = abs(posVectorX * sqrt(abs(posVectorX)) * move_power_multiplier)
+		var move_power = abs(posVectorX * move_power_multiplier)
 
 		if posVectorX < -1 * (joystick.deadzone/ joystick.maxLength):
 			_left = true

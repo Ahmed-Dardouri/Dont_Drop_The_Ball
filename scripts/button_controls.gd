@@ -1,7 +1,7 @@
 extends Control
 
 
-@export var move_power : int = 600
+@export var move_power : int = 800
 
 
 # Called when the node enters the scene tree for the first time.

@@ -51,14 +51,17 @@ position = Vector2(1, -35)
 [node name="ball" parent="." instance=ExtResource("2_qfnet")]
 position = Vector2(603, -569)
 mass = 1.0
+gravity_scale = 0.9
+max_speed = 900.0
+fall_speed = 500.0
+air_friction = 9
 
 [node name="PhysicsPlayer" parent="." instance=ExtResource("3_i7141")]
 position = Vector2(584, 573)
 lock_rotation = true
 jump_power = -600
-initial_move_speed = 250
-move_acceleration = 1500.0
-initial_move_acceleration = 4000.0
+initial_move_speed = 100
+move_acceleration = 1800.0
 
 [node name="PhantomCamera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target")]
 top_level = true

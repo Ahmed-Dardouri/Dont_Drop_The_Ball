@@ -27,7 +27,6 @@ script = ExtResource("1_mphia")
 [node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
 
 [node name="button_controls" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -84,6 +83,7 @@ deadzone = 10
 maxLength = 150
 
 [node name="CheckButton" type="CheckButton" parent="."]
+visible = false
 offset_right = 44.0
 offset_bottom = 24.0
 scale = Vector2(5.28, 5.28)
