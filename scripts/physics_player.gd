@@ -5,6 +5,8 @@ extends RigidBody2D
 @onready var ground_cast := $groundcast
 @onready var ceiling_cast := $ceilingcast
 
+
+@export var keyboard_move_power : int = 800
 @export var jump_power : int = -600
 @export var initial_move_speed : int = 300
 @export var coyote_timeout : float = 150
@@ -55,7 +57,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-		
 	CheckGround()
 	HandleGravity(delta)
 	HandleJump()
@@ -65,7 +66,6 @@ func _physics_process(delta: float) -> void:
 	CheckCeiling()
 	ApplyMovement(delta)
 	ApplyVelocity()	
-	# print("linear velocity : " + str(linear_velocity.x))
 
 
 func HandleJump() -> void:
@@ -165,19 +165,18 @@ func handle_move_event(event: MoveEvent) -> void:
 		
 	if event._move == PlayerMoves.LEFT:
 		_leftHeld = event._pressed
+		if _leftHeld:
+			_move.x = -1
+			_addedHorizontalVelocity = event._power
 	
 	if event._move == PlayerMoves.RIGHT:
 		_rightHeld = event._pressed
+		if _rightHeld:
+			_move.x = 1
+			_addedHorizontalVelocity = event._power
+
 		
-	if _leftHeld:
-		_move.x = -1
-		_addedHorizontalVelocity = event._power
-		
-	elif _rightHeld:
-		_move.x = 1
-		_addedHorizontalVelocity = event._power
-		
-	else:
+	if !_leftHeld && !_rightHeld:
 		_move.x = 0	
 		_addedHorizontalVelocity = 0
 		
@@ -186,7 +185,20 @@ func handle_move_event(event: MoveEvent) -> void:
 		_timeJumpWasPressed = Time.get_ticks_msec()
 	
 	
-	
 	_JumpHeldPrev = _JumpHeld
 	
 	pass
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Jump"):
+		MoveEvent.invoke_move(PlayerMoves.JUMP, true, 0)
+	if event.is_action_released("Jump"):
+		MoveEvent.invoke_move(PlayerMoves.JUMP, false, 0)
+	if event.is_action_pressed("Left"):
+		MoveEvent.invoke_move(PlayerMoves.LEFT, true, keyboard_move_power)
+	if event.is_action_released("Left"):
+		MoveEvent.invoke_move(PlayerMoves.LEFT, false, 0)
+	if event.is_action_pressed("Right"):
+		MoveEvent.invoke_move(PlayerMoves.RIGHT, true, keyboard_move_power)
+	if event.is_action_released("Right"):
+		MoveEvent.invoke_move(PlayerMoves.RIGHT, false, 0)

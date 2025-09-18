@@ -35,11 +35,11 @@ func hide_controls(game_over_event: GameOverEvent):
 
 
 func _on_jump_touch_button_pressed() -> void:
-	invoke_move(PlayerMoves.JUMP, true, 0)
+	MoveEvent.invoke_move(PlayerMoves.JUMP, true, 0)
 
 
 func _on_jump_touch_button_released() -> void:
-	invoke_move(PlayerMoves.JUMP, false, 0)
+	MoveEvent.invoke_move(PlayerMoves.JUMP, false, 0)
 
 
 
@@ -74,23 +74,23 @@ func get_joystick_action():
 		
 		
 		if _left:
-			invoke_move(PlayerMoves.LEFT, true, move_power)
+			MoveEvent.invoke_move(PlayerMoves.LEFT, true, move_power)
 
 		if _right:
-			invoke_move(PlayerMoves.RIGHT, true, move_power)
+			MoveEvent.invoke_move(PlayerMoves.RIGHT, true, move_power)
 			
 		if !_left && _prev_left:
-			invoke_move(PlayerMoves.LEFT, false, 0)
+			MoveEvent.invoke_move(PlayerMoves.LEFT, false, 0)
 			
 		if !_right && _prev_right:
-			invoke_move(PlayerMoves.RIGHT, false, 0)
+			MoveEvent.invoke_move(PlayerMoves.RIGHT, false, 0)
 			
 	else:
 		if _left:
-			invoke_move(PlayerMoves.LEFT, false, 0)
+			MoveEvent.invoke_move(PlayerMoves.LEFT, false, 0)
 		
 		if _right:
-			invoke_move(PlayerMoves.RIGHT, false, 0)
+			MoveEvent.invoke_move(PlayerMoves.RIGHT, false, 0)
 			
 		_left = false
 		_right = false
@@ -124,6 +124,3 @@ func check_move_reversal():
 
 		_prev_posVectorX = 0
 	
-
-func invoke_move(move : int, value: bool, power: float):
-	Events.invoke(MoveEvent.new(move, value, power))

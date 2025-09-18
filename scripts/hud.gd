@@ -7,11 +7,11 @@ extends CanvasLayer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	check_button.button_pressed = PlayerVariables.use_joystick
-	if PlayerVariables.use_joystick :
-		joystick_controls.visible = true
-	else:
-		button_controls.visible = true
-	pass # Replace with function body.
+	#if PlayerVariables.use_joystick :
+	#	joystick_controls.visible = true
+	#else:
+	#	button_controls.visible = true
+	#pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
