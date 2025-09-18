@@ -36,20 +36,24 @@ grow_vertical = 2
 script = ExtResource("2_hd3ao")
 
 [node name="right_touch_button" type="TouchScreenButton" parent="button_controls"]
-position = Vector2(196, 450)
+position = Vector2(211, 496)
+scale = Vector2(0.742559, 0.742559)
 texture_normal = ExtResource("3_5pdws")
 texture_pressed = ExtResource("4_hd3ao")
 shape = SubResource("RectangleShape2D_5ysmq")
+passby_press = true
 
 [node name="left_touch_button" type="TouchScreenButton" parent="button_controls"]
-position = Vector2(15, 448)
+position = Vector2(29, 496)
+scale = Vector2(0.742559, 0.742559)
 texture_normal = ExtResource("4_uo2fv")
 texture_pressed = ExtResource("5_047uy")
 shape = SubResource("RectangleShape2D_6fi6k")
+passby_press = true
 
 [node name="jump_touch_button" type="TouchScreenButton" parent="button_controls"]
-position = Vector2(543, -108)
-scale = Vector2(2.74894, 1.8125)
+position = Vector2(399, -108)
+scale = Vector2(3.00025, 1.8125)
 texture_normal = ExtResource("3_5ysmq")
 shape = SubResource("RectangleShape2D_uo2fv")
 
