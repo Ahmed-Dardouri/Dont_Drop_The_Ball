@@ -76,6 +76,7 @@ tween_on_load = false
 inactive_update_mode = 1
 follow_offset = Vector2(0, -160)
 follow_damping = true
+follow_damping_value = Vector2(0.05, 0.05)
 dead_zone_width = 0.071
 dead_zone_height = 1.0
 metadata/_custom_type_script = "uid://bhexx6mj1xv3q"

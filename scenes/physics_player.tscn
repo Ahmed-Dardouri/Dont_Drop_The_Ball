@@ -12,7 +12,6 @@ mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_5evuk")
 script = ExtResource("1_5evuk")
 jump_power = -700
-max_speed = 50
 
 [node name="groundcast" type="ShapeCast2D" parent="."]
 position = Vector2(0, -3.12501)
@@ -37,7 +36,9 @@ color = Color(0, 0.207029, 0.207029, 1)
 polygon = PackedVector2Array(0.0116186, -28.0303, -2.62683, -28.0028, -9.1939, -26.9656, -15.5285, -26.0609, -14.4476, 4.14856, 14.4476, 4.14856, 15.5285, -26.0609, 9.1939, -26.9656, 2.62683, -28.0028)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+physics_interpolation_mode = 1
 zoom = Vector2(0.765, 0.765)
+process_callback = 0
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
 process_priority = 300
