@@ -45,7 +45,7 @@ passby_press = true
 
 [node name="left_touch_button" type="TouchScreenButton" parent="button_controls"]
 position = Vector2(29, 496)
-scale = Vector2(0.742559, 0.742559)
+scale = Vector2(0.742559, 0.74713)
 texture_normal = ExtResource("4_uo2fv")
 texture_pressed = ExtResource("5_047uy")
 shape = SubResource("RectangleShape2D_6fi6k")
