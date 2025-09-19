@@ -11,11 +11,11 @@
 [ext_resource type="Script" uid="uid://5kfcwwo1yv6u" path="res://scripts/joystick_controls.gd" id="8_hd3ao"]
 [ext_resource type="PackedScene" uid="uid://dm6q0abakck7u" path="res://scenes/joystick.tscn" id="9_0i1j5"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ysmq"]
-size = Vector2(169, 169)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_0m4u7"]
+points = PackedVector2Array(-85, -85, 130, -85, 130, 85, -85, 85)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6fi6k"]
-size = Vector2(169, 169)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_mphia"]
+points = PackedVector2Array(-130, -85, 85, -85, 85, 85, -130, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uo2fv"]
 size = Vector2(570, 500)
@@ -27,34 +27,37 @@ script = ExtResource("1_mphia")
 [node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
 
 [node name="button_controls" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -14.0
+offset_top = 16.0
+offset_right = -14.0
+offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_hd3ao")
 
 [node name="right_touch_button" type="TouchScreenButton" parent="button_controls"]
-position = Vector2(211, 496)
-scale = Vector2(0.742559, 0.742559)
+position = Vector2(431, 782)
+scale = Vector2(1.35, 1.35)
 texture_normal = ExtResource("3_5pdws")
 texture_pressed = ExtResource("4_hd3ao")
-shape = SubResource("RectangleShape2D_5ysmq")
+shape = SubResource("ConvexPolygonShape2D_0m4u7")
 passby_press = true
 
 [node name="left_touch_button" type="TouchScreenButton" parent="button_controls"]
-position = Vector2(29, 496)
-scale = Vector2(0.742559, 0.74713)
+position = Vector2(151, 782)
+scale = Vector2(1.35, 1.35)
 texture_normal = ExtResource("4_uo2fv")
 texture_pressed = ExtResource("5_047uy")
-shape = SubResource("RectangleShape2D_6fi6k")
+shape = SubResource("ConvexPolygonShape2D_mphia")
 passby_press = true
 
 [node name="jump_touch_button" type="TouchScreenButton" parent="button_controls"]
-position = Vector2(399, -108)
-scale = Vector2(3.00025, 1.8125)
+position = Vector2(955, -193)
+scale = Vector2(3.3281, 2.65497)
 texture_normal = ExtResource("3_5ysmq")
 shape = SubResource("RectangleShape2D_uo2fv")
 
