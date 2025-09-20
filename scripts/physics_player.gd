@@ -5,22 +5,27 @@ extends RigidBody2D
 @onready var ground_cast := $groundcast
 @onready var ceiling_cast := $ceilingcast
 
+#region loaded_constants
 
-@export var keyboard_move_power : int = 800
-@export var jump_power : int = -600
-@export var initial_move_speed : int = 300
-@export var coyote_timeout : float = 150
-@export var jump_buffer_timeout : float = 150
-@export var grounding_force : float = 1.5
-@export var fall_acceleration : float = 1800.0
-@export var max_fall_speed : float = 800
-@export var Jump_ended_early_gravity_modifier : float = 3.0
-@export var move_acceleration : float = 600
-@export var initial_move_acceleration : float = 10000
-@export var move_deceleration : float = 10000
-@export var stop_on_ceiled : bool = false
+var keyboard_move_power : int = 0
+var jump_power : int = 0
+var initial_move_speed : int = 0
+var coyote_timeout : float = 0
+var jump_buffer_timeout : float = 0
+var grounding_force : float = 0
+var fall_acceleration : float = 0
+var max_fall_speed : float = 0
+var Jump_ended_early_gravity_modifier : float = 0
+var move_acceleration : float = 0
+var initial_move_acceleration : float = 0
+var move_deceleration : float = 0
+var stop_on_ceiled : bool = false
+var mass_const : float = 0
+var gravity : float = 0
 
+#endregion
 
+#region internal_variables
 
 var _ceiled : bool = false
 var _endedJumpEarly : bool = false
@@ -34,21 +39,20 @@ var _bufferedJumpUsable : bool = false
 var _coyoteUsable : bool = false
 var _targetHorizontalVelocity : float = 0
 var _addedHorizontalVelocity : float = 0
-
-
-
 var _move : Vector2 = Vector2.ZERO
 var _frameVelocity : Vector2 = Vector2.ZERO
 var _timeJumpWasPressed : int = 0
 var _timeLeftGround : int = 0
 var _timeJumpWasReleased : int = 0
 
-
+#endregion
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	load_constants()
+	apply_constants()
 	Events.add_listener(MoveEvent, handle_move_event)
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_RAY
 	pass # Replace with function body.
@@ -208,3 +212,24 @@ func _input(event: InputEvent) -> void:
 		MoveEvent.invoke_move(PlayerMoves.RIGHT, true, keyboard_move_power)
 	if event.is_action_released("Right"):
 		MoveEvent.invoke_move(PlayerMoves.RIGHT, false, 0)
+
+func load_constants():
+	keyboard_move_power = Constants.player_keyboard_move_power
+	jump_power = Constants.player_jump_power
+	initial_move_speed = Constants.player_initial_move_speed
+	coyote_timeout = Constants.player_coyote_timeout
+	jump_buffer_timeout = Constants.player_jump_buffer_timeout
+	grounding_force = Constants.player_grounding_force
+	fall_acceleration = Constants.player_fall_acceleration
+	max_fall_speed = Constants.player_max_fall_speed
+	Jump_ended_early_gravity_modifier = Constants.player_Jump_ended_early_gravity_modifier
+	move_acceleration = Constants.player_move_acceleration
+	initial_move_acceleration = Constants.player_initial_move_acceleration
+	move_deceleration = Constants.player_move_deceleration
+	stop_on_ceiled = Constants.player_stop_on_ceiled
+	mass_const = Constants.player_mass_const
+	gravity = Constants.player_gravity
+
+func apply_constants():
+	mass = mass_const
+	gravity_scale = gravity

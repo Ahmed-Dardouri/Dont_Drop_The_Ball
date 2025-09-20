@@ -2,20 +2,16 @@ extends RigidBody2D
 
 @onready var shape_cast: ShapeCast2D = $ShapeCast2D 
 
-@export var skin := 0.5
 
-@export_range(0.0, 10000.0, 10.0) var max_speed := 1500.0
-@export_range(0.0, 10000.0, 10.0) var fall_speed := 1500.0
-@export_range(0.0, 100, 1) var air_friction := 1
+var max_speed := 1500.0
+var fall_speed := 1500.0
+var air_friction := 1
 
-var _prev_pos := Vector2.ZERO
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_prev_pos = global_position
-	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
-	
+	load_constants()
 	pass # Replace with function body.
 
 
@@ -53,3 +49,12 @@ func _on_body_entered(body: Node) -> void:
 	if body.name == "ground_static":
 		var score: int = 0
 		Events.invoke(GameOverEvent.new(score))
+
+
+func load_constants():
+	max_speed = Constants.ball_max_speed
+	fall_speed = Constants.ball_fall_speed
+	air_friction = Constants.ball_air_friction
+	
+func apply_constants():
+	pass

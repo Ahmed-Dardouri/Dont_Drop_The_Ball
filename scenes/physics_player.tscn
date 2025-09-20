@@ -8,10 +8,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lvk83"]
 
 [node name="PhysicsPlayer" type="RigidBody2D"]
-mass = 100.0
+mass = 0.001
 physics_material_override = SubResource("PhysicsMaterial_5evuk")
+gravity_scale = 0.0
 script = ExtResource("1_5evuk")
-jump_power = -700
 
 [node name="groundcast" type="ShapeCast2D" parent="."]
 position = Vector2(0, -3.12501)

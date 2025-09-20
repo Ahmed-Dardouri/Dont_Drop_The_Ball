@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Events="*res://addons/dynamic_event_manager/src/event_manager.gd"
-PlayerVariables="*res://scripts/utils/PlayerVariables.gd"
+Constants="*res://scripts/utils/Constants.gd"
 
 [display]
 
