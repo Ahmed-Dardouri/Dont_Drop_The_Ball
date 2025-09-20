@@ -166,18 +166,16 @@ func handle_move_event(event: MoveEvent) -> void:
 	if event._move == PlayerMoves.LEFT:
 		_leftHeld = event._pressed
 		if _leftHeld:
-			_move.x = -1
 			_addedHorizontalVelocity = event._power
-	
+			
 	if event._move == PlayerMoves.RIGHT:
 		_rightHeld = event._pressed
 		if _rightHeld:
-			_move.x = 1
 			_addedHorizontalVelocity = event._power
 
-		
+	update_move()
+	
 	if !_leftHeld && !_rightHeld:
-		_move.x = 0	
 		_addedHorizontalVelocity = 0
 		
 	if !_JumpHeldPrev && _JumpHeld:
@@ -188,6 +186,14 @@ func handle_move_event(event: MoveEvent) -> void:
 	_JumpHeldPrev = _JumpHeld
 	
 	pass
+
+func update_move():
+	if _rightHeld:
+		_move.x = 1
+	elif _leftHeld:
+		_move.x = -1
+	else:
+		_move.x = 0
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Jump"):
