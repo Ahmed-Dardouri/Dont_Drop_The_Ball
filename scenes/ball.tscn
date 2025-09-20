@@ -28,14 +28,17 @@ air_friction = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_n1dj2")
 
+[node name="Trail" parent="." node_paths=PackedStringArray("main_body") instance=ExtResource("3_f7cbr")]
+z_index = -1
+z_as_relative = false
+width = 30.0
+default_color = Color(1, 1, 1, 0.258824)
+main_body = NodePath("..")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-0.342665, -2.23669)
 scale = Vector2(0.039, 0.039)
 texture = ExtResource("1_7s4qf")
-
-[node name="Trail" parent="." node_paths=PackedStringArray("main_body") instance=ExtResource("3_f7cbr")]
-default_color = Color(1, 1, 1, 1)
-main_body = NodePath("..")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
 shape = SubResource("CircleShape2D_f7cbr")

@@ -3,10 +3,7 @@ extends Line2D
 var queue : Array
 @export var MAX_LENGTH : int
 @export var main_body : Node2D
-var custom_color : Color = Color(0xffffff)
 var track : bool = true
-func _ready() -> void:
-	default_color = custom_color
 
 func _process(_delta):
 	if track:
@@ -24,8 +21,7 @@ func _get_position():
 	return main_body.global_position
 
 func set_custom_color(col: Color) -> void:
-	custom_color = col
-	default_color = custom_color
+	default_color = col
 
 func reset_trail():
 	queue.clear()

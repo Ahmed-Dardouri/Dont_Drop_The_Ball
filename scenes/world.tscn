@@ -16,6 +16,7 @@ ease = 2
 [node name="world" type="Node2D"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
+z_index = -4096
 offset_left = -177.0
 offset_top = -190.0
 offset_right = -137.0
@@ -49,7 +50,7 @@ scale = Vector2(6322.4, -3159.89)
 position = Vector2(1, -35)
 
 [node name="ball" parent="." instance=ExtResource("2_qfnet")]
-position = Vector2(611, -567)
+position = Vector2(580, -567)
 mass = 1.0
 gravity_scale = 0.9
 max_speed = 900.0
