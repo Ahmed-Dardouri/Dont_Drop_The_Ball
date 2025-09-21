@@ -1,7 +1,25 @@
 [gd_scene load_steps=2 format=3 uid="uid://bp0vcj5imfgcb"]
 
-[ext_resource type="PackedScene" uid="uid://gdpcp3xup1lv" path="res://scenes/game.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://gdpcp3xup1lv" path="res://scenes/world_builder.tscn" id="1_o5qli"]
 
 [node name="main" type="Node2D"]
 
-[node name="game" parent="." instance=ExtResource("1_o5qli")]
+[node name="world_builder" parent="." instance=ExtResource("1_o5qli")]
+
+[node name="mode_select" type="Node2D" parent="."]
+
+[node name="settings" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="pause_screen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="sound_mngr" type="Node2D" parent="."]
+
+[node name="leaderboard_mngr" type="Node2D" parent="."]

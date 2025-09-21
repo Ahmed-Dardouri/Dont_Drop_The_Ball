@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://gdpcp3xup1lv"]
+
+[ext_resource type="PackedScene" uid="uid://c3jb2ccbbd4pp" path="res://scenes/world.tscn" id="1_lunhb"]
+[ext_resource type="PackedScene" uid="uid://7st5pqg6mdke" path="res://scenes/hud.tscn" id="2_dbkho"]
+[ext_resource type="PackedScene" uid="uid://d3lj0hbvgdghn" path="res://scenes/bonus_mngr.tscn" id="3_dbkho"]
+
+[node name="world_builder" type="Node2D"]
+
+[node name="world" parent="." instance=ExtResource("1_lunhb")]
+
+[node name="HUD" parent="." instance=ExtResource("2_dbkho")]
+visible = true
+
+[node name="bonus_mngr" parent="." instance=ExtResource("3_dbkho")]

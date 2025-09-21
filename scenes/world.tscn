@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://c3jb2ccbbd4pp"]
 
-[ext_resource type="PackedScene" uid="uid://bxy82qrpua865" path="res://scenes/static.tscn" id="1_71j4m"]
-[ext_resource type="PackedScene" uid="uid://3ewuh7jdv8qv" path="res://scenes/ground.tscn" id="1_qfnet"]
 [ext_resource type="PackedScene" uid="uid://ddkwcva4w8fu5" path="res://scenes/ball.tscn" id="2_qfnet"]
 [ext_resource type="PackedScene" uid="uid://g6dvsvhwvvtc" path="res://scenes/physics_player.tscn" id="3_i7141"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="4_4mrxx"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://c0vru7ptghj0t" path="res://scenes/const_objs.tscn" id="5_qfnet"]
+[ext_resource type="PackedScene" uid="uid://byvv311306aa0" path="res://scenes/mode_objs.tscn" id="6_i7141"]
 
 [sub_resource type="Resource" id="Resource_qfnet"]
 script = ExtResource("5_7r4gi")
@@ -14,40 +14,6 @@ transition = 0
 ease = 2
 
 [node name="world" type="Node2D"]
-
-[node name="ColorRect" type="ColorRect" parent="."]
-z_index = -4096
-offset_left = -177.0
-offset_top = -190.0
-offset_right = -137.0
-offset_bottom = -150.0
-scale = Vector2(37.6588, 24.4107)
-color = Color(0.621524, 0.621524, 0.621524, 1)
-
-[node name="statics" type="Node2D" parent="."]
-
-[node name="static" parent="statics" instance=ExtResource("1_71j4m")]
-position = Vector2(-194, 17250)
-rotation = 3.14159
-scale = Vector2(2344.1, -1662.52)
-
-[node name="static2" parent="statics" instance=ExtResource("1_71j4m")]
-position = Vector2(31624, -480)
-rotation = -1.57079
-scale = Vector2(2503.71, 3049.37)
-
-[node name="static3" parent="statics" instance=ExtResource("1_71j4m")]
-position = Vector2(-32119, -5741)
-rotation = 1.5708
-scale = Vector2(2759.56, 3216.31)
-
-[node name="static6" parent="statics" instance=ExtResource("1_71j4m")]
-position = Vector2(12497, -32310)
-rotation = 3.14159
-scale = Vector2(6322.4, -3159.89)
-
-[node name="ground" parent="." instance=ExtResource("1_qfnet")]
-position = Vector2(1, -35)
 
 [node name="ball" parent="." instance=ExtResource("2_qfnet")]
 position = Vector2(580, -567)
@@ -75,3 +41,7 @@ follow_damping_value = Vector2(0.05, 0.05)
 dead_zone_width = 0.071
 dead_zone_height = 1.0
 metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
+[node name="const_objs" parent="." instance=ExtResource("5_qfnet")]
+
+[node name="mode_objs" parent="." instance=ExtResource("6_i7141")]

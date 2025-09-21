@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0vru7ptghj0t"]
+
+[ext_resource type="PackedScene" uid="uid://bxy82qrpua865" path="res://scenes/static.tscn" id="1_v3q01"]
+[ext_resource type="PackedScene" uid="uid://3ewuh7jdv8qv" path="res://scenes/ground.tscn" id="2_dcf5b"]
+
+[node name="const_objs" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -4096
+offset_left = -177.0
+offset_top = -190.0
+offset_right = -137.0
+offset_bottom = -150.0
+scale = Vector2(37.6588, 24.4107)
+color = Color(0.621524, 0.621524, 0.621524, 1)
+
+[node name="statics" type="Node2D" parent="."]
+
+[node name="static" parent="statics" instance=ExtResource("1_v3q01")]
+position = Vector2(369, 1001)
+rotation = 3.14159
+scale = Vector2(129.126, 38.2195)
+
+[node name="static2" parent="statics" instance=ExtResource("1_v3q01")]
+position = Vector2(2821, -1356)
+rotation = -1.57079
+scale = Vector2(362.391, 164.716)
+
+[node name="static3" parent="statics" instance=ExtResource("1_v3q01")]
+position = Vector2(-1408, -1280)
+rotation = 1.5708
+scale = Vector2(359.96, 139.185)
+
+[node name="static6" parent="statics" instance=ExtResource("1_v3q01")]
+position = Vector2(761, -3836)
+rotation = 3.14159
+scale = Vector2(-129.65, -6.60767)
+
+[node name="ground" parent="." instance=ExtResource("2_dcf5b")]
+position = Vector2(1, -35)

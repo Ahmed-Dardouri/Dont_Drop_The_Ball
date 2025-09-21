@@ -1,7 +1,5 @@
 extends Node
 
-var use_joystick : bool = false
-
 #region player_constants
 
 var player_keyboard_move_power : int = 800
