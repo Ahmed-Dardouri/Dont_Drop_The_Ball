@@ -203,7 +203,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Jump"):
 		MoveEvent.invoke_move(PlayerMoves.JUMP, true, 0)
 	if event.is_action_released("Jump"):
-		MoveEvent.invoke_move(PlayerMoves.JUMP, false, 0)
+		MoveEvent.invoke_move(PlayerMoves.JUMP, false, 0) 
 	if event.is_action_pressed("Left"):
 		MoveEvent.invoke_move(PlayerMoves.LEFT, true, keyboard_move_power)
 	if event.is_action_released("Left"):
