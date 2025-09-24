@@ -27,3 +27,10 @@ var ball_fall_speed := 500.0
 var ball_air_friction := 9
 
 #endregion
+
+#region orb_constants
+
+var orb_lifespan_generic = 30
+var orb_lifespan_add_life = 30
+
+#endregion

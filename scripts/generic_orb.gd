@@ -6,9 +6,11 @@ class_name GenericOrb
 @onready var red_sprite: Sprite2D = $red_sprite
 
 #endregion
+@onready var timer: Timer = $Timer
 
 var _props : OrbProps = null
-
+var _lifespan : int = 10
+var _probability 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	update_orb()
@@ -39,3 +41,27 @@ func set_type(props :OrbProps):
 
 func update_orb():
 	select_sprite(_props.Type)
+	set_lifespan() # must set life span before timer
+	setup_timer()
+	
+func set_lifespan():
+	match _props.Type:
+		Enums.OrbEvent.GENERIC:
+			_lifespan = Constants.orb_lifespan_generic
+		Enums.OrbEvent.ADD_LIFE:
+			_lifespan = Constants.orb_lifespan_add_life
+		_: 
+			_lifespan = 1
+
+
+
+func setup_timer():
+	timer.one_shot = true
+	timer.wait_time = _lifespan
+	timer.autostart = true
+	timer.timeout.connect(_on_timeout)
+	timer.start()
+	
+
+func _on_timeout():
+	queue_free()

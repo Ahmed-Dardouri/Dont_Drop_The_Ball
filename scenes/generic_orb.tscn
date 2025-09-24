@@ -7,7 +7,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_r5sm3"]
 radius = 56.0
 
-[node name="generic_bonus_orb" type="Node2D"]
+[node name="generic_orb" type="Node2D"]
 scale = Vector2(0.61, 0.61)
 script = ExtResource("1_cqkum")
 
@@ -23,5 +23,7 @@ texture = ExtResource("3_woxxk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_r5sm3")
+
+[node name="Timer" type="Timer" parent="."]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
