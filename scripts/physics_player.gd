@@ -160,19 +160,19 @@ func ApplyMovement(delta: float):
 	
 	
 func handle_move_event(event: MoveEvent) -> void:
-	if event._move == PlayerMoves.JUMP:
+	if event._move == Enums.PlayerMoves.JUMP:
 		if event._pressed == true:
 			_JumpHeld = true
 		else:
 			_JumpHeld = false
 			_timeJumpWasReleased = Time.get_ticks_msec()
 		
-	if event._move == PlayerMoves.LEFT:
+	if event._move == Enums.PlayerMoves.LEFT:
 		_leftHeld = event._pressed
 		if _leftHeld:
 			_addedHorizontalVelocity = event._power
 			
-	if event._move == PlayerMoves.RIGHT:
+	if event._move == Enums.PlayerMoves.RIGHT:
 		_rightHeld = event._pressed
 		if _rightHeld:
 			_addedHorizontalVelocity = event._power
@@ -201,17 +201,17 @@ func update_move():
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Jump"):
-		MoveEvent.invoke_move(PlayerMoves.JUMP, true, 0)
+		MoveEvent.invoke_move(Enums.PlayerMoves.JUMP, true, 0)
 	if event.is_action_released("Jump"):
-		MoveEvent.invoke_move(PlayerMoves.JUMP, false, 0) 
+		MoveEvent.invoke_move(Enums.PlayerMoves.JUMP, false, 0) 
 	if event.is_action_pressed("Left"):
-		MoveEvent.invoke_move(PlayerMoves.LEFT, true, keyboard_move_power)
+		MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, true, keyboard_move_power)
 	if event.is_action_released("Left"):
-		MoveEvent.invoke_move(PlayerMoves.LEFT, false, 0)
+		MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, false, 0)
 	if event.is_action_pressed("Right"):
-		MoveEvent.invoke_move(PlayerMoves.RIGHT, true, keyboard_move_power)
+		MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, true, keyboard_move_power)
 	if event.is_action_released("Right"):
-		MoveEvent.invoke_move(PlayerMoves.RIGHT, false, 0)
+		MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, false, 0)
 
 func load_constants():
 	keyboard_move_power = Constants.player_keyboard_move_power
