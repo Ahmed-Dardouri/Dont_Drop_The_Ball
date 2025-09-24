@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3e8retqk0tvx"]
+[gd_scene load_steps=7 format=3 uid="uid://c3e8retqk0tvx"]
 
 [ext_resource type="PackedScene" uid="uid://bniegixvweldd" path="res://scenes/generic_orb.tscn" id="1_k70kv"]
+[ext_resource type="Script" uid="uid://c3uyi4uydif2v" path="res://scripts/orb_mngr.gd" id="1_yyp6m"]
 [ext_resource type="Script" uid="uid://bfwbykkrt6qyn" path="res://scripts/orb_spawner.gd" id="2_8wc3p"]
 [ext_resource type="Script" uid="uid://faic7luwlu41" path="res://scripts/utils/orb_properties.gd" id="3_giebm"]
 
@@ -15,6 +16,7 @@ Type = 1
 metadata/_custom_type_script = "uid://faic7luwlu41"
 
 [node name="orb_mngr" type="Node2D"]
+script = ExtResource("1_yyp6m")
 
 [node name="orb_spawner" type="Node2D" parent="."]
 script = ExtResource("2_8wc3p")

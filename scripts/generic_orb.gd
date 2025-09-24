@@ -10,7 +10,7 @@ class_name GenericOrb
 
 var _props : OrbProps = null
 var _lifespan : int = 10
-var _probability 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	update_orb()
