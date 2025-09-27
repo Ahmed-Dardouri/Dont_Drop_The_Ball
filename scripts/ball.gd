@@ -47,8 +47,7 @@ func apply_air_friction():
 
 func _on_body_entered(body: Node) -> void:
 	if body.name == "ground_static":
-		var score: int = 0
-		Events.invoke(GameOverEvent.new(score))
+		Events.invoke(GameOverEvent.new())
 
 
 func load_constants():

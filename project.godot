@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Events="*res://addons/dynamic_event_manager/src/event_manager.gd"
 Constants="*res://scripts/utils/Constants.gd"
+GameSaveMngr="*res://scripts/utils/game_save_mngr.gd"
 
 [display]
 

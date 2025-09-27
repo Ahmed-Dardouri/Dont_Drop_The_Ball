@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=13 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
@@ -17,6 +17,8 @@ points = PackedVector2Array(-130, -85, 85, -85, 85, 85, -130, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uo2fv"]
 size = Vector2(570, 500)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hd3ao"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 5
@@ -76,7 +78,20 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="score_label" type="Label" parent="score_mngr/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="score_mngr/MarginContainer"]
+layout_mode = 2
+
+[node name="score_label" type="Label" parent="score_mngr/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "0"
+
+[node name="VSeparator" type="VSeparator" parent="score_mngr/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1500
+theme_override_styles/separator = SubResource("StyleBoxEmpty_hd3ao")
+
+[node name="pb_label" type="Label" parent="score_mngr/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "0"
