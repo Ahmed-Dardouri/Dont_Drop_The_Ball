@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bp0vcj5imfgcb"]
+[gd_scene load_steps=3 format=3 uid="uid://bp0vcj5imfgcb"]
 
 [ext_resource type="PackedScene" uid="uid://gdpcp3xup1lv" path="res://scenes/world_builder.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://6bf047vbgpub" path="res://scenes/sound_mngr.tscn" id="2_0wfyh"]
 
 [node name="main" type="Node2D"]
 
@@ -20,6 +21,6 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="sound_mngr" type="Node2D" parent="."]
+[node name="sound_mngr" parent="." instance=ExtResource("2_0wfyh")]
 
 [node name="leaderboard_mngr" type="Node2D" parent="."]

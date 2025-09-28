@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://6bf047vbgpub"]
+
+[ext_resource type="Script" uid="uid://symdfn7kep85" path="res://scripts/sound_mngr.gd" id="1_p1t0o"]
+[ext_resource type="Script" uid="uid://cxc7o202876wm" path="res://scripts/utils/sound_entry.gd" id="2_6r1ji"]
+[ext_resource type="AudioStream" uid="uid://c4jcdtpsdqat8" path="res://sounds/retro-coin-4-236671.mp3" id="2_jcxsx"]
+[ext_resource type="AudioStream" uid="uid://1runm4q188uu" path="res://sounds/bg_music_lofi-lofi-chill-405232.mp3" id="3_7mg1q"]
+[ext_resource type="AudioStream" uid="uid://ctv8diqughvc5" path="res://sounds/classic-game-action-negative-21-224579.wav" id="4_u7y87"]
+
+[sub_resource type="Resource" id="Resource_u7y87"]
+script = ExtResource("2_6r1ji")
+key = 0
+audio = ExtResource("2_jcxsx")
+metadata/_custom_type_script = "uid://cxc7o202876wm"
+
+[sub_resource type="Resource" id="Resource_543au"]
+script = ExtResource("2_6r1ji")
+key = 1
+audio = ExtResource("4_u7y87")
+metadata/_custom_type_script = "uid://cxc7o202876wm"
+
+[sub_resource type="Resource" id="Resource_vssky"]
+script = ExtResource("2_6r1ji")
+key = 2
+audio = ExtResource("3_7mg1q")
+metadata/_custom_type_script = "uid://cxc7o202876wm"
+
+[node name="sound_mngr" type="Node2D"]
+script = ExtResource("1_p1t0o")
+sfx_list = Array[ExtResource("2_6r1ji")]([SubResource("Resource_u7y87"), SubResource("Resource_543au")])
+music_list = Array[ExtResource("2_6r1ji")]([SubResource("Resource_vssky")])
+
+[node name="music_player" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_7mg1q")
+
+[node name="sfx_player" type="AudioStreamPlayer2D" parent="."]
+max_polyphony = 10

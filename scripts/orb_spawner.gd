@@ -45,6 +45,5 @@ func _on_timeout() -> void:
 func create_orb_copy(props: OrbProps) -> Node:
 	
 	var orb_cpy = generic_orb_scene.instantiate()
-	print(orb_cpy)
 	orb_cpy.set_type(props)
 	return orb_cpy

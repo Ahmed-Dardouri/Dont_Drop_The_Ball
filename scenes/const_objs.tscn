@@ -7,6 +7,7 @@
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -4096
+z_as_relative = false
 offset_left = -177.0
 offset_top = -190.0
 offset_right = -137.0

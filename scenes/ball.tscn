@@ -26,6 +26,7 @@ script = ExtResource("1_cxlvu")
 shape = SubResource("CircleShape2D_n1dj2")
 
 [node name="Trail" parent="." node_paths=PackedStringArray("main_body") instance=ExtResource("3_f7cbr")]
+top_level = false
 z_index = -1
 z_as_relative = false
 width = 30.0

@@ -6,7 +6,7 @@ extends RigidBody2D
 var max_speed := 1500.0
 var fall_speed := 1500.0
 var air_friction := 1
-
+var game_over : bool = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -46,8 +46,10 @@ func apply_air_friction():
 
 
 func _on_body_entered(body: Node) -> void:
-	if body.name == "ground_static":
-		Events.invoke(GameOverEvent.new())
+	if body.name == "ground_static" && !game_over:
+		game_over = true
+		GameOverEvent.invoke_game_over()
+		SoundPlayEvent.invoke_sound_play(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
 
 
 func load_constants():

@@ -16,6 +16,7 @@ func _process(_delta):
 		for point in queue:
 			add_point(point)
 	
+	print(queue.size())
 
 func _get_position():
 	return main_body.global_position
