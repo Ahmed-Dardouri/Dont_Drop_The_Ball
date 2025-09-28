@@ -5,7 +5,7 @@ var queue : Array
 @export var main_body : Node2D
 var track : bool = true
 
-func _process(_delta):
+func _physics_process(delta: float) -> void:
 	if track:
 		var pos = _get_position()
 		queue.push_front(pos)
@@ -16,7 +16,6 @@ func _process(_delta):
 		for point in queue:
 			add_point(point)
 	
-	print(queue.size())
 
 func _get_position():
 	return main_body.global_position
