@@ -1,10 +1,10 @@
 class_name OrbCollectedEvent extends Event
 
-var _type: int
+var _props: OrbProps
 
-func _init(type: int) -> void:
-	_type = type
+func _init(props: OrbProps) -> void:
+	_props = props
 
 
-static func invoke_orb_event(type : int):
-	Events.invoke(OrbCollectedEvent.new(type))
+static func invoke_orb_event(props : OrbProps):
+	Events.invoke(OrbCollectedEvent.new(props))

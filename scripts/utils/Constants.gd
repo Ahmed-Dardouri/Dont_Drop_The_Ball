@@ -30,10 +30,10 @@ var ball_air_friction := 9
 
 #region orb_constants
 
-var orb_lifespan_generic = 30
-var orb_lifespan_add_life = 30
+var orb_lifespan_blue = 30
+var orb_lifespan_red = 30
 
-var orb_score_generic = 2
-var orb_score_add_life = 3
+var orb_score_blue = 2
+var orb_score_red = 3
 
 #endregion

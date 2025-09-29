@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c3jb2ccbbd4pp"]
+[gd_scene load_steps=8 format=3 uid="uid://c3jb2ccbbd4pp"]
 
 [ext_resource type="PackedScene" uid="uid://ddkwcva4w8fu5" path="res://scenes/ball.tscn" id="2_qfnet"]
 [ext_resource type="PackedScene" uid="uid://g6dvsvhwvvtc" path="res://scenes/physics_player.tscn" id="3_i7141"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_7r4gi"]
 [ext_resource type="PackedScene" uid="uid://c0vru7ptghj0t" path="res://scenes/const_objs.tscn" id="5_qfnet"]
 [ext_resource type="PackedScene" uid="uid://byvv311306aa0" path="res://scenes/mode_objs.tscn" id="6_i7141"]
-[ext_resource type="PackedScene" uid="uid://c3e8retqk0tvx" path="res://scenes/orb_mngr.tscn" id="7_i7141"]
 
 [sub_resource type="Resource" id="Resource_qfnet"]
 script = ExtResource("5_7r4gi")
@@ -46,5 +45,3 @@ metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 [node name="const_objs" parent="." instance=ExtResource("5_qfnet")]
 
 [node name="mode_objs" parent="." instance=ExtResource("6_i7141")]
-
-[node name="orb_mngr" parent="." instance=ExtResource("7_i7141")]

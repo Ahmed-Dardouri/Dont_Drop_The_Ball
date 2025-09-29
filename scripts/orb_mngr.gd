@@ -12,20 +12,20 @@ func _process(delta: float) -> void:
 	pass
 
 func orb_event_handler(event: OrbCollectedEvent):
-	match event._type:
-		Enums.OrbEvent.GENERIC:
-			orb_event_handler_generic()
-		Enums.OrbEvent.ADD_LIFE:
-			orb_event_handler_add_life()
+	match event._props.Type:
+		Enums.OrbType.BLUE:
+			orb_event_handler_blue()
+		Enums.OrbType.RED:
+			orb_event_handler_red()
 		_:
-			orb_event_handler_add_life()
+			orb_event_handler_red()
 	pass
 
 
-func orb_event_handler_generic():
-	AddScoreEvent.invoke_add_score(Constants.orb_score_generic)
+func orb_event_handler_blue():
+	AddScoreEvent.invoke_add_score(Constants.orb_score_blue)
 	pass
 		
-func orb_event_handler_add_life():
-	AddScoreEvent.invoke_add_score(Constants.orb_score_add_life)
+func orb_event_handler_red():
+	AddScoreEvent.invoke_add_score(Constants.orb_score_red)
 	pass

@@ -38,6 +38,7 @@ func _on_timeout() -> void:
 		randf_range(spawn_zone.position.y, spawn_zone.position.y + spawn_zone.size.y)
 	)
 	var orb = create_orb_copy(props)
+	
 	orb.global_position = pos
 	add_child(orb) 
 

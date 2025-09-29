@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://be05yexebg7c8"]
+
+[ext_resource type="Script" uid="uid://bfwbykkrt6qyn" path="res://scripts/orb_spawner.gd" id="1_1ogdr"]
+[ext_resource type="PackedScene" uid="uid://bniegixvweldd" path="res://scenes/generic_orb.tscn" id="2_yq6c3"]
+[ext_resource type="Script" uid="uid://faic7luwlu41" path="res://scripts/utils/orb_properties.gd" id="3_dfgii"]
+
+[sub_resource type="Resource" id="Resource_giebm"]
+script = ExtResource("3_dfgii")
+Type = null
+metadata/_custom_type_script = "uid://faic7luwlu41"
+
+[sub_resource type="Resource" id="Resource_yyp6m"]
+script = ExtResource("3_dfgii")
+Type = null
+metadata/_custom_type_script = "uid://faic7luwlu41"
+
+[node name="orb_spawner" type="Node2D"]
+script = ExtResource("1_1ogdr")
+generic_orb_scene = ExtResource("2_yq6c3")
+spawn_zone = Rect2(50, 200, 1075, 200)
+orb_props = Array[ExtResource("3_dfgii")]([SubResource("Resource_giebm"), SubResource("Resource_yyp6m")])
+spawn_interval = 5.0

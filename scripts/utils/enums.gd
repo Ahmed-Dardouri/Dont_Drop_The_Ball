@@ -6,9 +6,9 @@ enum PlayerMoves {
 	LEFT
 }
 
-enum OrbEvent {
-	GENERIC,
-	ADD_LIFE
+enum OrbType {
+	RED,
+	BLUE
 }
 
 enum SoundType {
