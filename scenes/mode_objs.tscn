@@ -1,3 +1,120 @@
-[gd_scene format=3 uid="uid://byvv311306aa0"]
+[gd_scene load_steps=11 format=3 uid="uid://byvv311306aa0"]
+
+[ext_resource type="Texture2D" uid="uid://tlrkqxq2urmt" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/01_Mist.png" id="1_xjhus"]
+[ext_resource type="Texture2D" uid="uid://ov70sn5jqf5d" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/02_Bushes.png" id="2_gsxix"]
+[ext_resource type="Texture2D" uid="uid://b5tyo8w1x3dg2" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/03_Particles.png" id="3_rl2jp"]
+[ext_resource type="Texture2D" uid="uid://enhh18h6gk2b" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/04_Forest.png" id="4_6acn1"]
+[ext_resource type="Texture2D" uid="uid://ofrlc8f7ndcv" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/05_Particles.png" id="5_rg6d8"]
+[ext_resource type="Texture2D" uid="uid://bjx7hgs4i2ryd" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/06_Forest.png" id="6_dtpy4"]
+[ext_resource type="Texture2D" uid="uid://b5whijc1y3p4f" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/07_Forest.png" id="7_1pog6"]
+[ext_resource type="Texture2D" uid="uid://cety6ftlb5ucu" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/08_Forest.png" id="8_tiyi7"]
+[ext_resource type="Texture2D" uid="uid://bactd6tx4v2rf" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/09_Forest.png" id="9_rxj2a"]
+[ext_resource type="Texture2D" uid="uid://upc7xl10ckte" path="res://sprites/Parallax Forest Background (Seamless)/Parallax Forest Background - Blue/10_Sky.png" id="10_hqyjw"]
 
 [node name="mode_objs" type="Node2D"]
+
+[node name="forest_parallax" type="Node2D" parent="."]
+scale = Vector2(0.581768, 0.581768)
+
+[node name="Parallax2D" type="Parallax2D" parent="forest_parallax"]
+z_index = -300
+scroll_scale = Vector2(0.95, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D"]
+position = Vector2(960, 540)
+texture = ExtResource("1_xjhus")
+
+[node name="Parallax2D2" type="Parallax2D" parent="forest_parallax"]
+z_index = -350
+scroll_scale = Vector2(0.9, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D2"]
+position = Vector2(960, 540)
+texture = ExtResource("2_gsxix")
+
+[node name="Parallax2D3" type="Parallax2D" parent="forest_parallax"]
+z_index = -400
+scroll_scale = Vector2(0.85, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D3"]
+position = Vector2(960, 540)
+texture = ExtResource("3_rl2jp")
+
+[node name="Parallax2D4" type="Parallax2D" parent="forest_parallax"]
+z_index = -500
+scroll_scale = Vector2(0.8, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D4"]
+position = Vector2(960, 540)
+texture = ExtResource("4_6acn1")
+
+[node name="Parallax2D5" type="Parallax2D" parent="forest_parallax"]
+z_index = -550
+scroll_scale = Vector2(0.7, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D5"]
+position = Vector2(960, 540)
+texture = ExtResource("5_rg6d8")
+
+[node name="Parallax2D6" type="Parallax2D" parent="forest_parallax"]
+z_index = -600
+scroll_scale = Vector2(0.6, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D6"]
+position = Vector2(960, 540)
+texture = ExtResource("6_dtpy4")
+
+[node name="Parallax2D7" type="Parallax2D" parent="forest_parallax"]
+z_index = -700
+scroll_scale = Vector2(0.5, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D7"]
+position = Vector2(960, 540)
+texture = ExtResource("7_1pog6")
+
+[node name="Parallax2D8" type="Parallax2D" parent="forest_parallax"]
+z_index = -800
+scroll_scale = Vector2(0.4, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D8"]
+position = Vector2(960, 540)
+texture = ExtResource("8_tiyi7")
+
+[node name="Parallax2D9" type="Parallax2D" parent="forest_parallax"]
+z_index = -900
+scroll_scale = Vector2(0.3, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D9"]
+position = Vector2(960, 540)
+texture = ExtResource("9_rxj2a")
+
+[node name="Parallax2D10" type="Parallax2D" parent="forest_parallax"]
+z_index = -1000
+scroll_scale = Vector2(0.1, 1)
+repeat_size = Vector2(1920, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax/Parallax2D10"]
+visible = false
+position = Vector2(960, 540)
+texture = ExtResource("10_hqyjw")
+
+[node name="Sprite2D" type="Sprite2D" parent="forest_parallax"]

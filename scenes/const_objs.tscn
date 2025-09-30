@@ -12,7 +12,7 @@ offset_top = -190.0
 offset_right = -137.0
 offset_bottom = -150.0
 scale = Vector2(37.6588, 24.4107)
-color = Color(0.621524, 0.621524, 0.621524, 1)
+color = Color(0.158472, 0.158472, 0.158472, 1)
 
 [node name="statics" type="Node2D" parent="."]
 
