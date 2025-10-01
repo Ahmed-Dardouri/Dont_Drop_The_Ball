@@ -7,16 +7,12 @@ func _ready() -> void:
 
 
 func _on_play_botton_pressed() -> void:
-	ButtonEvent.invoke(Enums.ButtonType.PLAY)
+	ButtonEvent.invoke(Enums.MainButtonType.PLAY)
 
 
 func _on_settings_button_pressed() -> void:
-	ButtonEvent.invoke(Enums.ButtonType.SETTINGS)
+	ButtonEvent.invoke(Enums.MainButtonType.SETTINGS)
 
 
 func _on_exit_button_pressed() -> void:
-	ButtonEvent.invoke(Enums.ButtonType.EXIT)
-
-
-func _on_tutorial_button_pressed() -> void:
-	ButtonEvent.invoke(Enums.ButtonType.TUTORIAL)
+	ButtonEvent.invoke(Enums.MainButtonType.EXIT)

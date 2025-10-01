@@ -22,14 +22,16 @@ enum Sounds {
 	LOFI_BG_MUSIC
 }
 
-enum ButtonType {
+enum MainButtonType {
 	PLAY,
 	SETTINGS,
-	PAUSE,
 	BACK,
 	EXIT,
-	TUTORIAL,
-	AUDIO,
-	VIDEO,
-	CONTROLS
+}
+
+enum MainScene {
+	WORLD_BUILDER,
+	MAIN_MENU,
+	SETTINGS_MENU,
+	TUTORIAL
 }

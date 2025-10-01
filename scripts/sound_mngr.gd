@@ -8,12 +8,8 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Events.add_listener(SoundPlayEvent, sound_play_event_handler)
-	Events.add_listener(GameOverEvent, handle_game_over)
-	Events.add_listener(WorldBuiltEvent, handle_world_built)
+	add_events()
 	
-	SoundPlayEvent.invoke(Enums.SoundType.MUSIC, Enums.Sounds.LOFI_BG_MUSIC)
-
 func play_sfx(stream: AudioStream) -> void:
 	if stream != null:
 		sfx_player.stream = stream
@@ -26,6 +22,9 @@ func play_music(stream: AudioStream) -> void:
 		music_player.autoplay = true
 		music_player.play()
 
+func stop_sfx() -> void:
+	sfx_player.stop()
+	
 func stop_music() -> void:
 	music_player.stop()
 
@@ -57,3 +56,32 @@ func handle_world_built(event: WorldBuiltEvent):
 	
 func handle_game_over(event: GameOverEvent):
 	stop_music()
+
+func volume_set_handle(event: VolumeSetEvent):
+	var saved_game := GameSaveMngr.get_saved_game()
+	if event._type == Enums.SoundType.MUSIC:
+		saved_game.Music_volume = event._volume
+		music_player.volume_db = event._volume
+		
+	elif event._type == Enums.SoundType.SFX:
+		saved_game.Sfx_volume = event._volume
+		sfx_player.volume_db = event._volume
+		
+	GameSaveMngr.set_saved_game(saved_game)
+	print(saved_game.Music_volume )
+	GameSaveMngr.save_game()
+	
+func sound_enable_handle(event: SoundEnableEvent):
+	
+	if event._enable == false:
+		if event._type == Enums.SoundType.MUSIC:	
+			stop_music()
+		elif event._type == Enums.SoundType.SFX:
+			stop_sfx()
+	
+func add_events():
+	Events.add_listener(VolumeSetEvent, volume_set_handle)
+	Events.add_listener(SoundPlayEvent, sound_play_event_handler)
+	Events.add_listener(GameOverEvent, handle_game_over)
+	Events.add_listener(WorldBuiltEvent, handle_world_built)
+	Events.add_listener(SoundEnableEvent, sound_enable_handle)

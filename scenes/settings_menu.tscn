@@ -1,0 +1,115 @@
+[gd_scene load_steps=8 format=3 uid="uid://bkvfjq11opflv"]
+
+[ext_resource type="Texture2D" uid="uid://cpbdpkduc3nfi" path="res://sprites/dontdrop.png" id="1_05p07"]
+[ext_resource type="Script" uid="uid://bhweskur276go" path="res://scripts/settings_menu.gd" id="1_cr101"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_labj1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cr101"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05p07"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wswnh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lwwgp"]
+
+[node name="settings_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_cr101")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(960, 541)
+scale = Vector2(2, 2)
+texture = ExtResource("1_05p07")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 680.0
+offset_top = 503.0
+offset_right = 1432.0
+offset_bottom = 707.0
+scale = Vector2(1.0052, 1)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_labj1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="MusicPanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_cr101")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/MusicPanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MusicPanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/MusicPanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Music"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/MusicPanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+theme_override_styles/separator = SubResource("StyleBoxEmpty_05p07")
+
+[node name="Music_HSlider" type="HSlider" parent="PanelContainer/VBoxContainer/MusicPanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+size_flags_vertical = 1
+min_value = -35.0
+max_value = 0.0
+
+[node name="SfxPanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_wswnh")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/SfxPanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/SfxPanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/SfxPanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Sfx"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/SfxPanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 150
+theme_override_styles/separator = SubResource("StyleBoxEmpty_05p07")
+
+[node name="Sfx_HSlider" type="HSlider" parent="PanelContainer/VBoxContainer/SfxPanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+size_flags_vertical = 1
+min_value = -35.0
+max_value = 0.0
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+theme_override_styles/separator = SubResource("StyleBoxEmpty_lwwgp")
+
+[node name="back_Button" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Back"
+
+[connection signal="changed" from="PanelContainer/VBoxContainer/MusicPanelContainer/MarginContainer/HBoxContainer/Music_HSlider" to="." method="_on_music_h_slider_changed"]
+[connection signal="drag_ended" from="PanelContainer/VBoxContainer/MusicPanelContainer/MarginContainer/HBoxContainer/Music_HSlider" to="." method="_on_music_h_slider_drag_ended"]
+[connection signal="drag_ended" from="PanelContainer/VBoxContainer/SfxPanelContainer/MarginContainer/HBoxContainer/Sfx_HSlider" to="." method="_on_sfx_h_slider_drag_ended"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/back_Button" to="." method="_on_back_button_pressed"]
