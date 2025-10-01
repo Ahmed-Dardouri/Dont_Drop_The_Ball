@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://g6dvsvhwvvtc"]
+[gd_scene load_steps=4 format=3 uid="uid://g6dvsvhwvvtc"]
 
 [ext_resource type="Script" uid="uid://dthkj057831er" path="res://scripts/physics_player.gd" id="1_5evuk"]
-[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_jgnsu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5evuk"]
 
@@ -34,14 +33,3 @@ polygon = PackedVector2Array(0, -28.0963, -2.6, -28.003, -6.116, -27.599, -8.824
 scale = Vector2(0.972005, 1.1723)
 color = Color(0, 0.207029, 0.207029, 1)
 polygon = PackedVector2Array(0.0116186, -28.0303, -2.62683, -28.0028, -9.1939, -26.9656, -15.5285, -26.0609, -14.4476, 4.14856, 14.4476, 4.14856, 15.5285, -26.0609, 9.1939, -26.9656, 2.62683, -28.0028)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-physics_interpolation_mode = 1
-zoom = Vector2(0.765, 0.765)
-process_callback = 0
-
-[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
-process_priority = 300
-process_physics_priority = 300
-script = ExtResource("2_jgnsu")
-metadata/_custom_type_script = "uid://bd046eokvcnu2"

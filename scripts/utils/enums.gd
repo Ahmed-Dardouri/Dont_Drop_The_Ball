@@ -21,3 +21,15 @@ enum Sounds {
 	GAME_OVER,
 	LOFI_BG_MUSIC
 }
+
+enum ButtonType {
+	PLAY,
+	SETTINGS,
+	PAUSE,
+	BACK,
+	EXIT,
+	TUTORIAL,
+	AUDIO,
+	VIDEO,
+	CONTROLS
+}

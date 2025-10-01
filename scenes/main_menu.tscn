@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://ckd50itjrp2p2"]
+
+[ext_resource type="Script" uid="uid://cr54770vmpr86" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Texture2D" uid="uid://cpbdpkduc3nfi" path="res://sprites/dontdrop.png" id="2_ekxnf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekxnf"]
+bg_color = Color(0.458824, 0.458824, 0.458824, 0)
+
+[node name="main_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_l6cm7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(960, 541)
+scale = Vector2(2, 2)
+texture = ExtResource("2_ekxnf")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 956.0
+offset_top = 476.0
+offset_right = 1135.0
+offset_bottom = 850.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ekxnf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="play_botton" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Play"
+
+[node name="settings_button" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Settings"
+
+[node name="exit_button" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Exit"
+
+[node name="tutorial_button" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Tutorial"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/play_botton" to="." method="_on_play_botton_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/settings_button" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/exit_button" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/tutorial_button" to="." method="_on_tutorial_button_pressed"]
