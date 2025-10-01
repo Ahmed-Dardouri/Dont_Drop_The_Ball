@@ -201,17 +201,17 @@ func update_move():
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Jump"):
-		MoveEvent.invoke_move(Enums.PlayerMoves.JUMP, true, 0)
+		MoveEvent.invoke(Enums.PlayerMoves.JUMP, true, 0)
 	if event.is_action_released("Jump"):
-		MoveEvent.invoke_move(Enums.PlayerMoves.JUMP, false, 0) 
+		MoveEvent.invoke(Enums.PlayerMoves.JUMP, false, 0) 
 	if event.is_action_pressed("Left"):
-		MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, true, keyboard_move_power)
+		MoveEvent.invoke(Enums.PlayerMoves.LEFT, true, keyboard_move_power)
 	if event.is_action_released("Left"):
-		MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, false, 0)
+		MoveEvent.invoke(Enums.PlayerMoves.LEFT, false, 0)
 	if event.is_action_pressed("Right"):
-		MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, true, keyboard_move_power)
+		MoveEvent.invoke(Enums.PlayerMoves.RIGHT, true, keyboard_move_power)
 	if event.is_action_released("Right"):
-		MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, false, 0)
+		MoveEvent.invoke(Enums.PlayerMoves.RIGHT, false, 0)
 
 func load_constants():
 	keyboard_move_power = Constants.player_keyboard_move_power

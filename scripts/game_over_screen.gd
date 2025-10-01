@@ -20,8 +20,7 @@ func handle_game_over(event: GameOverEvent) -> void:
 	replay_btn.grab_focus()
 
 func replay() -> void:
-	get_tree().paused = false
-	get_tree().reload_current_scene()
+	ReplayEvent.invoke()
 
 
 

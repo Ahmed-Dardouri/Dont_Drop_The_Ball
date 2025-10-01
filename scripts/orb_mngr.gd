@@ -23,9 +23,9 @@ func orb_event_handler(event: OrbCollectedEvent):
 
 
 func orb_event_handler_blue():
-	AddScoreEvent.invoke_add_score(Constants.orb_score_blue)
+	AddScoreEvent.invoke(Constants.orb_score_blue)
 	pass
 		
 func orb_event_handler_red():
-	AddScoreEvent.invoke_add_score(Constants.orb_score_red)
+	AddScoreEvent.invoke(Constants.orb_score_red)
 	pass

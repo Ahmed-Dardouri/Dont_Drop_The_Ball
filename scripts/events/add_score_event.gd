@@ -6,5 +6,5 @@ func _init(score: int) -> void:
 	_score = score
 
 
-static func invoke_add_score(score : int):
+static func invoke(score : int):
 	Events.invoke(AddScoreEvent.new(score))

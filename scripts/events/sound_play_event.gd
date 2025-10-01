@@ -8,5 +8,5 @@ func _init(type: Enums.SoundType, sound : Enums.Sounds) -> void:
 	_type = type
 
 
-static func invoke_sound_play(type: Enums.SoundType, sound : Enums.Sounds):
+static func invoke(type: Enums.SoundType, sound : Enums.Sounds):
 	Events.invoke(SoundPlayEvent.new(type, sound))

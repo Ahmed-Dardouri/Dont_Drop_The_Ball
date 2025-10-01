@@ -6,5 +6,5 @@ func _init(props: OrbProps) -> void:
 	_props = props
 
 
-static func invoke_orb_event(props : OrbProps):
+static func invoke(props : OrbProps):
 	Events.invoke(OrbCollectedEvent.new(props))

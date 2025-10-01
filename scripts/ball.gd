@@ -48,8 +48,8 @@ func apply_air_friction():
 func _on_body_entered(body: Node) -> void:
 	if body.name == "ground_static" && !game_over:
 		game_over = true
-		GameOverEvent.invoke_game_over()
-		SoundPlayEvent.invoke_sound_play(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
+		GameOverEvent.invoke()
+		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
 
 
 func load_constants():

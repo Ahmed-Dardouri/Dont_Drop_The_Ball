@@ -10,7 +10,9 @@ extends Node2D
 func _ready() -> void:
 	Events.add_listener(SoundPlayEvent, sound_play_event_handler)
 	Events.add_listener(GameOverEvent, handle_game_over)
-	SoundPlayEvent.invoke_sound_play(Enums.SoundType.MUSIC, Enums.Sounds.LOFI_BG_MUSIC)
+	Events.add_listener(WorldBuiltEvent, handle_world_built)
+	
+	SoundPlayEvent.invoke(Enums.SoundType.MUSIC, Enums.Sounds.LOFI_BG_MUSIC)
 
 func play_sfx(stream: AudioStream) -> void:
 	if stream != null:
@@ -49,6 +51,9 @@ func sound_play_event_handler(event: SoundPlayEvent):
 		play_sfx(get_sfx(event._sound))
 	elif event._type == Enums.SoundType.MUSIC:
 		play_music(get_music(event._sound))
+	
+func handle_world_built(event: WorldBuiltEvent):
+	play_music(get_music(Enums.Sounds.LOFI_BG_MUSIC))
 	
 func handle_game_over(event: GameOverEvent):
 	stop_music()

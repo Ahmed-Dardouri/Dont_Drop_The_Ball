@@ -35,11 +35,11 @@ func hide_controls(game_over_event: GameOverEvent):
 
 
 func _on_jump_touch_button_pressed() -> void:
-	MoveEvent.invoke_move(Enums.PlayerMoves.JUMP, true, 0)
+	MoveEvent.invoke(Enums.PlayerMoves.JUMP, true, 0)
 
 
 func _on_jump_touch_button_released() -> void:
-	MoveEvent.invoke_move(Enums.PlayerMoves.JUMP, false, 0)
+	MoveEvent.invoke(Enums.PlayerMoves.JUMP, false, 0)
 
 
 
@@ -74,23 +74,23 @@ func get_joystick_action():
 		
 		
 		if _left:
-			MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, true, move_power)
+			MoveEvent.invoke(Enums.PlayerMoves.LEFT, true, move_power)
 
 		if _right:
-			MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, true, move_power)
+			MoveEvent.invoke(Enums.PlayerMoves.RIGHT, true, move_power)
 			
 		if !_left && _prev_left:
-			MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, false, 0)
+			MoveEvent.invoke(Enums.PlayerMoves.LEFT, false, 0)
 			
 		if !_right && _prev_right:
-			MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, false, 0)
+			MoveEvent.invoke(Enums.PlayerMoves.RIGHT, false, 0)
 			
 	else:
 		if _left:
-			MoveEvent.invoke_move(Enums.PlayerMoves.LEFT, false, 0)
+			MoveEvent.invoke(Enums.PlayerMoves.LEFT, false, 0)
 		
 		if _right:
-			MoveEvent.invoke_move(Enums.PlayerMoves.RIGHT, false, 0)
+			MoveEvent.invoke(Enums.PlayerMoves.RIGHT, false, 0)
 			
 		_left = false
 		_right = false

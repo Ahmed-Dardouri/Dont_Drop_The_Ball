@@ -13,7 +13,7 @@ func load_game():
 		_saved_game = load(_SAVED_GAME_PATH)
 	else:
 		save_game()
-	GameLoadEvent.invoke_game_load(_saved_game)
+	GameLoadEvent.invoke(_saved_game)
 	
 
 func set_saved_game(saved_game: SavedGame):

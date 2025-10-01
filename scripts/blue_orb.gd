@@ -14,8 +14,8 @@ func _ready() -> void:
 
 
 func orb_collected():
-	OrbCollectedEvent.invoke_orb_event(_props)
-	SoundPlayEvent.invoke_sound_play(Enums.SoundType.SFX, Enums.Sounds.ORB_COLLECTED)
+	OrbCollectedEvent.invoke(_props)
+	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.ORB_COLLECTED)
 	queue_free()
 
 
