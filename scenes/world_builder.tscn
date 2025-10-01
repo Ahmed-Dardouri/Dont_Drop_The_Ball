@@ -9,7 +9,9 @@
 script = ExtResource("1_mj35w")
 
 [node name="world" parent="." instance=ExtResource("1_lunhb")]
+process_mode = 1
 
 [node name="HUD" parent="." instance=ExtResource("2_dbkho")]
 
 [node name="orb_mngr" parent="." instance=ExtResource("4_mj35w")]
+process_mode = 1

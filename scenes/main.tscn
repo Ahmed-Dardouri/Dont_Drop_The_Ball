@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c1b6mkvc3j0tq" path="res://scenes/sound_mngr.tscn" id="2_0wfyh"]
 
 [node name="main" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_sugp2")
 
 [node name="world_builder" parent="." instance=ExtResource("1_o5qli")]

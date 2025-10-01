@@ -49,6 +49,7 @@ func _on_body_entered(body: Node) -> void:
 	if body.name == "ground_static" && !game_over:
 		game_over = true
 		GameOverEvent.invoke()
+		PauseEvent.invoke(true)
 		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
 
 
