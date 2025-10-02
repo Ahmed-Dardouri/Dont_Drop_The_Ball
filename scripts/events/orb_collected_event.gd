@@ -7,4 +7,5 @@ func _init(props: OrbProps) -> void:
 
 
 static func invoke(props : OrbProps):
-	Events.invoke(OrbCollectedEvent.new(props))
+	if PauseEvent.state == false:
+		Events.invoke(OrbCollectedEvent.new(props))

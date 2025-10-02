@@ -10,4 +10,5 @@ func _init(move: int, pressed: bool, power: float) -> void:
 	_power = power
 
 static func invoke(move : int, value: bool, power: float):
-	Events.invoke(MoveEvent.new(move, value, power))
+	if PauseEvent.state == false:
+		Events.invoke(MoveEvent.new(move, value, power))

@@ -7,4 +7,5 @@ func _init(score: int) -> void:
 
 
 static func invoke(score : int):
-	Events.invoke(AddScoreEvent.new(score))
+	if PauseEvent.state == false:
+		Events.invoke(AddScoreEvent.new(score))
