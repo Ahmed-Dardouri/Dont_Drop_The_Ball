@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 @onready var replay_btn: Button = $VBoxContainer/ReplayButton
-@onready var score_mngr: Control = $"../score_mngr"
 
 
 func _ready() -> void:

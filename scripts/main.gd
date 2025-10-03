@@ -72,7 +72,6 @@ func play_button_handle():
 	PauseEvent.invoke(false)
 	phantom_camera_2d.priority = 0
 	switch_scene(Enums.MainScene.WORLD_BUILDER)
-	world_builder.load_world()
 	
 func settngs_button_handle():
 	switch_scene(Enums.MainScene.SETTINGS_MENU)
@@ -81,6 +80,7 @@ func back_button_handle():
 	match _current_scene:
 		Enums.MainScene.WORLD_BUILDER:
 			PauseEvent.invoke(true)
+			world_builder.unload_world()
 			switch_scene(Enums.MainScene.MAIN_MENU)
 		Enums.MainScene.SETTINGS_MENU:
 			switch_scene(Enums.MainScene.MAIN_MENU)

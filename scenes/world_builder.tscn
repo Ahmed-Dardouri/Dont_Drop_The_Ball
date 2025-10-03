@@ -14,6 +14,7 @@ script = ExtResource("1_mj35w")
 process_mode = 1
 
 [node name="HUD" parent="." instance=ExtResource("2_dbkho")]
+visible = false
 
 [node name="orb_mngr" parent="." instance=ExtResource("4_mj35w")]
 process_mode = 1

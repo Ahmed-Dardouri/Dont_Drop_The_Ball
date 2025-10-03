@@ -5,6 +5,7 @@ var _pause_screen_to_consume : bool = true
 
 @onready var game_over_screen: CanvasLayer = $game_over_screen
 @onready var pause_screen: CanvasLayer = $pause_screen
+@onready var hud: CanvasLayer = $HUD
 
 
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	SoundEnableEvent.invoke(Enums.SoundType.MUSIC, Enums.SoundCmd.PLAY)
 	SoundPlayEvent.invoke(Enums.SoundType.MUSIC, Enums.Sounds.LOFI_BG_MUSIC)
 	switch_scene(Enums.WorldScene.GAME)
+	GameSaveMngr.load_game()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") && _current_scene == Enums.WorldScene.GAME && _pause_screen_to_consume:
@@ -23,7 +25,12 @@ func _input(event: InputEvent) -> void:
 
 func load_world():
 	SoundPlayEvent.invoke(Enums.SoundType.MUSIC, Enums.Sounds.LOFI_BG_MUSIC)
+	hud.visible = true
 
+func unload_world():
+	hud.visible = false
+	SoundEnableEvent.invoke(Enums.SoundType.MUSIC, Enums.SoundCmd.STOP)
+	
 func switch_scene(scene: Enums.WorldScene):
 	_current_scene = scene
 	hide_scenes()
