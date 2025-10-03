@@ -16,6 +16,13 @@ enum SoundType {
 	SFX
 }
 
+enum SoundCmd {
+	PLAY,
+	STOP,
+	PAUSE,
+	RESUME
+}
+
 enum Sounds {
 	ORB_COLLECTED,
 	GAME_OVER,
@@ -34,4 +41,16 @@ enum MainScene {
 	MAIN_MENU,
 	SETTINGS_MENU,
 	TUTORIAL
+}
+
+enum WorldScene {
+	GAME,
+	PAUSE_SCREEN,
+	GAME_OVER_SCREEN
+}
+
+enum WorldButtonType {
+	MAIN_MENU,
+	BACK,
+	REPLAY
 }

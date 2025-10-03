@@ -25,6 +25,7 @@ func add_score_handler(event: AddScoreEvent):
 
 func update_score_label(score: int):
 	score_label.text = str(score)
+	Variables.current_score = score
 	
 func update_pb_label(score: int):
 	pb_label.text = str(score)

@@ -20,6 +20,7 @@ PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_came
 Events="*res://addons/dynamic_event_manager/src/event_manager.gd"
 Constants="*res://scripts/utils/Constants.gd"
 GameSaveMngr="*res://scripts/utils/game_save_mngr.gd"
+Variables="*res://scripts/utils/variables.gd"
 
 [display]
 

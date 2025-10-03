@@ -52,6 +52,8 @@ func handle_pause(event: PauseEvent):
 	get_tree().paused = event._pause
 
 func handle_buttons(event: ButtonEvent):
+	
+	phantom_camera_2d.priority = 5
 	match event._type:
 		Enums.MainButtonType.PLAY:
 			play_button_handle()
@@ -66,6 +68,7 @@ func handle_buttons(event: ButtonEvent):
 			
 			
 func play_button_handle():
+	_reload_world()
 	PauseEvent.invoke(false)
 	phantom_camera_2d.priority = 0
 	switch_scene(Enums.MainScene.WORLD_BUILDER)
@@ -112,7 +115,8 @@ func switch_scene(scene: Enums.MainScene):
 			main_menu.visible = true
 		Enums.MainScene.SETTINGS_MENU:
 			settings_menu.visible = true
-
+		
+		
 func hide_scenes():
 	world_builder.visible = false
 	main_menu.visible = false

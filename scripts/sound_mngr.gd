@@ -28,7 +28,13 @@ func stop_sfx() -> void:
 func stop_music() -> void:
 	music_player.stop()
 
+func pause_sfx(value : bool):
+	sfx_player.stream_paused = value
 
+func pause_music(value : bool):
+	music_player.stream_paused = value
+	
+	
 func get_sfx(type: Enums.Sounds) -> AudioStream:
 	var stream : AudioStream = null
 	for i in sfx_list.size():
@@ -52,7 +58,7 @@ func sound_play_event_handler(event: SoundPlayEvent):
 		play_music(get_music(event._sound))
 	
 func handle_world_built(event: WorldBuiltEvent):
-	play_music(get_music(Enums.Sounds.LOFI_BG_MUSIC))
+	pass
 	
 func handle_game_over(event: GameOverEvent):
 	stop_music()
@@ -68,17 +74,33 @@ func volume_set_handle(event: VolumeSetEvent):
 		sfx_player.volume_db = event._volume
 		
 	GameSaveMngr.set_saved_game(saved_game)
-	print(saved_game.Music_volume )
 	GameSaveMngr.save_game()
 	
 func sound_enable_handle(event: SoundEnableEvent):
-	
-	if event._enable == false:
-		if event._type == Enums.SoundType.MUSIC:	
-			stop_music()
-		elif event._type == Enums.SoundType.SFX:
-			stop_sfx()
-	
+	match event._command:
+		Enums.SoundCmd.PLAY:
+			pass
+		
+		Enums.SoundCmd.STOP:
+			if event._type == Enums.SoundType.MUSIC:	
+				stop_music()
+			elif event._type == Enums.SoundType.SFX:
+				stop_sfx()
+		
+		Enums.SoundCmd.PAUSE:
+			if event._type == Enums.SoundType.MUSIC:	
+				pause_music(true)
+			elif event._type == Enums.SoundType.SFX:
+				pause_sfx(true)
+			
+		Enums.SoundCmd.RESUME:
+			if event._type == Enums.SoundType.MUSIC:	
+				pause_music(false)
+			elif event._type == Enums.SoundType.SFX:
+				pause_sfx(false)
+		_:
+			pass
+
 func add_events():
 	Events.add_listener(VolumeSetEvent, volume_set_handle)
 	Events.add_listener(SoundPlayEvent, sound_play_event_handler)

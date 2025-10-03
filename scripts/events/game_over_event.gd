@@ -1,4 +1,5 @@
 class_name GameOverEvent extends Event
 
 static func invoke():
-	Events.invoke(GameOverEvent.new())
+	if PauseEvent.state == false:
+		Events.invoke(GameOverEvent.new())

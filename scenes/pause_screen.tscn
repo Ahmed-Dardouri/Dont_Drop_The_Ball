@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://djyugvd15x3ir"]
+
+[ext_resource type="Texture2D" uid="uid://cet70rvf1ls6r" path="res://sprites/transparent_white_bg.png" id="1_gchx3"]
+[ext_resource type="Script" uid="uid://cta35vfmu0jk8" path="res://scripts/pause_screen.gd" id="1_qeunj"]
+
+[node name="pause_screen" type="CanvasLayer"]
+script = ExtResource("1_qeunj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = ExtResource("1_gchx3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_left = 643.0
+offset_top = 394.0
+offset_right = 1243.0
+offset_bottom = 736.0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="menu_button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Menu"
+
+[node name="back_button" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Back"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/menu_button" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/back_button" to="." method="_on_back_button_pressed"]

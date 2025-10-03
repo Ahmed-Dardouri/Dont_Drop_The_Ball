@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 @onready var replay_btn: Button = $VBoxContainer/ReplayButton
 @onready var score_mngr: Control = $"../score_mngr"
@@ -19,13 +19,13 @@ func handle_game_over(event: GameOverEvent) -> void:
 	# Focus the button so keyboard/space activates it too
 	replay_btn.grab_focus()
 
-func replay() -> void:
-	ReplayEvent.invoke()
-
 
 
 func _on_replay_button_pressed() -> void:
-	replay()
+	WorldButtonEvent.invoke(Enums.WorldButtonType.REPLAY)
+	
+func _on_main_menu_button_pressed() -> void:
+	WorldButtonEvent.invoke(Enums.WorldButtonType.MAIN_MENU)
 
 func get_current_score() -> int :
-	return score_mngr.get_score()
+	return Variables.current_score

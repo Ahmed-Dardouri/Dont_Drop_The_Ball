@@ -1,6 +1,5 @@
-[gd_scene load_steps=13 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=12 format=3 uid="uid://7st5pqg6mdke"]
 
-[ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="1_ahhtf"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://dj5ls2yxusw85" path="res://sprites/right_semi_transparent.png" id="3_5pdws"]
 [ext_resource type="Texture2D" uid="uid://i1er83q1ufry" path="res://sprites/transparent.png" id="3_5ysmq"]
@@ -22,9 +21,6 @@ size = Vector2(570, 500)
 
 [node name="HUD" type="CanvasLayer"]
 layer = 5
-
-[node name="game_over_screen" parent="." instance=ExtResource("1_ahhtf")]
-visible = false
 
 [node name="button_controls" type="Control" parent="."]
 visible = false
@@ -63,6 +59,7 @@ texture_normal = ExtResource("3_5ysmq")
 shape = SubResource("RectangleShape2D_uo2fv")
 
 [node name="score_mngr" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
