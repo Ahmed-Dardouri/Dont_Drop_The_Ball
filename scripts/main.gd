@@ -5,6 +5,7 @@ extends Node2D
 @onready var main_menu: Control = $main_menu
 @onready var settings_menu: Control = $settings_menu
 
+@onready var camera_2d: Camera2D = $Camera2D
 
 var _index : int = 0
 var _scene_path := "res://scenes/world_builder.tscn"
@@ -15,9 +16,9 @@ func _ready() -> void:
 	setup_game()
 	GameSaveMngr.load_game()
 
-
-
-
+func _process(delta: float) -> void:
+	print("main : "  + str(phantom_camera_2d._get_is_active()))
+	print("main : "  + str(phantom_camera_2d.priority))
 
 func replay_handler(event: ReplayEvent):
 	_reload_world()
@@ -40,13 +41,20 @@ func _reload_world():
 	# wait for node to be removed
 	await Engine.get_main_loop().process_frame
 	await Engine.get_main_loop().process_frame
+	await Engine.get_main_loop().process_frame
+	await Engine.get_main_loop().process_frame
+	await Engine.get_main_loop().process_frame
+	await Engine.get_main_loop().process_frame
+	await Engine.get_main_loop().process_frame
+	await Engine.get_main_loop().process_frame
 	
 	world_builder = new_scene
-	
 	#add node to main
 	add_child(world_builder)
+	world_builder.position = Vector2.ZERO
 	move_child(world_builder, _index)  # keep the same position in the tree
 	world_builder.load_world()
+	
 	
 func handle_pause(event: PauseEvent):
 	get_tree().paused = event._pause

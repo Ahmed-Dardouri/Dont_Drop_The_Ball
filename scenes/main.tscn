@@ -34,7 +34,6 @@ visible = false
 
 [node name="PhantomCamera2D" type="Node2D" parent="."]
 position = Vector2(960, 540)
-scale = Vector2(1.66258, 1.00569)
 script = ExtResource("5_tefeu")
 priority = 4
 tween_resource = SubResource("Resource_o6xl0")
@@ -43,7 +42,6 @@ metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(960, 540)
-scale = Vector2(1.66258, 1.00569)
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
 process_priority = 300
