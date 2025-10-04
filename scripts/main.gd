@@ -16,10 +16,6 @@ func _ready() -> void:
 	setup_game()
 	GameSaveMngr.load_game()
 
-func _process(delta: float) -> void:
-	print("main : "  + str(phantom_camera_2d._get_is_active()))
-	print("main : "  + str(phantom_camera_2d.priority))
-
 func replay_handler(event: ReplayEvent):
 	_reload_world()
 	PauseEvent.invoke(false)
