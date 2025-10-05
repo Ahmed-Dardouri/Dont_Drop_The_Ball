@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=13 format=3 uid="uid://7st5pqg6mdke"]
 
+[ext_resource type="Script" uid="uid://raqe3onpyrij" path="res://scripts/hud.gd" id="1_hd3ao"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://dj5ls2yxusw85" path="res://sprites/right_semi_transparent.png" id="3_5pdws"]
 [ext_resource type="Texture2D" uid="uid://i1er83q1ufry" path="res://sprites/transparent.png" id="3_5ysmq"]
@@ -21,9 +22,9 @@ size = Vector2(570, 500)
 
 [node name="HUD" type="CanvasLayer"]
 layer = 5
+script = ExtResource("1_hd3ao")
 
 [node name="button_controls" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
