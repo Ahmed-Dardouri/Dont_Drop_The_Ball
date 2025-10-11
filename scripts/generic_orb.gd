@@ -5,6 +5,7 @@ class_name GenericOrb
 
 @onready var blue_orb: BlueOrb = $blue_orb
 @onready var red_orb: RedOrb = $red_orb
+@onready var half_solid_orb: HalfSolidOrb = $half_solid_orb
 
 #endregion
 
@@ -23,7 +24,10 @@ func converge_orb(type: Enums.OrbType):
 			orb = blue_orb
 		Enums.OrbType.RED:
 			orb = red_orb
-		_: orb = null
+		Enums.OrbType.HALF_SOLID:
+			orb = half_solid_orb
+		_: 
+			orb = null
 		
 	for child in get_children():
 		if child != orb:

@@ -3,9 +3,9 @@ extends Node2D
 @export var generic_orb_scene: PackedScene
 
 @export var spawn_zone: Rect2 = Rect2(Vector2(-200, -200), Vector2(400, 400))
-@export var orb_props: Array[OrbProps] = []   # drag your orb scenes here
-@export var spawn_interval: float = 2.0           # seconds between spawns
-@export var max_orbs: int = 10                    # limit active orbs (0 = unlimited)
+@export var orb_props: Array[OrbProps] = []   
+@export var spawn_interval: float = 2.0           
+@export var max_orbs: int = 10                    
 
 var _timer: Timer
 

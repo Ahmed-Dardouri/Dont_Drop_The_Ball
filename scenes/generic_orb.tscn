@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bniegixvweldd"]
+[gd_scene load_steps=5 format=3 uid="uid://bniegixvweldd"]
 
 [ext_resource type="Script" uid="uid://ctgb5uwevkfq0" path="res://scripts/generic_orb.gd" id="1_cqkum"]
 [ext_resource type="PackedScene" uid="uid://bejk67ldvukvb" path="res://scenes/blue_orb.tscn" id="2_qukru"]
 [ext_resource type="PackedScene" uid="uid://n2dh6gw0likq" path="res://scenes/red_orb.tscn" id="3_h3ssl"]
+[ext_resource type="PackedScene" uid="uid://dhw0anotlyu1l" path="res://scenes/half_solid_orb.tscn" id="4_h3ssl"]
 
 [node name="generic_orb" type="Node2D"]
 scale = Vector2(0.61, 0.61)
@@ -11,3 +12,5 @@ script = ExtResource("1_cqkum")
 [node name="blue_orb" parent="." instance=ExtResource("2_qukru")]
 
 [node name="red_orb" parent="." instance=ExtResource("3_h3ssl")]
+
+[node name="half_solid_orb" parent="." instance=ExtResource("4_h3ssl")]

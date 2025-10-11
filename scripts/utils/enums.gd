@@ -8,7 +8,8 @@ enum PlayerMoves {
 
 enum OrbType {
 	RED,
-	BLUE
+	BLUE,
+	HALF_SOLID
 }
 
 enum SoundType {

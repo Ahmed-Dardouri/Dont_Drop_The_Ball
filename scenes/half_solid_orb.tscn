@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhw0anotlyu1l"]
+
+[ext_resource type="Script" uid="uid://dt5f3ecm3gqm6" path="res://scripts/half_solid_orb.gd" id="1_ke8wu"]
+[ext_resource type="Texture2D" uid="uid://utmsvffno56e" path="res://sprites/collect_half.png" id="2_1ievf"]
+[ext_resource type="Texture2D" uid="uid://dwhnde5mctw77" path="res://sprites/solid_half.png" id="3_xwp60"]
+
+[node name="half_solid_orb" type="Node2D"]
+script = ExtResource("1_ke8wu")
+
+[node name="collect_sprite" type="Sprite2D" parent="."]
+position = Vector2(-26.0623, -0.111679)
+scale = Vector2(0.338, 0.338)
+texture = ExtResource("2_1ievf")
+
+[node name="static" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="static"]
+polygon = PackedVector2Array(0.015625, 0.0078125, 0.046875, -41.3594, 12.0951, -39.7556, 24.2617, -33.5777, 32.4568, -25.6978, 39.202, -13.9725, 41.3301, -3.4115, 41.347, 3.8016, 40.0236, 11.3007, 36.2005, 20.2409, 30.3482, 28.534, 22.9373, 34.5627, 14.6736, 38.6211, 5.8217, 40.9443, 0.046875, 41.4609)
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(20.8906, -0.0078125)
+scale = Vector2(0.345, 0.345)
+texture = ExtResource("3_xwp60")
+
+[node name="collectArea2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="collectArea2D"]
+position = Vector2(-0.0625, 0.0078125)
+rotation = 3.14159
+scale = Vector2(1.315, 1.315)
+polygon = PackedVector2Array(0.015625, 0.0078125, -0.0714989, -41.3946, 12.0951, -39.7556, 24.2617, -33.5777, 32.4568, -25.6978, 39.202, -13.9725, 41.3301, -3.4115, 41.347, 3.8016, 40.0236, 11.3007, 36.2005, 20.2409, 30.3482, 28.534, 22.9373, 34.5627, 14.6736, 38.6211, 5.8217, 40.9443, -0.00115013, 41.4443)
+
+[connection signal="body_entered" from="collectArea2D" to="." method="_on_collect_area_2d_body_entered"]

@@ -6,6 +6,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	visible = false
 	Events.add_listener(GameOverEvent, hide_controls)
 	Events.add_listener(WorldBuiltEvent, handle_world_built)
 

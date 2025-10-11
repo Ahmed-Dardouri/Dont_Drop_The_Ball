@@ -32,8 +32,10 @@ var ball_air_friction := 9
 
 var orb_lifespan_blue = 30
 var orb_lifespan_red = 30
+var orb_lifespan_half_solid = 40
 
 var orb_score_blue = 2
 var orb_score_red = 3
+var orb_score_half_solid = 8
 
 #endregion

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3e8retqk0tvx"]
+[gd_scene load_steps=7 format=3 uid="uid://c3e8retqk0tvx"]
 
 [ext_resource type="Script" uid="uid://c3uyi4uydif2v" path="res://scripts/orb_mngr.gd" id="1_yyp6m"]
 [ext_resource type="PackedScene" uid="uid://be05yexebg7c8" path="res://scenes/orb_spawner.tscn" id="2_8wc3p"]
@@ -6,16 +6,22 @@
 
 [sub_resource type="Resource" id="Resource_giebm"]
 script = ExtResource("3_giebm")
-Type = 0
+Type = 2
 metadata/_custom_type_script = "uid://faic7luwlu41"
 
 [sub_resource type="Resource" id="Resource_yyp6m"]
 script = ExtResource("3_giebm")
-Type = null
+Type = 1
+metadata/_custom_type_script = "uid://faic7luwlu41"
+
+[sub_resource type="Resource" id="Resource_v5qgx"]
+script = ExtResource("3_giebm")
+Type = 0
 metadata/_custom_type_script = "uid://faic7luwlu41"
 
 [node name="orb_mngr" type="Node2D"]
 script = ExtResource("1_yyp6m")
 
 [node name="orb_spawner" parent="." instance=ExtResource("2_8wc3p")]
-orb_props = Array[ExtResource("3_giebm")]([SubResource("Resource_giebm"), SubResource("Resource_yyp6m")])
+orb_props = Array[ExtResource("3_giebm")]([SubResource("Resource_giebm"), SubResource("Resource_yyp6m"), SubResource("Resource_v5qgx")])
+spawn_interval = 5.0
