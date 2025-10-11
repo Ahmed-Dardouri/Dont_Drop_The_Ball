@@ -4,7 +4,7 @@ extends Control
 
 @onready var jump_touch_button: TouchScreenButton = $jump_touch_button
 
-@export var move_power_multiplier : int = 600
+@export var move_power_multiplier : int = 500
 
 var _left : bool = false
 var _right : bool = false

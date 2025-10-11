@@ -1,0 +1,92 @@
+[1mdiff --git a/scenes/half_solid_orb.tscn b/scenes/half_solid_orb.tscn[m
+[1mindex 345a032..82a55fa 100644[m
+[1m--- a/scenes/half_solid_orb.tscn[m
+[1m+++ b/scenes/half_solid_orb.tscn[m
+[36m@@ -1,9 +1,14 @@[m
+[31m-[gd_scene load_steps=4 format=3 uid="uid://dhw0anotlyu1l"][m
+[32m+[m[32m[gd_scene load_steps=5 format=3 uid="uid://dhw0anotlyu1l"][m
+ [m
+ [ext_resource type="Script" uid="uid://dt5f3ecm3gqm6" path="res://scripts/half_solid_orb.gd" id="1_ke8wu"][m
+ [ext_resource type="Texture2D" uid="uid://utmsvffno56e" path="res://sprites/collect_half.png" id="2_1ievf"][m
+ [ext_resource type="Texture2D" uid="uid://dwhnde5mctw77" path="res://sprites/solid_half.png" id="3_xwp60"][m
+ [m
+[32m+[m[32m[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1ievf"][m
+[32m+[m[32mfriction = 18.75[m
+[32m+[m[32mrough = true[m
+[32m+[m[32mabsorbent = true[m
+[32m+[m
+ [node name="half_solid_orb" type="Node2D"][m
+ script = ExtResource("1_ke8wu")[m
+ [m
+[36m@@ -13,6 +18,7 @@[m [mscale = Vector2(0.338, 0.338)[m
+ texture = ExtResource("2_1ievf")[m
+ [m
+ [node name="static" type="StaticBody2D" parent="."][m
+[32m+[m[32mphysics_material_override = SubResource("PhysicsMaterial_1ievf")[m
+ [m
+ [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="static"][m
+ polygon = PackedVector2Array(0.015625, 0.0078125, 0.046875, -41.3594, 12.0951, -39.7556, 24.2617, -33.5777, 32.4568, -25.6978, 39.202, -13.9725, 41.3301, -3.4115, 41.347, 3.8016, 40.0236, 11.3007, 36.2005, 20.2409, 30.3482, 28.534, 22.9373, 34.5627, 14.6736, 38.6211, 5.8217, 40.9443, 0.046875, 41.4609)[m
+[1mdiff --git a/scenes/physics_player.tscn b/scenes/physics_player.tscn[m
+[1mindex 9f06491..3fc23c5 100644[m
+[1m--- a/scenes/physics_player.tscn[m
+[1m+++ b/scenes/physics_player.tscn[m
+[36m@@ -27,7 +27,7 @@[m [mmax_results = 1[m
+ [m
+ [node name="PolygonCollider2D" type="CollisionPolygon2D" parent="."][m
+ scale = Vector2(1.40781, 1.21094)[m
+[31m-polygon = PackedVector2Array(0, -28.0963, -2.6, -28.003, -6.116, -27.599, -8.824, -27.102, -11.431, -26.439, -15.6271, -24.7741, -15.6271, -21.4709, -10.6548, -17.3419, -10.6548, 4.12902, 10.6548, 4.12902, 10.6548, -17.3419, 15.6271, -21.4709, 15.6271, -24.7741, 11.4306, -26.4387, 8.82363, -27.1018, 6.11638, -27.599, 2.62683, -28.0028)[m
+[32m+[m[32mpolygon = PackedVector2Array(-2.6, -28.003, -6.116, -27.599, -8.824, -27.102, -11.431, -26.439, -15.6387, -24.7958, -15.6317, 3.2583, -10.6548, 4.12902, 10.6548, 4.12902, 15.6223, 3.76676, 15.6271, -24.7741, 11.4306, -26.4387, 8.82363, -27.1018, 6.11638, -27.599, 2.62487, -27.987)[m
+ [m
+ [node name="Polygon2D2" type="Polygon2D" parent="."][m
+ scale = Vector2(0.972005, 1.1723)[m
+[1mdiff --git a/scripts/joystick_controls.gd b/scripts/joystick_controls.gd[m
+[1mindex 709d978..e3d2cf9 100644[m
+[1m--- a/scripts/joystick_controls.gd[m
+[1m+++ b/scripts/joystick_controls.gd[m
+[36m@@ -4,7 +4,7 @@[m [mextends Control[m
+ [m
+ @onready var jump_touch_button: TouchScreenButton = $jump_touch_button[m
+ [m
+[31m-@export var move_power_multiplier : int = 600[m
+[32m+[m[32m@export var move_power_multiplier : int = 500[m
+ [m
+ var _left : bool = false[m
+ var _right : bool = false[m
+[1mdiff --git a/scripts/physics_player.gd b/scripts/physics_player.gd[m
+[1mindex ec0486b..e2c81fd 100644[m
+[1m--- a/scripts/physics_player.gd[m
+[1m+++ b/scripts/physics_player.gd[m
+[36m@@ -153,7 +153,8 @@[m [mfunc ApplyMovement(delta: float):[m
+ 		else:[m
+ 			if sign(_frameVelocity.x * _move.x) == -1:[m
+ 				_frameVelocity.x = 0[m
+[31m-			_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, move_acceleration * delta)[m
+[32m+[m			[32melse:[m
+[32m+[m				[32m_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * _targetHorizontalVelocity, move_acceleration * delta)[m
+ 	else:[m
+ 		_frameVelocity.x = move_toward(_frameVelocity.x, _move.x * 0, move_deceleration * delta)[m
+ 	[m
+[1mdiff --git a/scripts/utils/Constants.gd b/scripts/utils/Constants.gd[m
+[1mindex 54ae99b..7c21beb 100644[m
+[1m--- a/scripts/utils/Constants.gd[m
+[1m+++ b/scripts/utils/Constants.gd[m
+[36m@@ -2,7 +2,7 @@[m [mextends Node[m
+ [m
+ #region player_constants[m
+ [m
+[31m-var player_keyboard_move_power : int = 800[m
+[32m+[m[32mvar player_keyboard_move_power : int = 500[m
+ var player_jump_power : int = -700[m
+ var player_initial_move_speed : int = 300[m
+ var player_coyote_timeout : float = 150.0[m
+[36m@@ -11,8 +11,8 @@[m [mvar player_grounding_force : float = 1.5[m
+ var player_fall_acceleration : float = 1800.0[m
+ var player_max_fall_speed : float = 800[m
+ var player_Jump_ended_early_gravity_modifier : float = 3.0[m
+[31m-var player_move_acceleration : float = 600[m
+[31m-var player_initial_move_acceleration : float = 10000[m
+[32m+[m[32mvar player_move_acceleration : float = 1000[m
+[32m+[m[32mvar player_initial_move_acceleration : float = 5000[m
+ var player_move_deceleration : float = 10000[m
+ var player_stop_on_ceiled : bool = false[m
+ var player_mass_const : float = 100.0[m
