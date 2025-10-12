@@ -20,7 +20,8 @@ func orb_collected():
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	orb_collected()
+	if body.name == "ball":
+		orb_collected()
 
 
 func update_orb():

@@ -13,6 +13,7 @@ config_version=5
 config/name="Dont_Drop"
 run/main_scene="uid://bp0vcj5imfgcb"
 config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="uid://cn8bul7jalspt"
 
 [autoload]
 

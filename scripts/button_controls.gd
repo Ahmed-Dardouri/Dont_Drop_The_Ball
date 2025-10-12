@@ -1,12 +1,13 @@
 extends Control
 
 
-@export var move_power : int = 800
+@export var move_power : int = 500
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	visible = false
+	load_constants()
 	Events.add_listener(GameOverEvent, hide_controls)
 	Events.add_listener(WorldBuiltEvent, handle_world_built)
 
@@ -42,3 +43,6 @@ func handle_world_built(event: WorldBuiltEvent):
 	
 func hide_controls(game_over_event: GameOverEvent):
 	visible = false
+
+func load_constants():
+	move_power = Constants.player_keyboard_move_power

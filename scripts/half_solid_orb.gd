@@ -42,4 +42,5 @@ func _props_init():
 
 
 func _on_collect_area_2d_body_entered(body: Node2D) -> void:
-	orb_collected()
+	if body.name == "ball":
+		orb_collected()
