@@ -9,8 +9,16 @@
 scale = Vector2(0.61, 0.61)
 script = ExtResource("1_cqkum")
 
-[node name="blue_orb" parent="." instance=ExtResource("2_qukru")]
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
-[node name="red_orb" parent="." instance=ExtResource("3_h3ssl")]
+[node name="child_orbs" type="Node2D" parent="."]
 
-[node name="half_solid_orb" parent="." instance=ExtResource("4_h3ssl")]
+[node name="blue_orb" parent="child_orbs" instance=ExtResource("2_qukru")]
+
+[node name="red_orb" parent="child_orbs" instance=ExtResource("3_h3ssl")]
+
+[node name="half_solid_orb" parent="child_orbs" instance=ExtResource("4_h3ssl")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

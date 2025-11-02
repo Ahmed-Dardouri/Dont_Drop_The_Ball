@@ -1,6 +1,8 @@
 extends Node2D
 class_name BlueOrb
 @onready var orb_sprite: Sprite2D = $orb_sprite
+@onready var area_2d: Area2D = $Area2D
+@onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
 
 @onready var timer: Timer = $Timer
 
@@ -43,3 +45,9 @@ func _on_timeout():
 func _props_init():
 	_props = OrbProps.new()
 	_props.Type = Enums.OrbType.BLUE
+
+func set_sprite_opacity(value : float):
+	orb_sprite.modulate.a = value
+
+func set_collision_enable(value: bool):
+	collision_shape_2d.disabled = !value

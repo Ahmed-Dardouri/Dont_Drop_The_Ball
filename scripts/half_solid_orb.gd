@@ -1,6 +1,9 @@
 extends Node2D
 class_name HalfSolidOrb
-@onready var orb_sprite: Sprite2D = $orb_sprite
+@onready var collect_sprite: Sprite2D = $collect_sprite
+@onready var collision_polygon_2d: CollisionPolygon2D = $half_static/CollisionPolygon2D
+@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var collect_collision_polygon_2d: CollisionPolygon2D = $collectArea2D/CollectCollisionPolygon2D
 
 @onready var timer: Timer = $Timer
 
@@ -44,3 +47,12 @@ func _props_init():
 func _on_collect_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "ball":
 		orb_collected()
+
+
+func set_sprite_opacity(value : float):
+	collect_sprite.modulate.a = value
+	sprite_2d.modulate.a = value
+
+func set_collision_enable(value: bool):
+	collision_polygon_2d.disabled = !value
+	collect_collision_polygon_2d.disabled = !value

@@ -17,10 +17,10 @@ position = Vector2(-26.0623, -0.111679)
 scale = Vector2(0.338, 0.338)
 texture = ExtResource("2_1ievf")
 
-[node name="static" type="StaticBody2D" parent="."]
+[node name="half_static" type="StaticBody2D" parent="."]
 physics_material_override = SubResource("PhysicsMaterial_1ievf")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="static"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="half_static"]
 polygon = PackedVector2Array(0.015625, 0.0078125, 0.046875, -41.3594, 12.0951, -39.7556, 24.2617, -33.5777, 32.4568, -25.6978, 39.202, -13.9725, 41.3301, -3.4115, 41.347, 3.8016, 40.0236, 11.3007, 36.2005, 20.2409, 30.3482, 28.534, 22.9373, 34.5627, 14.6736, 38.6211, 5.8217, 40.9443, 0.046875, 41.4609)
 
 [node name="Timer" type="Timer" parent="."]
@@ -32,7 +32,7 @@ texture = ExtResource("3_xwp60")
 
 [node name="collectArea2D" type="Area2D" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="collectArea2D"]
+[node name="CollectCollisionPolygon2D" type="CollisionPolygon2D" parent="collectArea2D"]
 position = Vector2(-0.0625, 0.0078125)
 rotation = 3.14159
 scale = Vector2(1.315, 1.315)
