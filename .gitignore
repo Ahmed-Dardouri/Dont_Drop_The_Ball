@@ -1,21 +1,57 @@
-# Godot 4+ specific ignores
+# =========================================================
+# Godot Engine
+# =========================================================
+
+# Godot 4.x: imported/metadata/cache
 .godot/
-.nomedia
 
-# Godot-specific ignores
+# Godot 3.x: imported assets cache
 .import/
+
+# Export templates/cache (varies)
 export.cfg
-export_credentials.cfg
-*.tmp
 
-# Imported translations (automatically generated from CSV files)
-*.translation
-
-# Mono-specific ignores
-.mono/
-data_*/
-mono_crash.*.json
-
-# custom
+# =========================================================
+# Export/build outputs (choose your folder names)
+# =========================================================
+export/
+exports/
 build/
-android/
+dist/
+bin/
+
+# =========================================================
+# C# / Mono (if you use Godot C#)
+# =========================================================
+.mono/
+mono_crash.*.json
+data_*/
+*.user
+*.userprefs
+*.suo
+*.pidb
+*.pdb
+*.mdb
+*.opendb
+*.dll
+
+# =========================================================
+# Logs / temp
+# =========================================================
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# =========================================================
+# IDEs / OS
+# =========================================================
+.vscode/
+.idea/
+*.iml
+
+.DS_Store
+Thumbs.db
+desktop.ini
