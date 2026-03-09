@@ -49,7 +49,7 @@ func apply_air_friction():
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("ground") && !game_over:
 		game_over = true
-		GameOverEvent.invoke(ScoreManager.get_score())
+		GameOverEvent.invoke()
 		GameState.is_paused = true
 		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
 	elif body.is_in_group("half_solid"):
