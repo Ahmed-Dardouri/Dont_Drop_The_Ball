@@ -50,7 +50,7 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("ground") && !game_over:
 		game_over = true
 		GameOverEvent.invoke()
-		GameState.is_paused = true
+		PauseEvent.invoke(true)
 		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
 	elif body.is_in_group("half_solid"):
 		linear_velocity = linear_velocity/3
