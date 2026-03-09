@@ -55,3 +55,10 @@ enum WorldButtonType {
 	BACK,
 	REPLAY
 }
+
+enum GameMode {
+	MENU,
+	PLAYING,
+	PAUSED,
+	GAME_OVER
+}

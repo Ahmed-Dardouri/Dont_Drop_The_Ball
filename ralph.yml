@@ -24,7 +24,7 @@ event_loop:
   prompt_file: "PROMPT.md"
   completion_promise: "LOOP_COMPLETE"
   starting_event: "design.start"
-  max_iterations: 150              # Generous for full idea→commit cycle
+  max_iterations: 250              # Generous for full idea→commit cycle
   max_runtime_seconds: 14400       # 4 hours max
   checkpoint_interval: 5
 

@@ -54,3 +54,35 @@ func test_pause_affects_orb_collection() -> void:
 	PauseEvent.state = true
 	should_collect = (PauseEvent.state == false)
 	assert_false(should_collect, "Orbs should not be collected when paused")
+
+
+#region GameState delegation tests
+
+func test_pause_event_delegates_to_game_state() -> void:
+	GameState.is_paused = false
+	PauseEvent.invoke(true)
+	assert_true(GameState.is_paused, "PauseEvent.invoke should update GameState")
+
+
+func test_pause_event_state_getter_delegates() -> void:
+	GameState.is_paused = true
+	assert_true(PauseEvent.state, "PauseEvent.state should reflect GameState")
+
+
+func test_pause_event_state_setter_delegates() -> void:
+	GameState.is_paused = false
+	PauseEvent.state = true
+	assert_true(GameState.is_paused, "PauseEvent.state setter should update GameState")
+
+
+func test_game_state_and_pause_event_synchronized() -> void:
+	# Setting via GameState should be reflected in PauseEvent.state
+	GameState.is_paused = true
+	assert_true(PauseEvent.state, "GameState change should reflect in PauseEvent.state")
+
+	# Setting via PauseEvent.state should be reflected in GameState
+	PauseEvent.state = false
+	assert_false(GameState.is_paused, "PauseEvent.state change should reflect in GameState")
+
+
+#endregion

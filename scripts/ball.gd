@@ -11,6 +11,7 @@ var game_over : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	add_to_group("ball")
 	load_constants()
 	pass # Replace with function body.
 
@@ -46,12 +47,12 @@ func apply_air_friction():
 
 
 func _on_body_entered(body: Node) -> void:
-	if body.name == "ground_static" && !game_over: 
+	if body.is_in_group("ground") && !game_over:
 		game_over = true
-		GameOverEvent.invoke()
-		PauseEvent.invoke(true)
+		GameOverEvent.invoke(ScoreManager.get_score())
+		GameState.is_paused = true
 		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
-	elif body.name == "half_static":
+	elif body.is_in_group("half_solid"):
 		linear_velocity = linear_velocity/3
 
 

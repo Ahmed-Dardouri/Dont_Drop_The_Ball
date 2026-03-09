@@ -137,3 +137,82 @@ func test_player_movement_constants() -> void:
 	assert_gt(Constants.player_move_deceleration, 0.0, "Move deceleration should be positive")
 
 #endregion
+
+
+#region Static PlayerPhysics class tests
+
+func test_static_can_coyote_within_window() -> void:
+	assert_true(PlayerPhysics.can_coyote(1000, 1100, 150.0), "Within window")
+
+
+func test_static_can_coyote_outside_window() -> void:
+	assert_false(PlayerPhysics.can_coyote(1000, 1200, 150.0), "Outside window")
+
+
+func test_static_can_coyote_at_boundary() -> void:
+	# Uses < (strictly less than), so boundary is NOT included
+	assert_false(PlayerPhysics.can_coyote(1000, 1150, 150.0), "At boundary")
+
+
+func test_static_has_buffered_jump_within_window() -> void:
+	assert_true(PlayerPhysics.has_buffered_jump(1000, 1100, 150.0), "Within window")
+
+
+func test_static_has_buffered_jump_outside_window() -> void:
+	assert_false(PlayerPhysics.has_buffered_jump(1000, 1200, 150.0), "Outside window")
+
+
+func test_static_calculate_gravity_grounded() -> void:
+	var config := PlayerPhysicsConfig.new()
+	var result := PlayerPhysics.calculate_gravity(0.0, true, false, config, 0.016)
+	assert_almost_eq(result, config.grounding_force, 0.1, "Grounded should apply grounding force")
+
+
+func test_static_calculate_gravity_grounded_positive_velocity() -> void:
+	var config := PlayerPhysicsConfig.new()
+	# When grounded and falling (positive y), should use grounding force
+	var result := PlayerPhysics.calculate_gravity(50.0, true, false, config, 0.016)
+	assert_almost_eq(result, config.grounding_force, 0.1, "Grounded with positive velocity should use grounding force")
+
+
+func test_static_calculate_gravity_falling() -> void:
+	var config := PlayerPhysicsConfig.new()
+	var result := PlayerPhysics.calculate_gravity(100.0, false, false, config, 0.016)
+	assert_gt(result, 100.0, "Falling should increase Y velocity")
+
+
+func test_static_calculate_gravity_early_jump() -> void:
+	var config := PlayerPhysicsConfig.new()
+	# When ended jump early and moving up (negative y), gravity should be multiplied
+	var result := PlayerPhysics.calculate_gravity(-100.0, false, true, config, 0.016)
+	# Normal gravity would be: move_toward(-100, 800, 1800 * 0.016) = -100 + 28.8 = -71.2
+	# Modified gravity: move_toward(-100, 800, 1800 * 3.0 * 0.016) = -100 + 86.4 = -13.6
+	assert_gt(result, -100.0, "Early jump should apply more gravity")
+
+
+func test_static_calculate_gravity_null_config() -> void:
+	var result := PlayerPhysics.calculate_gravity(100.0, false, false, null, 0.016)
+	assert_eq(result, 100.0, "Null config should return unchanged velocity")
+
+
+func test_static_calculate_horizontal_acceleration() -> void:
+	var config := PlayerPhysicsConfig.new()
+	var result := PlayerPhysics.calculate_horizontal_velocity(0.0, 1.0, 120.0, config, 0.016)
+	# Starting from 0, should accelerate toward target
+	assert_gt(result, 0.0, "Should move toward target")
+	assert_lt(result, 120.0, "Should not reach target in one frame")
+
+
+func test_static_calculate_horizontal_deceleration() -> void:
+	var config := PlayerPhysicsConfig.new()
+	var result := PlayerPhysics.calculate_horizontal_velocity(100.0, 0.0, 120.0, config, 0.016)
+	# No direction, should decelerate toward 0
+	assert_lt(abs(result), 100.0, "Should decelerate when no input")
+
+
+func test_static_calculate_horizontal_null_config() -> void:
+	var result := PlayerPhysics.calculate_horizontal_velocity(100.0, 1.0, 120.0, null, 0.016)
+	assert_eq(result, 100.0, "Null config should return unchanged velocity")
+
+
+#endregion

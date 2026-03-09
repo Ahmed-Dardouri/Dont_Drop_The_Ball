@@ -168,3 +168,73 @@ func test_apply_air_friction_zero_friction() -> void:
 
 
 #endregion
+
+
+#region Static BallPhysics class tests
+
+func test_static_clamp_max_speed_over_limit() -> void:
+	var result := BallPhysics.clamp_max_speed(Vector2(1000, 0), 900.0)
+	assert_almost_eq(result.x, 900.0, 0.1, "Static clamp_max_speed should clamp")
+	assert_eq(result.y, 0.0, "Y should be unchanged")
+
+
+func test_static_clamp_max_speed_under_limit() -> void:
+	var result := BallPhysics.clamp_max_speed(Vector2(100, 50), 900.0)
+	assert_eq(result, Vector2(100, 50), "Should not change when under limit")
+
+
+func test_static_clamp_max_speed_zero_limit() -> void:
+	var result := BallPhysics.clamp_max_speed(Vector2(1000, 1000), 0.0)
+	assert_eq(result, Vector2(1000, 1000), "Zero limit should not clamp")
+
+
+func test_static_clamp_fall_speed_over_limit() -> void:
+	var result := BallPhysics.clamp_fall_speed(Vector2(100, 600), 500.0)
+	assert_eq(result.x, 100.0, "X should be unchanged")
+	assert_eq(result.y, 500.0, "Y should be clamped")
+
+
+func test_static_clamp_fall_speed_under_limit() -> void:
+	var result := BallPhysics.clamp_fall_speed(Vector2(100, 400), 500.0)
+	assert_eq(result, Vector2(100, 400), "Should not change when under limit")
+
+
+func test_static_clamp_fall_speed_negative() -> void:
+	var result := BallPhysics.clamp_fall_speed(Vector2(100, -600), 500.0)
+	assert_eq(result.y, -600.0, "Upward velocity should not be affected")
+
+
+func test_static_apply_air_friction() -> void:
+	var result := BallPhysics.apply_air_friction(Vector2(1000, 50), 9.0)
+	assert_almost_eq(result.x, 991.0, 0.1, "X should be reduced by friction")
+	assert_eq(result.y, 50.0, "Y should be unchanged")
+
+
+func test_static_apply_air_friction_zero() -> void:
+	var result := BallPhysics.apply_air_friction(Vector2(100, 50), 0.0)
+	assert_eq(result, Vector2(100, 50), "Zero friction should not change velocity")
+
+
+func test_static_process_velocity() -> void:
+	var config := BallPhysicsConfig.new()
+	var result := BallPhysics.process_velocity(Vector2(1000, 600), config)
+	# Should clamp max_speed (magnitude 1166 -> 900), then apply friction
+	# After max_speed clamp: (771.5, 462.9), Y is already under 500 so no fall clamp
+	assert_almost_eq(result.length(), 900.0, 50.0, "Process velocity should clamp total speed")
+	# Friction reduces X: 771.5 * (1 - 9/1000) = 764.6
+	assert_almost_eq(result.x, 764.6, 1.0, "X should be reduced by friction")
+
+
+func test_static_process_velocity_clamps_fall() -> void:
+	var config := BallPhysicsConfig.new()
+	# Use a velocity where Y exceeds max_fall_speed after max_speed clamp
+	var result := BallPhysics.process_velocity(Vector2(0, 600), config)
+	assert_eq(result.y, 500.0, "Fall speed should be clamped when exceeds limit")
+
+
+func test_static_process_velocity_null_config() -> void:
+	var result := BallPhysics.process_velocity(Vector2(100, 50), null)
+	assert_eq(result, Vector2(100, 50), "Null config should return unchanged velocity")
+
+
+#endregion

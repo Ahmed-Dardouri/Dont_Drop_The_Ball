@@ -61,6 +61,8 @@ Optional (only if required by the task and export presets exist):
 
 Rule: If any command fails, fix the issue and rerun until all required commands succeed.
 
+Each major step must be committed in git.
+
 GODOT CLI REQUIREMENTS
 - Godot must be callable from terminal:
   godot --version  (or)  godot4 --version
@@ -71,6 +73,8 @@ If detection fails, run with an explicit binary path:
   GODOT_BIN=/absolute/path/to/Godot_v4.x.x_linux.x86_64 ./devscripts/test.sh
 
 Automation runs headlessly. Godot 4 uses --headless.
+
+
 
 Godot may print leak warnings (ObjectDB/RID/resources in use) during headless runs; treat them as non-fatal if ./devscripts/test.sh exits 0 and GUT passes.
 
