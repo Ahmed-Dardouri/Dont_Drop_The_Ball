@@ -9,6 +9,11 @@
 scale = Vector2(0.61, 0.61)
 script = ExtResource("1_cqkum")
 
+[node name="DataOrbArea" type="Area2D" parent="."]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DataOrbArea"]
+
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true

@@ -1,9 +1,12 @@
+class_name OrbSpawner
 extends Node2D
 
 @export var generic_orb_scene: PackedScene
 
 @export var spawn_zone: Rect2 = Rect2(Vector2(-200, -200), Vector2(400, 400))
 @export var orb_props: Array[OrbProps] = []
+@export var orb_data_array: Array[OrbData] = []
+@export var debug_force_orb_type: String = ""
 @export var spawn_interval: float = 2.0
 @export var max_orbs: int = 10
 
@@ -39,11 +42,30 @@ func _on_timeout() -> void:
 
 
 func _spawn_from_props() -> Node:
-	if orb_props.is_empty():
+	# Build combined pool
+	var pool_size := orb_props.size() + orb_data_array.size()
+	if pool_size == 0:
 		return null
 
-	var props := orb_props[randi() % orb_props.size()]
-	return create_orb_copy(props)
+	# Debug override: force specific orb type by name
+	if not debug_force_orb_type.is_empty():
+		for data: OrbData in orb_data_array:
+			if data.display_name == debug_force_orb_type:
+				return OrbAdapter.create_orb_from_data(generic_orb_scene, data)
+		return null  # Debug type not found
+
+	# Simple random selection from combined pool
+	var idx := randi() % pool_size
+
+	# First part of pool is OrbProps
+	if idx < orb_props.size():
+		var props := orb_props[idx]
+		return create_orb_copy(props)
+
+	# Second part of pool is OrbData
+	var data_idx := idx - orb_props.size()
+	var data := orb_data_array[data_idx]
+	return OrbAdapter.create_orb_from_data(generic_orb_scene, data)
 
 
 func create_orb_copy(props: OrbProps) -> Node:

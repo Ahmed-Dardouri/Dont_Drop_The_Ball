@@ -1,86 +1,123 @@
 Read README_FOR_AGENT.md first and follow it strictly.
 
-The orb system has already been refactored and now includes an effect manager or similar modular orb architecture. That refactor is acceptable. This task is NOT to do more large architecture work. This task is to use the current orb framework to implement actual new playable orb content.
+Also inspect and use the existing orb expansion work already present in the repo, including:
+- specs/orb-system-expansion/
+- progress.md or similar progress/design documents
+- the current OrbProps system
+- the new OrbData / OrbBehavior / EffectManager system
+
+Current problem:
+The previous run created a new orb architecture but did not complete the actual game integration. There are now two parallel systems:
+- the old working OrbProps-based system
+- the new richer OrbData-based system
+
+The new orb content is not appearing in gameplay because the new system is disconnected from spawning and scene execution.
+
+This run is NOT about more broad architecture work.
+This run is about finishing the integration so actual new orbs appear and work in the game.
 
 Main objective:
-Implement a first real content pack of new orb types on top of the existing orb/effect system.
+Complete the orb-system expansion by wiring the new orb content into the real gameplay loop so that the new orbs can actually spawn, be collected, execute their behaviors, and be manually tested in-game.
 
 Important constraints:
-- Do not spend the effort on more broad refactoring unless a very small change is required to support these orbs.
-- Preserve the current core gameplay feel.
-- Keep the player bouncing mechanic unchanged.
+- Do not do another large refactor unless a very small targeted change is truly necessary.
+- Prefer finishing and integrating the existing new system rather than inventing a third system.
+- Preserve current core gameplay feel.
+- Keep the player bounce mechanic unchanged.
 - Keep diffs focused and practical.
 - Prefer typed GDScript.
 - Validate all work with ./devscripts/test.sh and do not finish unless it exits 0.
-- Add or update GUT tests for deterministic logic related to orb effects, effect duration, stacking/conflict behavior, and score changes.
+- Add or update GUT tests for deterministic orb logic and integration points where possible.
 
-Implement these orb types:
-1. Burst Orb
-   - When collected, it clears nearby collectible orbs in a radius.
-   - Cleared nearby orbs should count as collected/cashed in for the player.
-   - Should use current orb/effect/spawn systems cleanly.
+What appears to be missing and must be addressed:
+1. No actual orb resource/content files were created
+2. The spawner still uses only OrbProps and does not support OrbData
+3. Missing orb behavior classes were planned but not implemented
+4. GenericOrb / scenes do not execute OrbData-driven behaviors
+5. The new orbs are not reachable in actual gameplay
 
-2. Vertical Line Orb
-   - When collected, it clears collectible orbs in a vertical line through its position.
-   - Cleared orbs should be cashed in for the player.
+Required implementation work:
+1. Create actual orb content resources/configs
+   - Create the needed orb definition files/resources so the new orb types are real content, not just architecture.
+   - Put them in a clear location such as resources/orbs/ or the project’s equivalent structure.
+   - Use the current architecture already introduced by the refactor.
 
-3. Horizontal Line Orb
-   - When collected, it clears collectible orbs in a horizontal line through its position.
-   - Cleared orbs should be cashed in for the player.
+2. Implement the missing orb behavior classes needed for the planned orb set
+   At minimum, implement the behavior classes necessary for these orb types:
+   - Burst Orb
+   - Vertical Line Orb
+   - Horizontal Line Orb
+   - Slow Fall Orb
+   - Sticky Head Orb
+   - Double Value Orb
+   - Combo Starter Orb
+   - Drifter Orb
 
-4. Slow Fall Orb
-   - Temporarily reduces the ball’s falling speed / gravity effect in a controlled and readable way.
-   - Duration should be configurable.
-   - Must integrate with the current effect manager instead of using hardcoded one-off logic if possible.
+3. Integrate the new orb system with spawning
+   - Update the current spawning/content pipeline so the new orbs can actually spawn in gameplay.
+   - If the existing OrbProps system must remain for compatibility, add a clean bridge/adapter rather than breaking working content.
+   - The result must be that the new orb types can really appear during play.
 
-5. Sticky Head Orb
-   - Temporarily makes the ball “stick” very briefly to the player’s head before bouncing away.
-   - This should improve control slightly without breaking the core bounce mechanic.
-   - Duration and/or stick time should be configurable.
+4. Integrate the new orb system with actual orb scenes
+   - Update GenericOrb and/or related scenes/scripts so OrbData-driven behaviors actually execute on collection or during runtime.
+   - Ensure moving orbs and timed effects can function through the real gameplay scene flow.
 
-6. Double Value Orb
-   - Temporarily increases score gained from orb pickups and/or score events, depending on the current scoring architecture.
-   - Duration should be configurable.
+5. Ensure the new orbs are testable in practice
+   - Make it possible to reliably verify the new orbs manually.
+   - If random spawning would make verification too slow, add a safe debug/dev-only mechanism to force or heavily increase spawn rates of specific orb types for testing, but do not break normal gameplay.
+   - Keep this mechanism simple and low-risk.
 
-7. Combo Starter Orb
-   - Starts or boosts a combo/multiplier window if the current architecture supports it.
-   - If combo infrastructure does not yet exist in a reusable way, implement the smallest practical version needed for this orb only if it can be done safely and testably.
-   - Do not overbuild a huge combo system.
-
-8. Drifter Orb
-   - A moving orb that drifts in a simple readable pattern.
-   - Its movement should be configurable and should not require major new architecture.
-   - It should still be collectible through normal gameplay.
+Orb behavior requirements:
+- Burst Orb: clears nearby collectible orbs in a radius and cashes them in for the player
+- Vertical Line Orb: clears collectible orbs in a vertical line and cashes them in
+- Horizontal Line Orb: clears collectible orbs in a horizontal line and cashes them in
+- Slow Fall Orb: temporarily reduces ball fall speed / gravity effect in a controlled configurable way
+- Sticky Head Orb: temporarily makes the ball briefly stick to the player’s head before bouncing
+- Double Value Orb: temporarily increases score gained from relevant score/orb events
+- Combo Starter Orb: starts or boosts a combo/multiplier window using the smallest safe implementation needed
+- Drifter Orb: moves in a simple readable configurable pattern and remains collectible
 
 Implementation guidance:
-- Use the current orb/effect manager and newly refactored architecture as the base.
-- Prefer data/config-driven definitions where possible, but do not over-engineer.
-- Make each orb type clearly identifiable in code and easy to extend later.
-- Reuse shared orb logic instead of duplicating behavior.
-- Keep moving orb behavior simple and stable.
-- Keep chain-reaction collection logic deterministic where possible.
+- Use the current OrbData / OrbBehavior / EffectManager foundation if it is viable
+- Do not leave the system half-integrated again
+- Prefer one coherent final path through the game rather than duplicated partial paths
+- If you must keep OrbProps for old content, make the relationship between OrbProps and OrbData explicit and maintainable
+- Reuse shared logic and avoid duplication
+- Keep chain-reaction logic deterministic where possible
 
 Testing expectations:
-Add or update tests for:
+Add or update tests for the deterministic parts of:
 - Burst radius collection logic
 - Vertical and horizontal line clear logic
 - Effect application/removal for timed effects
-- Score multiplier or double value logic
-- Sticky head / slow fall logic where deterministic pieces can be isolated
-- Drifter orb behavior logic if there is a deterministic movement component that can be unit tested
+- Score multiplier / double value behavior
+- Combo starter behavior if implemented
+- Drifter movement logic if it has deterministic movement rules
+- Any adapter/bridge logic between old and new orb systems if created
 
 Manual verification expectations:
-In your final summary, include clear manual verification steps for each implemented orb so I can quickly test them in-game.
+In the final summary, include exact steps for how I can verify each new orb in-game.
+If you add a debug spawn/testing hook, clearly explain:
+- where it is
+- how to enable it
+- how to force each orb to appear
 
 Definition of done:
-- All 8 orb types are implemented in the game codebase
-- They are integrated into spawning/content definitions so they can actually appear or be tested in-game
+- The new orb system is actually integrated into gameplay
+- Actual orb resource/content files exist
+- The missing behavior classes required for the implemented orb types exist
+- The spawner/content pipeline can produce the new orb types
+- GenericOrb or the relevant gameplay scene/scripts execute the new orb behaviors correctly
 - ./devscripts/test.sh exits 0
 - Existing gameplay is not unintentionally broken
 - Final summary includes:
-  1. which files were added/changed
-  2. which tests were added
-  3. how each orb behaves
-  4. exact manual steps to verify each orb in-game
+  1. what was integrated
+  2. which files were added/changed
+  3. which new orbs are now truly playable
+  4. what tests were added
+  5. exact manual verification steps
+  6. whether any compatibility bridge between OrbProps and OrbData was added
 
-Do not stop after more architecture work. The goal of this run is actual new orb content that is playable.
+Important:
+Do not stop after adding more architecture or placeholder classes.
+The goal of this run is to finish the missing integration and make actual new orb content appear and work in the real game.
