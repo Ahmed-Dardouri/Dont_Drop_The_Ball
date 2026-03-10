@@ -51,6 +51,7 @@ var _timeJumpWasReleased : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	add_to_group("player")
 	load_constants()
 	apply_constants()
 	Events.add_listener(MoveEvent, handle_move_event)

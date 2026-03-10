@@ -106,6 +106,39 @@ Prefer code-driven setup:
 - Keep scenes small and modular.
 - Avoid relying on manual drag/drop + inspector tweaking unless unavoidable.
 
+PHASE-SPECIFIC DEVELOPMENT RULES (CURRENT PRIORITY: ORB SYSTEM EXPANSION)
+
+Current priority is expanding the orb system in a modular, data-driven, and testable way.
+
+For this phase:
+- Prioritize orb architecture, orb behaviors, orb spawning, orb effect handling, and orb-related tests.
+- Do not introduce large unrelated refactors unless required to support orb modularity or testability.
+- Do not add monetization, progression systems, or major UI redesign in this phase unless explicitly requested.
+- Avoid changing the core player-ball bounce mechanic.
+- Preserve current game feel unless an orb feature explicitly extends it.
+
+Orb implementation guidance:
+- Prefer a data-driven orb structure so future orb types can be added with minimal code duplication.
+- Keep orb behavior modular and isolated where possible.
+- Clearly define effect lifetime rules such as instant, timed, stackable, refresh, replace, or mutually exclusive.
+- Add tests for deterministic orb logic and effect resolution.
+- If an orb requires manual gameplay verification, keep the implementation small and make the verification steps explicit in the final summary.
+
+Definition of done for orb-related work:
+- ./devscripts/test.sh exits 0
+- GUT tests exist for new deterministic orb logic
+- Existing gameplay is not unintentionally broken
+- New orb behaviors are structured so future orb types can be added more easily
+
+ORB CODE ORGANIZATION
+When adding orb-related systems, prefer consistent structure and naming.
+Examples:
+- orb definitions/configs in a dedicated orb-related folder
+- orb effect logic separated from scene glue
+- shared orb utilities kept in reusable modules rather than duplicated across orb scripts
+
+Follow the existing project structure first. Only create new folders if the current structure is clearly limiting maintainability.
+
 SAFETY BOUNDARIES (MUST NOT DO)
 - Do not delete major folders (scenes/, scripts/, assets/, etc.) unless explicitly instructed.
 - Do not change project settings (input map, rendering settings, main scene, etc.) unless required.

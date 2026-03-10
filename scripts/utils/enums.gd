@@ -62,3 +62,9 @@ enum GameMode {
 	PAUSED,
 	GAME_OVER
 }
+
+enum OrbRarity {
+	COMMON,
+	UNCOMMON,
+	RARE
+}
