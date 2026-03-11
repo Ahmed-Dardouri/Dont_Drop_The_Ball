@@ -1,8 +1,8 @@
 # Loop Summary
 
-**Status:** Completed successfully
-**Iterations:** 1
-**Duration:** 1m 10s
+**Status:** Failed: stale loop detected
+**Iterations:** 9
+**Duration:** 41m 41s
 
 ## Tasks
 
@@ -14,4 +14,4 @@ _No events recorded._
 
 ## Final Commit
 
-8f9cd6d: commit ralph files
+17751ad: chore: auto-commit before merge (loop primary)

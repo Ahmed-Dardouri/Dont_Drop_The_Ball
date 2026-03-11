@@ -81,6 +81,12 @@ func apply_effect(effect_id: String, value: Variant, duration: float, source: No
 			# Single instance, no stacking
 			if not has_effect(effect_id):
 				_active_effects[effect_id] = ActiveEffect.new(effect_id, value, duration, source)
+		"sticky_head":
+			# Single instance, refresh duration on reapply
+			if has_effect(effect_id):
+				_active_effects[effect_id].remaining_duration = duration
+			else:
+				_active_effects[effect_id] = ActiveEffect.new(effect_id, value, duration, source)
 		_:
 			# Default: replace existing effect
 			_active_effects[effect_id] = ActiveEffect.new(effect_id, value, duration, source)

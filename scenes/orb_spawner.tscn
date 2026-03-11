@@ -1,8 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://be05yexebg7c8"]
+[gd_scene load_steps=16 format=3 uid="uid://be05yexebg7c8"]
 
 [ext_resource type="Script" uid="uid://bfwbykkrt6qyn" path="res://scripts/orb_spawner.gd" id="1_1ogdr"]
 [ext_resource type="PackedScene" uid="uid://bniegixvweldd" path="res://scenes/generic_orb.tscn" id="2_yq6c3"]
 [ext_resource type="Script" uid="uid://faic7luwlu41" path="res://scripts/utils/orb_properties.gd" id="3_1ogdr"]
+[ext_resource type="Resource" uid="uid://dburstorb000001" path="res://resources/orbs/burst_orb.tres" id="4_burst"]
+[ext_resource type="Resource" uid="uid://dvlineorb000001" path="res://resources/orbs/vertical_line_orb.tres" id="5_vline"]
+[ext_resource type="Resource" uid="uid://dhlineorb000001" path="res://resources/orbs/horizontal_line_orb.tres" id="6_hline"]
+[ext_resource type="Resource" uid="uid://dslowfall000001" path="res://resources/orbs/slow_fall_orb.tres" id="7_slowfall"]
+[ext_resource type="Resource" uid="uid://dstickyhead0001" path="res://resources/orbs/sticky_head_orb.tres" id="8_sticky"]
+[ext_resource type="Resource" uid="uid://ddblvalue00001" path="res://resources/orbs/double_value_orb.tres" id="9_dblvalue"]
+[ext_resource type="Resource" uid="uid://dcombostart001" path="res://resources/orbs/combo_starter_orb.tres" id="10_combo"]
+[ext_resource type="Resource" uid="uid://ddrifterorb001" path="res://resources/orbs/drifter_orb.tres" id="11_drifter"]
+[ext_resource type="Resource" uid="uid://dtestorb000001" path="res://resources/orbs/test_orb.tres" id="12_test"]
 
 [sub_resource type="Resource" id="Resource_lx1t1"]
 script = ExtResource("3_1ogdr")
@@ -24,4 +33,5 @@ script = ExtResource("1_1ogdr")
 generic_orb_scene = ExtResource("2_yq6c3")
 spawn_zone = Rect2(50, 100, 1075, 250)
 orb_props = Array[ExtResource("3_1ogdr")]([SubResource("Resource_lx1t1"), SubResource("Resource_1ogdr"), SubResource("Resource_yq6c3")])
+orb_data_array = [ExtResource("4_burst"), ExtResource("5_vline"), ExtResource("6_hline"), ExtResource("7_slowfall"), ExtResource("8_sticky"), ExtResource("9_dblvalue"), ExtResource("10_combo"), ExtResource("11_drifter"), ExtResource("12_test")]
 spawn_interval = 1.0

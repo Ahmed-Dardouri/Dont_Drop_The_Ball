@@ -24,6 +24,7 @@ GameSaveMngr="*res://scripts/utils/game_save_mngr.gd"
 Variables="*res://scripts/utils/variables.gd"
 GameState="*res://scripts/core/game_state.gd"
 ScoreManager="*res://scripts/core/score_manager.gd"
+ModeManager="*res://scripts/core/mode_manager.gd"
 EffectManager="*res://scripts/effect_manager.gd"
 
 [display]

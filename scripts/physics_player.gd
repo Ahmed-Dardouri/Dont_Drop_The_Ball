@@ -96,9 +96,16 @@ func HandleGravity(delta: float):
 	else:
 		var inAirGravity = fall_acceleration
 		if _endedJumpEarly && _frameVelocity.y < 0 :
-			
+
 			inAirGravity *= Jump_ended_early_gravity_modifier
-		_frameVelocity.y = move_toward(_frameVelocity.y, max_fall_speed, inAirGravity * delta)
+
+		# Apply slow_fall effect if active
+		var current_max_fall = max_fall_speed
+		if EffectManager.has_effect("slow_fall"):
+			var slow_factor = EffectManager.get_effect_value("slow_fall")
+			current_max_fall = max_fall_speed * slow_factor
+
+		_frameVelocity.y = move_toward(_frameVelocity.y, current_max_fall, inAirGravity * delta)
 			
 
 
@@ -122,6 +129,12 @@ func CheckGround():
 		_timeLeftGround = Time.get_ticks_msec()
 
 func ApplyVelocity():
+	# Apply sticky_head effect if active (dampens velocity)
+	if EffectManager.has_effect("sticky_head"):
+		var dampen = EffectManager.get_effect_value("sticky_head")
+		_frameVelocity.x *= dampen
+		_frameVelocity.y *= dampen
+
 	linear_velocity = _frameVelocity
 
 func HasBufferedJump() -> bool:
