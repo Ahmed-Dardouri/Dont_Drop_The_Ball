@@ -21,33 +21,6 @@ func _on_score_changed(new_score: int) -> void:
 	_score = new_score
 
 
-#region OrbProps Path Integration
-
-func test_spawner_creates_orb_props_orb() -> void:
-	"""Verify that the OrbProps path still works end-to-end."""
-	var spawner := OrbSpawner.new()
-	spawner.generic_orb_scene = load("res://scenes/generic_orb.tscn")
-
-	var props := OrbProps.new()
-	props.Type = Enums.OrbType.BLUE
-	spawner.orb_props = [props]
-	spawner.orb_data_array = []
-	add_child(spawner)
-
-	var result: Node = spawner._spawn_from_props()
-
-	assert_not_null(result, "Spawner should create an orb from OrbProps")
-	assert_true(result is GenericOrb, "Result should be a GenericOrb")
-
-	var orb: GenericOrb = result as GenericOrb
-	assert_null(orb.get_orb_data(), "OrbProps orb should not have OrbData set")
-
-	result.queue_free()
-	spawner.queue_free()
-
-
-#endregion
-
 #region OrbData Path Integration
 
 func test_spawner_creates_orb_data_orb() -> void:
@@ -55,7 +28,7 @@ func test_spawner_creates_orb_data_orb() -> void:
 	var spawner := _create_spawner_with_inline_orb_data()
 	add_child(spawner)
 
-	var result: Node = spawner._spawn_from_props()
+	var result: Node = spawner._spawn_orb()
 
 	assert_not_null(result, "Spawner should create an orb from OrbData")
 	assert_true(result is GenericOrb, "Result should be a GenericOrb")
@@ -73,7 +46,7 @@ func test_orb_data_orb_has_correct_properties() -> void:
 	var spawner := _create_spawner_with_inline_orb_data()
 	add_child(spawner)
 
-	var result: Node = spawner._spawn_from_props()
+	var result: Node = spawner._spawn_orb()
 	add_child(result)
 	await get_tree().process_frame
 
@@ -101,7 +74,7 @@ func test_debug_force_selects_correct_orb() -> void:
 
 	# Spawn multiple times - should always get "Integration Test Orb"
 	for i in range(10):
-		var result: Node = spawner._spawn_from_props()
+		var result: Node = spawner._spawn_orb()
 		assert_not_null(result, "Should always return an orb with debug force")
 
 		var orb: GenericOrb = result as GenericOrb
@@ -122,7 +95,7 @@ func test_orb_data_orb_collectible() -> void:
 	var spawner := _create_spawner_with_inline_orb_data()
 	add_child(spawner)
 
-	var result: Node = spawner._spawn_from_props()
+	var result: Node = spawner._spawn_orb()
 	add_child(result)
 	await get_tree().process_frame
 
@@ -147,7 +120,7 @@ func test_orb_data_orb_collection_fires_score_event() -> void:
 	var spawner := _create_spawner_with_inline_orb_data()
 	add_child(spawner)
 
-	var result: Node = spawner._spawn_from_props()
+	var result: Node = spawner._spawn_orb()
 	add_child(result)
 	await get_tree().process_frame
 
@@ -169,7 +142,7 @@ func test_orb_data_orb_queue_free_on_collection() -> void:
 	var spawner := _create_spawner_with_inline_orb_data()
 	add_child(spawner)
 
-	var result: Node = spawner._spawn_from_props()
+	var result: Node = spawner._spawn_orb()
 	add_child(result)
 	await get_tree().process_frame
 
@@ -181,37 +154,6 @@ func test_orb_data_orb_queue_free_on_collection() -> void:
 	# Check immediately before the node is freed
 	assert_true(orb.is_queued_for_deletion(), "Orb should be queued for deletion after collection")
 
-	spawner.queue_free()
-
-
-#endregion
-
-#region Combined Pool Integration
-
-func test_combined_pool_orb_data_selection() -> void:
-	"""Verify that OrbData orbs can be selected from a combined pool."""
-	var spawner := _create_spawner_with_mixed_pool()
-	add_child(spawner)
-
-	var found_orb_data := false
-	var found_orb_props := false
-
-	# Spawn multiple orbs to verify both types can be selected
-	for i in range(50):
-		var result: Node = spawner._spawn_from_props()
-		if result == null:
-			continue
-
-		var orb: GenericOrb = result as GenericOrb
-		if orb.get_orb_data() != null:
-			found_orb_data = true
-		else:
-			found_orb_props = true
-
-		result.queue_free()
-
-	assert_true(found_orb_data, "Should select OrbData orbs from combined pool")
-	assert_true(found_orb_props, "Should select OrbProps orbs from combined pool")
 	spawner.queue_free()
 
 
@@ -237,7 +179,6 @@ func test_real_test_orb_in_spawner() -> void:
 	"""Verify that the real test_orb.tres works in a spawner."""
 	var spawner := OrbSpawner.new()
 	spawner.generic_orb_scene = load("res://scenes/generic_orb.tscn")
-	spawner.orb_props = []
 
 	# Load and cast the resource
 	var resource: Resource = load("res://resources/orbs/test_orb.tres")
@@ -251,7 +192,7 @@ func test_real_test_orb_in_spawner() -> void:
 
 	add_child(spawner)
 
-	var result: Node = spawner._spawn_from_props()
+	var result: Node = spawner._spawn_orb()
 	assert_not_null(result, "Spawner should create an orb from test_orb.tres")
 
 	var orb: GenericOrb = result as GenericOrb
@@ -259,6 +200,31 @@ func test_real_test_orb_in_spawner() -> void:
 
 	result.queue_free()
 	spawner.queue_free()
+
+
+func test_migrated_basic_orbs_load() -> void:
+	"""Verify that the migrated blue, red, and half_solid orb resources load."""
+	var blue: Resource = load("res://resources/orbs/blue_orb.tres")
+	var red: Resource = load("res://resources/orbs/red_orb.tres")
+	var half_solid: Resource = load("res://resources/orbs/half_solid_orb.tres")
+
+	assert_not_null(blue, "blue_orb.tres should load")
+	assert_not_null(red, "red_orb.tres should load")
+	assert_not_null(half_solid, "half_solid_orb.tres should load")
+
+	var blue_data: OrbData = blue as OrbData
+	var red_data: OrbData = red as OrbData
+	var half_data: OrbData = half_solid as OrbData
+
+	assert_eq(blue_data.display_name, "Blue Orb", "Blue orb should have correct name")
+	assert_eq(blue_data.base_score, 2, "Blue orb should have score of 2")
+
+	assert_eq(red_data.display_name, "Red Orb", "Red orb should have correct name")
+	assert_eq(red_data.base_score, 3, "Red orb should have score of 3")
+
+	assert_eq(half_data.display_name, "Half Solid Orb", "Half solid orb should have correct name")
+	assert_eq(half_data.base_score, 8, "Half solid orb should have score of 8")
+	assert_true(half_data.is_half_solid, "Half solid orb should have is_half_solid=true")
 
 
 #endregion
@@ -294,23 +260,7 @@ func _create_inline_orb_data() -> OrbData:
 func _create_spawner_with_inline_orb_data() -> OrbSpawner:
 	var spawner := OrbSpawner.new()
 	spawner.generic_orb_scene = load("res://scenes/generic_orb.tscn")
-	spawner.orb_props = []
 	spawner.orb_data_array = [_create_inline_orb_data()]
-	return spawner
-
-
-func _create_spawner_with_mixed_pool() -> OrbSpawner:
-	var spawner := OrbSpawner.new()
-	spawner.generic_orb_scene = load("res://scenes/generic_orb.tscn")
-
-	# Add OrbProps
-	var props := OrbProps.new()
-	props.Type = Enums.OrbType.BLUE
-	spawner.orb_props = [props]
-
-	# Add OrbData
-	spawner.orb_data_array = [_create_inline_orb_data()]
-
 	return spawner
 
 

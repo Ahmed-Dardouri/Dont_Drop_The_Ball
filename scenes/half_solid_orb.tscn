@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dhw0anotlyu1l"]
+[gd_scene load_steps=5 format=3 uid="uid://cymba304fy1ss"]
 
 [ext_resource type="Script" uid="uid://dt5f3ecm3gqm6" path="res://scripts/half_solid_orb.gd" id="1_ke8wu"]
 [ext_resource type="Texture2D" uid="uid://utmsvffno56e" path="res://sprites/collect_half.png" id="2_1ievf"]

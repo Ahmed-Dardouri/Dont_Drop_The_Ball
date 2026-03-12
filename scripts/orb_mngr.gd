@@ -1,35 +1,15 @@
 extends Node2D
+## Orb Manager - Listens to orb collection events.
+## Scoring is now handled by ScoreBehavior in the OrbData system.
+## This manager can be extended for achievements, statistics, etc.
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Events.add_listener(OrbCollectedEvent, orb_event_handler)
+	Events.add_listener(OrbCollectedEvent, _on_orb_collected)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _on_orb_collected(event: OrbCollectedEvent) -> void:
+	var orb_data: OrbData = event.get_orb_data()
+	# Future: Add achievement tracking, statistics, etc.
+	# For now, scoring is handled by ScoreBehavior in the orb's behaviors array.
 	pass
-
-func orb_event_handler(event: OrbCollectedEvent):
-	match event._props.Type:
-		Enums.OrbType.BLUE:
-			orb_event_handler_blue()
-		Enums.OrbType.RED:
-			orb_event_handler_red()
-		Enums.OrbType.HALF_SOLID:
-			orb_event_handler_half_solid()
-		_:
-			pass
-
-
-func orb_event_handler_blue():
-	AddScoreEvent.invoke(Constants.orb_score_blue)
-	
-		
-func orb_event_handler_red():
-	AddScoreEvent.invoke(Constants.orb_score_red)
-	
-
-func orb_event_handler_half_solid():
-	AddScoreEvent.invoke(Constants.orb_score_half_solid)
-	

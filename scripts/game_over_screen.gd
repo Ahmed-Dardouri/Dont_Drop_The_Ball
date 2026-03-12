@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func handle_game_over(event: GameOverEvent) -> void:
 	var saved_game := GameSaveMngr.get_saved_game()
-	var curr_score = get_current_score()
+	var curr_score = ScoreManager.get_score()
 	saved_game.pb = max(curr_score, saved_game.pb)
 	GameSaveMngr.set_saved_game(saved_game)
 	GameSaveMngr.save_game()

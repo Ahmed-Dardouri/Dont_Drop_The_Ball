@@ -4,7 +4,6 @@ extends Node2D
 @export var generic_orb_scene: PackedScene
 
 @export var spawn_zone: Rect2 = Rect2(Vector2(-200, -200), Vector2(400, 400))
-@export var orb_props: Array[OrbProps] = []
 @export var orb_data_array: Array[OrbData] = []
 @export var debug_force_orb_type: String = ""
 @export var spawn_interval: float = 2.0
@@ -27,7 +26,7 @@ func _on_timeout() -> void:
 	if max_orbs > 0 and get_tree().get_nodes_in_group("orbs").size() >= max_orbs:
 		return
 
-	var orb := _spawn_from_props()
+	var orb := _spawn_orb()
 	if orb == null:
 		return
 
@@ -41,10 +40,8 @@ func _on_timeout() -> void:
 	add_child(orb)
 
 
-func _spawn_from_props() -> Node:
-	# Build combined pool
-	var pool_size := orb_props.size() + orb_data_array.size()
-	if pool_size == 0:
+func _spawn_orb() -> Node:
+	if orb_data_array.is_empty():
 		return null
 
 	# Debug override: force specific orb type by name
@@ -54,21 +51,7 @@ func _spawn_from_props() -> Node:
 				return OrbAdapter.create_orb_from_data(generic_orb_scene, data)
 		return null  # Debug type not found
 
-	# Simple random selection from combined pool
-	var idx := randi() % pool_size
-
-	# First part of pool is OrbProps
-	if idx < orb_props.size():
-		var props := orb_props[idx]
-		return create_orb_copy(props)
-
-	# Second part of pool is OrbData
-	var data_idx := idx - orb_props.size()
-	var data := orb_data_array[data_idx]
+	# Random selection from OrbData array
+	var idx := randi() % orb_data_array.size()
+	var data := orb_data_array[idx]
 	return OrbAdapter.create_orb_from_data(generic_orb_scene, data)
-
-
-func create_orb_copy(props: OrbProps) -> Node:
-	var orb_cpy = generic_orb_scene.instantiate()
-	orb_cpy.set_type(props)
-	return orb_cpy

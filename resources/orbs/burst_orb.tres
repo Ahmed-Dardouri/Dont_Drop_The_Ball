@@ -1,25 +1,31 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://bs50bcxjisooe"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=8 format=3 uid="uid://bs50bcxjisooe"]
 
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_ul723"]
 [ext_resource type="Script" uid="uid://rfnjxjnep0yc" path="res://scripts/data/behaviors/burst_behavior.gd" id="2_burstbehavior"]
-[ext_resource type="Texture2D" uid="uid://c8f7gwmxuqim8" path="res://sprites/blue_ball.png" id="3_texture"]
+[ext_resource type="Script" uid="uid://bk0sdde0ofy4b" path="res://scripts/data/behaviors/score_behavior.gd" id="3_scorebehavior"]
+[ext_resource type="Texture2D" uid="uid://coyryknpeeh1u" path="res://sprites/explosion_orb.png" id="4_ul723"]
+
+[sub_resource type="Resource" id="ScoreBehavior_1"]
+script = ExtResource("3_scorebehavior")
+base_score = 10
+behavior_id = ""
 
 [sub_resource type="Resource" id="BurstBehavior_1"]
 script = ExtResource("2_burstbehavior")
-radius = 150.0
+radius = 800.0
 bonus_per_orb = 3
 behavior_id = ""
 
 [resource]
 script = ExtResource("1_orbdata")
 display_name = "Burst Orb"
-texture = ExtResource("3_texture")
-scale = Vector2(1, 1)
+texture = ExtResource("4_ul723")
+scale = Vector2(0.2, 0.2)
 base_score = 10
 lifespan = 25.0
 rarity = 1
 collision_radius = 32.0
 is_half_solid = false
-behaviors = Array[ExtResource("1_ul723")]([SubResource("BurstBehavior_1")])
+behaviors = Array[ExtResource("1_ul723")]([SubResource("ScoreBehavior_1"), SubResource("BurstBehavior_1")])
 spawn_animation_duration = 1.5

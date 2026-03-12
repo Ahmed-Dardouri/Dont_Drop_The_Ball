@@ -5,7 +5,7 @@ class_name BurstBehavior extends OrbBehavior
 #region Properties
 
 ## Radius in pixels to search for nearby orbs.
-@export var radius: float = 150.0
+@export var radius: float = 25.0
 
 ## Bonus score per orb cleared (in addition to their own score).
 @export var bonus_per_orb: int = 2

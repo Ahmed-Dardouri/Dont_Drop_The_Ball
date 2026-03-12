@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://utmsvffno56e"
-path="res://.godot/imported/collect_half.png-224ceba30b92005f8fd5616e1d173739.ctex"
+uid="uid://coyryknpeeh1u"
+path="res://.godot/imported/explosion_orb.png-17c22bf0dc5050f08a71a4bf25a5986d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/collect_half.png"
-dest_files=["res://.godot/imported/collect_half.png-224ceba30b92005f8fd5616e1d173739.ctex"]
+source_file="res://sprites/explosion_orb.png"
+dest_files=["res://.godot/imported/explosion_orb.png-17c22bf0dc5050f08a71a4bf25a5986d.ctex"]
 
 [params]
 

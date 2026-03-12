@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwhnde5mctw77"
-path="res://.godot/imported/solid_half.png-f18795e00f5c58cd0f7ada33d817f189.ctex"
+uid="uid://cwkv3uebnt4v2"
+path="res://.godot/imported/half_solid.png-2ef607cf4a668ba017be762b6221ca38.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/solid_half.png"
-dest_files=["res://.godot/imported/solid_half.png-f18795e00f5c58cd0f7ada33d817f189.ctex"]
+source_file="res://sprites/half_solid.png"
+dest_files=["res://.godot/imported/half_solid.png-2ef607cf4a668ba017be762b6221ca38.ctex"]
 
 [params]
 

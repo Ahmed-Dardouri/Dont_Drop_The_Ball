@@ -17,6 +17,7 @@ func _ready() -> void:
 	GameSaveMngr.load_game()
 
 func replay_handler(event: ReplayEvent):
+	ScoreManager.reset_score()
 	_reload_world()
 	PauseEvent.invoke(false)
 	

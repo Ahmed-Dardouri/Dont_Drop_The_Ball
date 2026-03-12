@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://blgspqnlb563u"]
+
+[ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
+[ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
+[ext_resource type="Script" uid="uid://bk0sdde0ofy4b" path="res://scripts/data/behaviors/score_behavior.gd" id="2_scorebehavior"]
+[ext_resource type="Texture2D" uid="uid://dqrvqhu6m0x7r" path="res://sprites/red_ball.png" id="3_texture"]
+
+[sub_resource type="Resource" id="ScoreBehavior_1"]
+script = ExtResource("2_scorebehavior")
+base_score = 3
+behavior_id = ""
+
+[resource]
+script = ExtResource("1_orbdata")
+display_name = "Red Orb"
+texture = ExtResource("3_texture")
+scale = Vector2(0.6, 0.6)
+base_score = 3
+lifespan = 30.0
+rarity = 0
+collision_radius = 32.0
+is_half_solid = false
+behaviors = Array[ExtResource("1_behavior")]([SubResource("ScoreBehavior_1")])
+spawn_animation_duration = 1.5
