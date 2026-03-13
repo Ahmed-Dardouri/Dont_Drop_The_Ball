@@ -57,7 +57,12 @@ func test_set_orb_data_uses_collision_radius() -> void:
 
 
 func test_set_orb_data_enables_monitoring() -> void:
-	var orb: GenericOrb = await _create_generic_orb_with_data()
+	var orb_data := OrbData.new()
+	orb_data.collision_radius = 32.0
+	orb_data.texture = _create_test_texture()
+	orb_data.spawn_animation_duration = 0.0  # Skip spawn animation for this test
+
+	var orb: GenericOrb = await _create_generic_orb_with_data(orb_data)
 	var area: Area2D = orb.get_data_orb_area()
 
 	assert_not_null(area, "DataOrbArea should exist")

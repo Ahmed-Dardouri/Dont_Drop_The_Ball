@@ -53,7 +53,8 @@ func _on_body_entered(body: Node) -> void:
 		PauseEvent.invoke(true)
 		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
 	elif body.is_in_group("half_solid"):
-		linear_velocity = linear_velocity/3
+		# Gentle velocity reduction for smoother bounce feel
+		linear_velocity = linear_velocity * 0.7
 
 
 func load_constants():

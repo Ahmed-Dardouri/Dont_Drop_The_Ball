@@ -23,6 +23,12 @@ var _spawn_complete: bool = false
 
 #endregion
 
+#region Lifespan State
+
+var _lifespan_time_elapsed: float = 0.0
+
+#endregion
+
 
 func _ready() -> void:
 	# Handle deferred collision setup
@@ -38,6 +44,13 @@ func _process(delta: float) -> void:
 	# Handle spawn animation
 	if not _spawn_complete:
 		_orb_data_spawn_animation(delta)
+		return
+
+	# Track lifespan and despawn when expired
+	_lifespan_time_elapsed += delta
+	if _lifespan_time_elapsed >= _orb_data.lifespan:
+		_disable_collision()
+		queue_free()
 		return
 
 	# Process behaviors that need per-frame updates
@@ -128,10 +141,10 @@ func _setup_half_solid(orb_data: OrbData) -> void:
 	# Create the static body for the solid platform (TOP half only)
 	_half_solid_body = StaticBody2D.new()
 
-	# Add bouncy physics material to make collision less harsh
+	# Add bouncy physics material for smooth bouncing
 	var physics_mat := PhysicsMaterial.new()
 	physics_mat.bounce = 0.5
-	physics_mat.friction = 0.3
+	physics_mat.friction = 0.0  # No friction to prevent sticking
 	_half_solid_body.physics_material_override = physics_mat
 
 	_half_solid_collision = CollisionPolygon2D.new()
@@ -154,6 +167,7 @@ func _setup_half_solid(orb_data: OrbData) -> void:
 
 	_half_solid_collision.polygon = points
 	_half_solid_collision.disabled = true  # Disabled during spawn animation
+	_half_solid_collision.one_way_collision = true  # Only collide from above
 	_half_solid_body.add_child(_half_solid_collision)
 	_half_solid_body.add_to_group("half_solid")
 	add_child(_half_solid_body)
@@ -229,6 +243,15 @@ func _enable_collision() -> void:
 	if _half_solid_collision != null:
 		_half_solid_collision.disabled = false
 
+
+## Disables all collision immediately (called before despawn).
+func _disable_collision() -> void:
+	if data_orb_area != null:
+		data_orb_area.monitoring = false
+		data_orb_area.monitorable = false
+	if _half_solid_collision != null:
+		_half_solid_collision.disabled = true
+
 #endregion
 
 #region Collection
@@ -246,6 +269,9 @@ func _on_data_orb_area_body_entered(body: Node2D) -> void:
 func on_orb_collected() -> void:
 	if _orb_data == null:
 		return
+
+	# Disable collision immediately to prevent bounce-after-disappear
+	_disable_collision()
 
 	# Fire event for any listeners (UI, achievements, etc.)
 	OrbCollectedEvent.invoke(_orb_data)

@@ -6,5 +6,7 @@
 script = ExtResource("1_cqkum")
 
 [node name="DataOrbArea" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DataOrbArea"]
