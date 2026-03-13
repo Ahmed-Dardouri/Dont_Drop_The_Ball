@@ -1,14 +1,20 @@
 class_name BurstBehavior extends OrbBehavior
-## Behavior that clears nearby orbs within a radius and awards score for each.
-## Creates an explosive chain collection effect.
+## Behavior that spawns an expanding explosion circle which collects nearby orbs.
+## Creates a visual burst effect with proper orb collection.
 
 #region Properties
 
-## Radius in pixels to search for nearby orbs.
-@export var radius: float = 25.0
+## Radius in pixels for the explosion circle.
+@export var radius: float = 150.0
 
 ## Bonus score per orb cleared (in addition to their own score).
 @export var bonus_per_orb: int = 2
+
+## Texture for the explosion circle visual.
+@export var explosion_texture: Texture2D
+
+## How long the explosion lasts in seconds.
+@export var explosion_duration: float = 0.3
 
 #endregion
 
@@ -21,28 +27,20 @@ func execute(context: Dictionary) -> void:
 
 	var center: Vector2 = orb.global_position if orb.has_method("get") else Vector2.ZERO
 
-	# Find all orbs in the "orbs" group within radius
-	var all_orbs: Array[Node] = orb.get_tree().get_nodes_in_group("orbs")
-	var collected_count: int = 0
+	# Spawn the explosion circle
+	_spawn_explosion(orb, center)
 
-	for nearby_orb: Node in all_orbs:
-		if nearby_orb == orb:
-			continue  # Skip self
 
-		if not nearby_orb.is_inside_tree():
-			continue
+func _spawn_explosion(orb: Node, center: Vector2) -> void:
+	var scene: PackedScene = load("res://scenes/explosion_circle.tscn")
+	var explosion: ExplosionCircle = scene.instantiate()
 
-		var distance: float = center.distance_to(nearby_orb.global_position)
-		if distance <= radius:
-			# Award bonus score for this orb
-			ScoreManager.add_score(bonus_per_orb)
-			collected_count += 1
-			# Queue free the nearby orb
-			nearby_orb.queue_free()
+	explosion.setup(radius, explosion_texture)
+	explosion.duration = explosion_duration
+	explosion.global_position = center
 
-	# Bonus for chain reaction
-	if collected_count > 0:
-		ScoreManager.add_score(collected_count * bonus_per_orb)
+	# Add to the same parent as the orb (usually the scene tree)
+	orb.get_tree().current_scene.add_child(explosion)
 
 
 func process(_orb: Node, _delta: float) -> void:
