@@ -7,9 +7,6 @@ class_name BurstBehavior extends OrbBehavior
 ## Radius in pixels for the explosion circle.
 @export var radius: float = 150.0
 
-## Bonus score per orb cleared (in addition to their own score).
-@export var bonus_per_orb: int = 2
-
 ## Texture for the explosion circle visual.
 @export var explosion_texture: Texture2D
 
@@ -23,7 +20,7 @@ class_name BurstBehavior extends OrbBehavior
 func execute(context: Dictionary) -> void:
 	var orb: Node = context.get("orb")
 	if orb == null:
-		return
+		return 
 
 	var center: Vector2 = orb.global_position if orb.has_method("get") else Vector2.ZERO
 
