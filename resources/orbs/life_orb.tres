@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://b2qkkqdhm5vss"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=7 format=3 uid="uid://b2qkkqdhm5vss"]
 
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" uid="uid://sop4re5g3equ" path="res://scripts/data/behaviors/life_orb_behavior.gd" id="2_lifebehavior"]
 [ext_resource type="Texture2D" uid="uid://dwxf4p6xbmeee" path="res://sprites/life_orb.png" id="4_gjquq"]
+[ext_resource type="Texture2D" path="res://sprites/life_orb_effect.png" id="5_effect"]
 
 [sub_resource type="Resource" id="LifeOrbBehavior_1"]
 script = ExtResource("2_lifebehavior")
+effect_texture = ExtResource("5_effect")
 behavior_id = "life_orb"
 
 [resource]
