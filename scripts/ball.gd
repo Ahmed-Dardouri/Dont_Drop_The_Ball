@@ -196,8 +196,9 @@ func _complete_rescue() -> void:
 		_rescue_sprite.queue_free()
 		_rescue_sprite = null
 
-	# Reset velocity
+	# Reset velocity and rotation
 	linear_velocity = Vector2.ZERO
+	rotation = 0.0
 
 	# Notify systems
 	BallRescueEvent.invoke(false)

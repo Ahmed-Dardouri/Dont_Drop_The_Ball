@@ -73,6 +73,7 @@ func handle_buttons(event: ButtonEvent):
 			
 			
 func play_button_handle():
+	ScoreManager.reset_score()
 	_reload_world()
 	PauseEvent.invoke(false)
 	phantom_camera_2d.priority = 0

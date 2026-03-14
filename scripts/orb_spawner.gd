@@ -11,7 +11,8 @@ extends Node2D
 
 # Life orb settings
 @export var life_orb_data: OrbData
-@export var life_orb_spawn_interval: float = 60.0  # Spawn every 60 seconds
+@export var life_orb_first_spawn_delay: float = 30.0  # First spawn after 30 seconds
+@export var life_orb_spawn_interval: float = 90.0  # Spawn every 90 seconds after first
 
 var _timer: Timer
 var _game_time_elapsed: float = 0.0
@@ -35,8 +36,8 @@ func _ready() -> void:
 		_spawn_counts[data.display_name] = 0
 	if life_orb_data != null:
 		_spawn_counts[life_orb_data.display_name] = 0
-		# Set first life orb spawn time (60 seconds after game start, not at start)
-		_life_orb_next_spawn_time = life_orb_spawn_interval
+		# First life orb spawns after first_spawn_delay seconds
+		_life_orb_next_spawn_time = life_orb_first_spawn_delay
 
 
 func _process(delta: float) -> void:
