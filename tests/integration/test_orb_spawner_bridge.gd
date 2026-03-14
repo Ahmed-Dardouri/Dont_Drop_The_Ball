@@ -246,7 +246,7 @@ func _create_inline_orb_data() -> OrbData:
 	orb_data.scale = Vector2.ONE
 	orb_data.base_score = 5
 	orb_data.lifespan = 30.0
-	orb_data.rarity = Enums.OrbRarity.COMMON
+	orb_data.spawn_weight = 1.0
 	orb_data.collision_radius = 32.0
 	orb_data.is_half_solid = false
 

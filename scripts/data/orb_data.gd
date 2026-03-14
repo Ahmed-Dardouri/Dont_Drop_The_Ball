@@ -23,8 +23,8 @@ class_name OrbData extends Resource
 ## Time in seconds before orb despawns
 @export var lifespan: float = 30.0
 
-## Rarity tier affecting spawn weight
-@export var rarity: Enums.OrbRarity = Enums.OrbRarity.COMMON
+## Spawn weight for weighted random selection (higher = more common)
+@export var spawn_weight: float = 1.0
 
 #endregion
 

@@ -166,6 +166,10 @@ func _on_effect_expired(effect_id: String) -> void:
 	if effect_id == "time_slow":
 		Engine.time_scale = 1.0
 
+	# Notify when life effect expires
+	if effect_id == "has_life":
+		LifeChangedEvent.invoke(false)
+
 
 func _on_game_over(_event: GameOverEvent) -> void:
 	clear_all_effects()

@@ -20,9 +20,9 @@ func test_orb_data_default_lifespan() -> void:
 	assert_eq(orb_data.lifespan, 30.0, "Default lifespan should be 30.0")
 
 
-func test_orb_data_default_rarity() -> void:
+func test_orb_data_default_spawn_weight() -> void:
 	var orb_data := OrbData.new()
-	assert_eq(orb_data.rarity, Enums.OrbRarity.COMMON, "Default rarity should be COMMON")
+	assert_eq(orb_data.spawn_weight, 1.0, "Default spawn_weight should be 1.0")
 
 
 func test_orb_data_default_scale() -> void:
@@ -72,10 +72,10 @@ func test_orb_data_set_lifespan() -> void:
 	assert_eq(orb_data.lifespan, 45.0, "lifespan should be settable")
 
 
-func test_orb_data_set_rarity() -> void:
+func test_orb_data_set_spawn_weight() -> void:
 	var orb_data := OrbData.new()
-	orb_data.rarity = Enums.OrbRarity.RARE
-	assert_eq(orb_data.rarity, Enums.OrbRarity.RARE, "rarity should be settable")
+	orb_data.spawn_weight = 5.0
+	assert_eq(orb_data.spawn_weight, 5.0, "spawn_weight should be settable")
 
 
 func test_orb_data_set_is_half_solid() -> void:
@@ -97,12 +97,12 @@ func test_orb_data_can_be_duplicated() -> void:
 	var original := OrbData.new()
 	original.display_name = "Original"
 	original.base_score = 10
-	original.rarity = Enums.OrbRarity.RARE
+	original.spawn_weight = 3.0
 
 	var copy := original.duplicate()
 	assert_eq(copy.display_name, "Original", "Duplicated OrbData should have same display_name")
 	assert_eq(copy.base_score, 10, "Duplicated OrbData should have same base_score")
-	assert_eq(copy.rarity, Enums.OrbRarity.RARE, "Duplicated OrbData should have same rarity")
+	assert_eq(copy.spawn_weight, 3.0, "Duplicated OrbData should have same spawn_weight")
 
 
 #endregion

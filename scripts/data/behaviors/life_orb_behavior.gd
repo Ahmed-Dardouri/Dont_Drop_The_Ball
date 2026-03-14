@@ -1,13 +1,17 @@
 class_name LifeOrbBehavior extends OrbBehavior
 ## Behavior that grants an extra life (saves from game over once).
 ## Maximum of 1 life can be held at a time.
+## Life effect lasts 60 seconds or until consumed by dropping the ball.
+
+## Duration of the life effect in seconds
+const LIFE_DURATION: float = 60.0
 
 #region OrbBehavior Implementation
 
 func execute(_context: Dictionary) -> void:
 	# Only grant life if player doesn't already have one
 	if not EffectManager.has_effect("has_life"):
-		EffectManager.apply_effect("has_life", true, EffectManager.DURATION_PERMANENT)
+		EffectManager.apply_effect("has_life", true, LIFE_DURATION)
 		LifeChangedEvent.invoke(true)
 
 
