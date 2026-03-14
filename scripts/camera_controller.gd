@@ -1,7 +1,7 @@
 extends Node2D
 ## Adjusts camera zoom based on device type (mobile vs desktop).
 
-@export var desktop_zoom: Vector2 = Vector2(2, 2)
+@export var desktop_zoom: Vector2 = Vector2(1.8, 1.8)
 @export var mobile_zoom: Vector2 = Vector2(2.5, 2.5)
 
 @onready var phantom_camera: Node2D = $PhantomCamera2D
