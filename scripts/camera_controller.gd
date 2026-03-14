@@ -5,12 +5,12 @@ extends Node2D
 #region Exported Properties
 
 ## Desktop camera settings
-@export var desktop_zoom: Vector2 = Vector2(1, 1)
-@export var desktop_follow_offset: Vector2 = Vector2(0, -220)
+@export var desktop_zoom: Vector2 = Vector2(2, 2)
+@export var desktop_follow_offset: Vector2 = Vector2(0, 0)
 
 ## Mobile camera settings (more zoomed in, adjusted offset to show ground)
-@export var mobile_zoom: Vector2 = Vector2(2.5, 2.5)
-@export var mobile_follow_offset: Vector2 = Vector2(0, -100)
+@export var mobile_zoom: Vector2 = Vector2(2.2, 2.2)
+@export var mobile_follow_offset: Vector2 = Vector2(0, -50)
 
 #endregion
 
@@ -31,9 +31,17 @@ func _adjust_camera_for_device() -> void:
 
 	var is_mobile: bool = _is_mobile_device()
 
-	var target_zoom: Vector2 = mobile_zoom if is_mobile else desktop_zoom
-	var target_offset: Vector2 = mobile_follow_offset if is_mobile else desktop_follow_offset
-
+	var target_zoom: Vector2 
+	
+	var target_offset: Vector2
+	
+	if is_mobile :
+		target_zoom = mobile_zoom
+		target_offset = mobile_follow_offset
+	else :
+		target_offset = desktop_follow_offset
+		target_zoom = desktop_zoom
+		
 	# Set PhantomCamera2D properties
 	phantom_camera.zoom = target_zoom
 	phantom_camera.follow_offset = target_offset
@@ -47,10 +55,6 @@ func _is_mobile_device() -> bool:
 		# For Web, check if it has touch capability
 		if os_name == "Web":
 			return DisplayServer.is_touchscreen_available()
-		return true
-
-	# Desktop with touch screen - treat as mobile if touch is available
-	if DisplayServer.is_touchscreen_available():
 		return true
 
 	return false

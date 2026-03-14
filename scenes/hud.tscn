@@ -59,37 +59,48 @@ shape = SubResource("RectangleShape2D_uo2fv")
 
 [node name="score_mngr" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("8_hd3ao")
 
 [node name="MarginContainer" type="MarginContainer" parent="score_mngr"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
 [node name="HBoxContainer" type="HBoxContainer" parent="score_mngr/MarginContainer"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 0
 
 [node name="score_label" type="Label" parent="score_mngr/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "0"
 
-[node name="VSeparator" type="VSeparator" parent="score_mngr/MarginContainer/HBoxContainer"]
+[node name="VSeparator" type="Control" parent="score_mngr/MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 1500
-theme_override_styles/separator = SubResource("StyleBoxEmpty_hd3ao")
+size_flags_horizontal = 3
 
 [node name="pb_label" type="Label" parent="score_mngr/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "0"
+horizontal_alignment = 2
 
 [node name="ingame_settings" type="Control" parent="."]
 layout_mode = 3
