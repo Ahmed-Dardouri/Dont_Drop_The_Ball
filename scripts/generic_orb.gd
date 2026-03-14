@@ -262,6 +262,9 @@ func _on_data_orb_area_body_entered(body: Node2D) -> void:
 		return
 
 	if body.is_in_group("ball"):
+		# Skip collision if ball is in rescue mode
+		if body.has_method("is_rescuing") and body.is_rescuing():
+			return
 		on_orb_collected()
 
 

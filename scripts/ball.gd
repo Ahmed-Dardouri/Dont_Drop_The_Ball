@@ -11,6 +11,7 @@ var game_over: bool = false
 # Rescue state
 var _is_rescuing: bool = false
 var _rescue_target_pos: Vector2 = Vector2(580, 100)
+var _player_target : Vector2 = Vector2(580, 601)
 var _rescue_progress: float = 0.0
 var _rescue_duration: float = 1.5
 
@@ -19,6 +20,7 @@ var _rescue_sprite: Sprite2D = null
 
 # Player reference for rescue
 var _player: Node2D = null
+var _player_collision: CollisionPolygon2D = null
 
 
 # Called when the node enters the scene tree for the first time.
@@ -66,6 +68,10 @@ func apply_air_friction():
 
 
 func _on_body_entered(body: Node) -> void:
+	# Ignore all collisions during rescue
+	if _is_rescuing:
+		return
+
 	if body.is_in_group("ground") && !game_over:
 		# Check for life before game over
 		if EffectManager.has_effect("has_life"):
@@ -105,6 +111,10 @@ func _trigger_rescue() -> void:
 	if _player != null and _player is RigidBody2D:
 		_player.freeze = true
 
+	# Disable player collision during rescue
+	if _player_collision != null:
+		_player_collision.disabled = true
+
 	# Create rescue visual
 	_create_rescue_visual()
 
@@ -118,6 +128,8 @@ func _find_player() -> void:
 	var players := get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
 		_player = players[0]
+		# Get player collision for disabling during rescue
+		_player_collision = _player.get_node_or_null("PolygonCollider2D")
 
 
 func _create_rescue_visual() -> void:
@@ -148,8 +160,8 @@ func _update_rescue(delta: float) -> void:
 
 	# Move player to neutral position (below ball)
 	if _player != null:
-		var player_target := Vector2(_rescue_target_pos.x, 601)
-		_player.global_position = lerp(_player.global_position, player_target, eased_t * 0.1)
+		
+		_player.global_position = lerp(_player.global_position, _player_target, eased_t * 0.1)
 
 	# Update rescue visual (pulsating effect)
 	if _rescue_sprite != null:
@@ -175,6 +187,10 @@ func _complete_rescue() -> void:
 		_player.freeze = false
 		_player.linear_velocity = Vector2.ZERO
 
+	# Re-enable player collision
+	if _player_collision != null:
+		_player_collision.disabled = false
+
 	# Remove rescue visual
 	if _rescue_sprite != null:
 		_rescue_sprite.queue_free()
@@ -198,6 +214,11 @@ func _on_ball_rescue_event(event: BallRescueEvent) -> void:
 	else:
 		_is_rescuing = false
 		freeze = false
+
+
+## Returns whether the ball is currently in rescue mode.
+func is_rescuing() -> bool:
+	return _is_rescuing
 
 #endregion
 
