@@ -4,12 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://be05yexebg7c8" path="res://scenes/orb_spawner.tscn" id="2_8wc3p"]
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="3_orbdata"]
 [ext_resource type="Resource" uid="uid://b5je1vglmgcld" path="res://resources/orbs/blue_orb.tres" id="5_aov1d"]
-[ext_resource type="Resource" uid="uid://o3xqxg4g32pt" path="res://resources/orbs/half_solid_orb.tres" id="6_aov1d"]
+[ext_resource type="Resource" uid="uid://b2qkkqdhm5vss" path="res://resources/orbs/life_orb.tres" id="6_aov1d"]
 [ext_resource type="Resource" uid="uid://bs50bcxjisooe" path="res://resources/orbs/burst_orb.tres" id="6_nh687"]
 
 [node name="orb_mngr" type="Node2D"]
 script = ExtResource("1_yyp6m")
 
 [node name="orb_spawner" parent="." instance=ExtResource("2_8wc3p")]
-orb_data_array = Array[ExtResource("3_orbdata")]([ExtResource("6_aov1d"), ExtResource("5_aov1d"), ExtResource("6_nh687")])
+orb_data_array = Array[ExtResource("3_orbdata")]([ExtResource("5_aov1d"), ExtResource("6_nh687"), ExtResource("6_aov1d")])
 max_orbs = 20

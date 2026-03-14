@@ -11,6 +11,10 @@ extends Node2D
 
 var _timer: Timer
 
+# Spawn metrics
+var _spawn_counts: Dictionary = {}  # orb_name -> count
+var _total_spawns: int = 0
+
 
 func _ready() -> void:
 	# Set up timer
@@ -19,6 +23,10 @@ func _ready() -> void:
 	_timer.autostart = true
 	_timer.timeout.connect(_on_timeout)
 	add_child(_timer)
+
+	# Initialize spawn counts
+	for data: OrbData in orb_data_array:
+		_spawn_counts[data.display_name] = 0
 
 
 func _on_timeout() -> void:
@@ -48,10 +56,50 @@ func _spawn_orb() -> Node:
 	if not debug_force_orb_type.is_empty():
 		for data: OrbData in orb_data_array:
 			if data.display_name == debug_force_orb_type:
+				_record_spawn(data.display_name)
 				return OrbAdapter.create_orb_from_data(generic_orb_scene, data)
 		return null  # Debug type not found
 
 	# Random selection from OrbData array
 	var idx := randi() % orb_data_array.size()
 	var data := orb_data_array[idx]
+	_record_spawn(data.display_name)
 	return OrbAdapter.create_orb_from_data(generic_orb_scene, data)
+
+
+func _record_spawn(orb_name: String) -> void:
+	if not _spawn_counts.has(orb_name):
+		_spawn_counts[orb_name] = 0
+	_spawn_counts[orb_name] += 1
+	_total_spawns += 1
+
+
+## Prints spawn metrics for rarity testing and analysis.
+func print_spawn_metrics() -> void:
+	print("=== ORB SPAWN METRICS ===")
+	print("Total orbs spawned: %d" % _total_spawns)
+	print("\nPer-type breakdown:")
+	for orb_name: String in _spawn_counts.keys():
+		var count: int = _spawn_counts[orb_name]
+		var percentage: float = 0.0
+		if _total_spawns > 0:
+			percentage = (float(count) / float(_total_spawns)) * 100.0
+		print("  %s: %d (%.1f%%)" % [orb_name, count, percentage])
+	print("=========================")
+
+
+## Returns the spawn count for a specific orb type.
+func get_spawn_count(orb_name: String) -> int:
+	if _spawn_counts.has(orb_name):
+		return _spawn_counts[orb_name]
+	return 0
+
+
+## Returns total spawns across all orb types.
+func get_total_spawns() -> int:
+	return _total_spawns
+
+
+## Returns a copy of the spawn counts dictionary.
+func get_all_spawn_counts() -> Dictionary:
+	return _spawn_counts.duplicate()

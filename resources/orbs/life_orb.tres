@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://b2qkkqdhm5vss"]
+
+[ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
+[ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
+[ext_resource type="Script" uid="uid://sop4re5g3equ" path="res://scripts/data/behaviors/life_orb_behavior.gd" id="2_lifebehavior"]
+[ext_resource type="Texture2D" uid="uid://dwxf4p6xbmeee" path="res://sprites/life_orb.png" id="4_gjquq"]
+
+[sub_resource type="Resource" id="LifeOrbBehavior_1"]
+script = ExtResource("2_lifebehavior")
+behavior_id = "life_orb"
+
+[resource]
+script = ExtResource("1_orbdata")
+display_name = "Life Orb"
+texture = ExtResource("4_gjquq")
+scale = Vector2(0.6, 0.6)
+base_score = 0
+lifespan = 45.0
+rarity = 2
+collision_radius = 32.0
+is_half_solid = false
+behaviors = Array[ExtResource("1_behavior")]([SubResource("LifeOrbBehavior_1")])
+spawn_animation_duration = 1.5
