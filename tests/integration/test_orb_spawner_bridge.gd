@@ -11,6 +11,7 @@ func before_each() -> void:
 	PauseEvent.state = false
 	# Reset ScoreManager for each test
 	ScoreManager.reset_score()
+	ComboManager.reset_combo()
 
 
 func after_each() -> void:
@@ -130,8 +131,8 @@ func test_orb_data_orb_collection_fires_score_event() -> void:
 	orb.on_orb_collected()
 	await get_tree().process_frame
 
-	# Test orb has base_score of 5, so we should get 5 points
-	assert_eq(_score, 5, "Should award 5 points for Test Orb collection")
+	# Test orb has base_score of 5, so we should get 5 + 1 combo = 6 points
+	assert_eq(_score, 6, "Should award 5 points + 1 combo for Test Orb collection")
 
 	ScoreManager.score_changed.disconnect(_on_score_changed)
 	spawner.queue_free()

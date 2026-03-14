@@ -10,6 +10,7 @@ func before_each() -> void:
 	_behavior = ScoreBehavior.new()
 	EffectManager.clear_all_effects()
 	ScoreManager.reset_score()
+	ComboManager.reset_combo()
 
 
 #region Base Score Tests
@@ -22,8 +23,8 @@ func test_base_score_awarded() -> void:
 	# When: execute() is called
 	_behavior.execute(context)
 
-	# Then: ScoreManager.add_score(5) was called
-	assert_eq(ScoreManager.get_score(), 5, "Base score should be awarded")
+	# Then: ScoreManager.add_score(5 + 1 combo bonus) was called
+	assert_eq(ScoreManager.get_score(), 6, "Base score + combo bonus should be awarded")
 
 
 func test_default_base_score_is_one() -> void:
@@ -47,8 +48,8 @@ func test_double_value_applied() -> void:
 	# When: execute() is called
 	_behavior.execute(context)
 
-	# Then: score is doubled to 6
-	assert_eq(ScoreManager.get_score(), 6, "Score should be doubled when double_value is active")
+	# Then: score is doubled to 6 + 1 combo bonus = 7
+	assert_eq(ScoreManager.get_score(), 7, "Score should be doubled when double_value is active (plus combo)")
 
 
 #endregion
@@ -64,8 +65,8 @@ func test_score_multiplier_applied() -> void:
 	# When: execute() is called
 	_behavior.execute(context)
 
-	# Then: score is 10
-	assert_eq(ScoreManager.get_score(), 10, "Score should be multiplied by score_multiplier")
+	# Then: score is 10 + 1 combo bonus = 11
+	assert_eq(ScoreManager.get_score(), 11, "Score should be multiplied by score_multiplier (plus combo)")
 
 
 #endregion
@@ -82,8 +83,8 @@ func test_combined_multipliers() -> void:
 	# When: execute() is called
 	_behavior.execute(context)
 
-	# Then: score is base * 2 * 2 = 20
-	assert_eq(ScoreManager.get_score(), 20, "Score should be doubled then multiplied")
+	# Then: score is base * 2 * 2 = 20 + 1 combo bonus = 21
+	assert_eq(ScoreManager.get_score(), 21, "Score should be doubled then multiplied (plus combo)")
 
 
 func test_no_effects_base_score_only() -> void:
@@ -94,8 +95,8 @@ func test_no_effects_base_score_only() -> void:
 	# When: execute() is called
 	_behavior.execute(context)
 
-	# Then: score is just base_score
-	assert_eq(ScoreManager.get_score(), 7, "Score should be base_score when no effects active")
+	# Then: score is base_score + 1 combo bonus = 8
+	assert_eq(ScoreManager.get_score(), 8, "Score should be base_score + combo when no effects active")
 
 
 #endregion

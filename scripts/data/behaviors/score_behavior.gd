@@ -1,5 +1,6 @@
 class_name ScoreBehavior extends OrbBehavior
 ## Behavior that awards score when an orb is collected.
+## Uses ComboManager for combo bonuses and spawns floating score labels.
 ## Respects active score modifiers (double_value, score_multiplier).
 
 #region Properties
@@ -11,19 +12,21 @@ class_name ScoreBehavior extends OrbBehavior
 
 #region OrbBehavior Implementation
 
-func execute(_context: Dictionary) -> void:
-	var score: int = base_score
+func execute(context: Dictionary) -> void:
+	# Use ComboManager to handle scoring with combo bonuses
+	var result: Dictionary = ComboManager.add_orb_score(base_score)
 
-	# Apply double value if active (doubles the score)
-	if EffectManager.has_effect("double_value"):
-		score *= 2
+	# Spawn floating score label at orb position
+	var orb: Node = context.get("orb")
+	if orb != null and orb is Node2D:
+		var world_pos: Vector2 = orb.global_position
+		_spawn_floating_score(orb, world_pos, result.base_score, result.combo_bonus)
 
-	# Apply score multiplier if active
-	var multiplier: Variant = EffectManager.get_effect_value("score_multiplier")
-	if multiplier != null:
-		score = int(score * float(multiplier))
 
-	ScoreManager.add_score(score)
+func _spawn_floating_score(orb: Node, world_pos: Vector2, base_score: int, combo_bonus: int) -> void:
+	# Find a suitable parent for the floating score (world or root)
+	var parent: Node = orb.get_tree().current_scene
+	FloatingScore.spawn_at(parent, world_pos, base_score, combo_bonus)
 
 
 func process(_orb: Node, _delta: float) -> void:

@@ -52,6 +52,9 @@ func _on_body_entered(body: Node) -> void:
 		GameOverEvent.invoke()
 		PauseEvent.invoke(true)
 		SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.GAME_OVER)
+	elif body.is_in_group("player"):
+		# Ball hit player's head - reset combo
+		BallHeadHitEvent.invoke()
 	elif body.is_in_group("half_solid"):
 		# Gentle velocity reduction for smoother bounce feel
 		linear_velocity = linear_velocity * 0.7
