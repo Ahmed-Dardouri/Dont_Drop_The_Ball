@@ -5,10 +5,13 @@ class_name VortexBehavior extends OrbBehavior
 #region Properties
 
 ## Duration of the vortex effect in seconds
-@export var vortex_duration: float = 45.0
+@export var vortex_duration: float = 30
 
 ## Radius of the vortex collection area
-@export var vortex_radius: float = 150.0
+@export var vortex_radius: float = 100.0
+
+## Scale multiplier for the vortex visual (final size)
+@export var vortex_scale: float = 1.0
 
 ## Texture for the vortex visual effect
 @export var vortex_texture: Texture2D
@@ -35,7 +38,7 @@ func _spawn_vortex(orb: Node) -> void:
 	var vortex: VortexEffect = scene.instantiate()
 
 	vortex.add_to_group("vortex_effect")
-	vortex.setup(vortex_texture, vortex_radius, vortex_duration)
+	vortex.setup(vortex_texture, vortex_radius, vortex_duration, vortex_scale)
 
 	# Find the ball and add vortex to scene
 	var balls := orb.get_tree().get_nodes_in_group("ball")

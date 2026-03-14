@@ -10,6 +10,9 @@ class_name VortexEffect extends Area2D
 ## Radius of the vortex collection area
 @export var vortex_radius: float = 150.0
 
+## Scale multiplier for the vortex visual (final size)
+@export var vortex_scale: float = 1.0
+
 ## Rotation speed of the visual sprite (radians per second)
 @export var rotation_speed: float = 2.0
 
@@ -41,6 +44,9 @@ func _ready() -> void:
 	# Connect area detection signal
 	area_entered.connect(_on_area_entered)
 
+	# Listen for game over to clean up
+	Events.add_listener(GameOverEvent, _on_game_over)
+
 	# Find the ball to follow
 	_find_ball()
 
@@ -58,7 +64,7 @@ func _process(delta: float) -> void:
 
 	# Check if effect expired
 	if _time_elapsed >= duration:
-		queue_free()
+		_cleanup()
 
 
 func _on_area_entered(area: Area2D) -> void:
@@ -74,16 +80,27 @@ func _on_area_entered(area: Area2D) -> void:
 			orb_node.on_orb_collected()
 
 
+func _on_game_over(_event: GameOverEvent) -> void:
+	_cleanup()
+
+
 func _find_ball() -> void:
 	var balls := get_tree().get_nodes_in_group("ball")
 	if balls.size() > 0:
 		_ball = balls[0]
 
 
+func _cleanup() -> void:
+	# Notify UI that vortex is gone
+	VortexChangedEvent.invoke(false)
+	queue_free()
+
+
 ## Initializes the vortex with texture and parameters.
-func setup(texture: Texture2D, radius: float = 150.0, effect_duration: float = 45.0) -> void:
+func setup(texture: Texture2D, radius: float = 150.0, effect_duration: float = 45.0, scale_mult: float = 1.0) -> void:
 	vortex_radius = radius
 	duration = effect_duration
+	vortex_scale = scale_mult
 
 	# Update collision shape
 	if _collision_shape != null and _collision_shape.shape is CircleShape2D:
@@ -92,9 +109,9 @@ func setup(texture: Texture2D, radius: float = 150.0, effect_duration: float = 4
 	if texture != null:
 		_visual_sprite = Sprite2D.new()
 		_visual_sprite.texture = texture
-		# Scale sprite to match radius
+		# Scale sprite to match radius, then apply vortex_scale multiplier
 		var texture_size: float = max(texture.get_width(), texture.get_height())
-		var scale_factor: float = (vortex_radius * 2.0) / texture_size
+		var scale_factor: float = (vortex_radius * 2.0) / texture_size * vortex_scale
 		_visual_sprite.scale = Vector2(scale_factor, scale_factor)
 		_visual_sprite.z_index = -1
 		_visual_sprite.modulate = Color(1, 1, 1, 0.6)

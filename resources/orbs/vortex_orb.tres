@@ -1,24 +1,27 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://vortexorb"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://ca8q48rqtohcc"]
 
-[ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
-[ext_resource type="Script" path="res://scripts/data/behaviors/vortex_behavior.gd" id="2_vortexbehavior"]
-[ext_resource type="Texture2D" path="res://sprites/vortex_orb.png" id="3_texture"]
+[ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
+[ext_resource type="Script" uid="uid://cmivg7xisibbo" path="res://scripts/data/behaviors/vortex_behavior.gd" id="2_vortexbehavior"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yqs8m"]
+load_path = "res://.godot/imported/vortex_orb.png-36c539ecdc7d9e87e501af613b074940.ctex"
 
 [sub_resource type="Resource" id="VortexBehavior_1"]
 script = ExtResource("2_vortexbehavior")
-vortex_duration = 45.0
-vortex_radius = 150.0
-vortex_texture = ExtResource("3_texture")
+vortex_duration = 30.0
+vortex_radius = 100.0
+vortex_texture = SubResource("CompressedTexture2D_yqs8m")
+behavior_id = ""
 
 [resource]
 script = ExtResource("1_orbdata")
 display_name = "Vortex Orb"
-texture = ExtResource("3_texture")
-scale = Vector2(0.6, 0.6)
+texture = SubResource("CompressedTexture2D_yqs8m")
+scale = Vector2(0.5, 0.5)
 base_score = 5
 lifespan = 30.0
-spawn_weight = 0.3
+spawn_weight = 0.1
 collision_radius = 32.0
 is_half_solid = false
 behaviors = Array[ExtResource("1_behavior")]([SubResource("VortexBehavior_1")])
