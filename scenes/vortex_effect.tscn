@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://vortexecffect"]
+
+[ext_resource type="Script" path="res://scripts/vortex_effect.gd" id="1_script"]
+
+[node name="VortexEffect" type="Area2D"]
+script = ExtResource("1_script")
+duration = 45.0
+vortex_radius = 150.0
+rotation_speed = 2.0

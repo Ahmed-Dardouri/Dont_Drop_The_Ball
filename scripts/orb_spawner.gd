@@ -43,11 +43,27 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_game_time_elapsed += delta
 
+	# Update spawn timer based on speedup effect
+	_update_spawn_timer()
+
 	# Check if it's time to spawn a life orb
 	if life_orb_data != null and _game_time_elapsed >= _life_orb_next_spawn_time:
 		_try_spawn_life_orb()
 		# Use += to maintain fixed intervals (60, 120, 180...) not relative to current time
 		_life_orb_next_spawn_time += life_orb_spawn_interval
+
+
+func _update_spawn_timer() -> void:
+	# Check for spawn speedup effect
+	var current_interval: float = spawn_interval
+	if EffectManager.has_effect("spawn_speedup"):
+		var multiplier: Variant = EffectManager.get_effect_value("spawn_speedup")
+		if multiplier != null and multiplier > 0:
+			current_interval = spawn_interval / float(multiplier)
+
+	# Update timer if interval changed
+	if _timer != null and abs(_timer.wait_time - current_interval) > 0.001:
+		_timer.wait_time = current_interval
 
 
 func _try_spawn_life_orb() -> void:

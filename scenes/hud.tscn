@@ -112,6 +112,15 @@ offset_bottom = 301.0
 scale = Vector2(0.5, 0.5)
 stretch_mode = 4
 
+[node name="VortexIndicator" type="TextureRect" parent="."]
+visible = false
+offset_left = 34.0
+offset_top = 241.0
+offset_right = 174.0
+offset_bottom = 381.0
+scale = Vector2(0.5, 0.5)
+stretch_mode = 4
+
 [connection signal="pressed" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_pressed"]
 [connection signal="released" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_released"]
 [connection signal="pressed" from="button_controls/left_touch_button" to="button_controls" method="_on_left_touch_button_pressed"]
