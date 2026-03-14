@@ -14,8 +14,8 @@ extends Node2D
 @export var life_orb_spawn_interval: float = 60.0  # Spawn every 60 seconds
 
 var _timer: Timer
-var _life_orb_timer: Timer
 var _game_time_elapsed: float = 0.0
+var _life_orb_next_spawn_time: float = 0.0
 
 # Spawn metrics
 var _spawn_counts: Dictionary = {}  # orb_name -> count
@@ -30,24 +30,36 @@ func _ready() -> void:
 	_timer.timeout.connect(_on_timeout)
 	add_child(_timer)
 
-	# Set up life orb timer (starts after first interval, not at game start)
-	if life_orb_data != null:
-		_life_orb_timer = Timer.new()
-		_life_orb_timer.wait_time = life_orb_spawn_interval
-		_life_orb_timer.autostart = true
-		_life_orb_timer.one_shot = false
-		_life_orb_timer.timeout.connect(_on_life_orb_timeout)
-		add_child(_life_orb_timer)
-
 	# Initialize spawn counts
 	for data: OrbData in orb_data_array:
 		_spawn_counts[data.display_name] = 0
 	if life_orb_data != null:
 		_spawn_counts[life_orb_data.display_name] = 0
+		# Set first life orb spawn time (60 seconds after game start, not at start)
+		_life_orb_next_spawn_time = life_orb_spawn_interval
 
 
 func _process(delta: float) -> void:
 	_game_time_elapsed += delta
+
+	# Check if it's time to spawn a life orb
+	if life_orb_data != null and _game_time_elapsed >= _life_orb_next_spawn_time:
+		_try_spawn_life_orb()
+		_life_orb_next_spawn_time = _game_time_elapsed + life_orb_spawn_interval
+
+
+func _try_spawn_life_orb() -> void:
+	if life_orb_data == null:
+		return
+
+	# Don't spawn if max_orbs reached
+	if max_orbs > 0 and get_tree().get_nodes_in_group("orbs").size() >= max_orbs:
+		return
+
+	var orb := OrbAdapter.create_orb_from_data(generic_orb_scene, life_orb_data)
+	_record_spawn(life_orb_data.display_name)
+	_position_orb(orb)
+	add_child(orb)
 
 
 func _on_timeout() -> void:
@@ -59,24 +71,6 @@ func _on_timeout() -> void:
 	if orb == null:
 		return
 
-	_position_orb(orb)
-	add_child(orb)
-
-
-func _on_life_orb_timeout() -> void:
-	# Skip spawning at game start (timer fires immediately with autostart)
-	if _game_time_elapsed < life_orb_spawn_interval:
-		return
-
-	if life_orb_data == null:
-		return
-
-	# Don't spawn if max_orbs reached
-	if max_orbs > 0 and get_tree().get_nodes_in_group("orbs").size() >= max_orbs:
-		return
-
-	var orb := OrbAdapter.create_orb_from_data(generic_orb_scene, life_orb_data)
-	_record_spawn(life_orb_data.display_name)
 	_position_orb(orb)
 	add_child(orb)
 
@@ -150,6 +144,7 @@ func print_spawn_metrics() -> void:
 	print("=== ORB SPAWN METRICS ===")
 	print("Total orbs spawned: %d" % _total_spawns)
 	print("Game time elapsed: %.1f seconds" % _game_time_elapsed)
+	print("Next life orb spawn: %.1f seconds" % _life_orb_next_spawn_time)
 	print("\nPer-type breakdown:")
 	for orb_name: String in _spawn_counts.keys():
 		var count: int = _spawn_counts[orb_name]

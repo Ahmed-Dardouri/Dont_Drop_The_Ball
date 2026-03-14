@@ -14,4 +14,3 @@ script = ExtResource("1_yyp6m")
 orb_data_array = Array[ExtResource("3_orbdata")]([ExtResource("5_aov1d"), ExtResource("6_nh687")])
 max_orbs = 20
 life_orb_data = ExtResource("6_aov1d")
-life_orb_spawn_interval = 60.0
