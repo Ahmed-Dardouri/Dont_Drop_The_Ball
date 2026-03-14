@@ -9,8 +9,8 @@ extends Node2D
 @export var desktop_follow_offset: Vector2 = Vector2(0, 0)
 
 ## Mobile camera settings (more zoomed in, adjusted offset to show ground)
-@export var mobile_zoom: Vector2 = Vector2(2.2, 2.2)
-@export var mobile_follow_offset: Vector2 = Vector2(0, -50)
+@export var mobile_zoom: Vector2 = Vector2(2.1, 2.1)
+@export var mobile_follow_offset: Vector2 = Vector2(0, -25)
 
 #endregion
 
