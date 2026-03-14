@@ -57,7 +57,7 @@ func _on_body_entered(body: Node) -> void:
 		BallHeadHitEvent.invoke()
 	elif body.is_in_group("half_solid"):
 		# Gentle velocity reduction for smoother bounce feel
-		linear_velocity = linear_velocity * 0.7
+		linear_velocity = linear_velocity * 0.4
 
 
 func load_constants():
