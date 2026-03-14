@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=15 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="Script" uid="uid://raqe3onpyrij" path="res://scripts/hud.gd" id="1_hd3ao"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dyvle2c4krphw" path="res://sprites/left_semi_solid.png" id="5_047uy"]
 [ext_resource type="Script" uid="uid://bo7u33l1lie1b" path="res://scripts/score_mngr.gd" id="8_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://b0m2uc6nwrvby" path="res://sprites/vortex_orb.png" id="9_0i1j5"]
+[ext_resource type="Texture2D" uid="uid://d2koxxjlwafl5" path="res://sprites/spawn_speedup_orb.png" id="10_mphia"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_0m4u7"]
 points = PackedVector2Array(-85, -85, 130, -85, 130, 85, -85, 85)
@@ -131,6 +132,7 @@ offset_top = 321.0
 offset_right = 174.0
 offset_bottom = 461.0
 scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_mphia")
 stretch_mode = 4
 
 [connection signal="pressed" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_pressed"]
