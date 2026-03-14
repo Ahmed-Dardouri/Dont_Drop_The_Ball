@@ -8,7 +8,7 @@ class_name LifeOrbEffect extends Node2D
 
 ## Final scale multiplier
 @export var max_scale: float = 2.0
-
+@export var min_scale: float = 0.2
 #endregion
 
 #region State
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	var eased_progress: float = 1.0 - pow(1.0 - progress, 2)
 
 	# Expand scale
-	scale = Vector2.ONE * (0.2 + (max_scale - 0.2) * eased_progress)
+	scale = Vector2.ONE * (min_scale + (max_scale - min_scale) * eased_progress)
 
 	# Fade out
 	if _visual_sprite != null:

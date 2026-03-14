@@ -11,6 +11,6 @@
 script = ExtResource("1_yyp6m")
 
 [node name="orb_spawner" parent="." instance=ExtResource("2_8wc3p")]
-orb_data_array = Array[ExtResource("3_orbdata")]([ExtResource("5_aov1d"), ExtResource("6_nh687")])
+orb_data_array = Array[ExtResource("3_orbdata")]([ExtResource("6_nh687"), ExtResource("5_aov1d")])
 max_orbs = 20
 life_orb_data = ExtResource("6_aov1d")
