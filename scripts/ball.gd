@@ -158,9 +158,12 @@ func _update_rescue(delta: float) -> void:
 	# Move ball to target
 	global_position = lerp(global_position, _rescue_target_pos, eased_t * 0.1)
 
+	# Smoothly rotate ball back to 0
+	rotation = lerp(rotation, 0.0, eased_t * 0.1)
+
 	# Move player to neutral position (below ball)
 	if _player != null:
-		
+
 		_player.global_position = lerp(_player.global_position, _player_target, eased_t * 0.1)
 
 	# Update rescue visual (pulsating effect)
