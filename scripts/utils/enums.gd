@@ -27,7 +27,8 @@ enum SoundCmd {
 enum Sounds {
 	ORB_COLLECTED,
 	GAME_OVER,
-	LOFI_BG_MUSIC
+	LOFI_BG_MUSIC,
+	BALL_RESCUE
 }
 
 enum MainButtonType {

@@ -51,6 +51,7 @@ var _timeJumpWasReleased : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
 	add_to_group("player")
 	load_constants()
 	apply_constants()
@@ -62,6 +63,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	print(global_position)
 	CheckGround()
 	HandleGravity(delta)
 	HandleJump()

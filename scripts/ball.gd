@@ -10,7 +10,7 @@ var game_over: bool = false
 
 # Rescue state
 var _is_rescuing: bool = false
-var _rescue_target_pos: Vector2 = Vector2(580, -400)
+var _rescue_target_pos: Vector2 = Vector2(580, 100)
 var _rescue_progress: float = 0.0
 var _rescue_duration: float = 1.5
 
@@ -111,7 +111,7 @@ func _trigger_rescue() -> void:
 	# Notify systems
 	BallRescueEvent.invoke(true)
 
-	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.ORB_COLLECTED)
+	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.BALL_RESCUE)
 
 
 func _find_player() -> void:
@@ -148,7 +148,7 @@ func _update_rescue(delta: float) -> void:
 
 	# Move player to neutral position (below ball)
 	if _player != null:
-		var player_target := Vector2(_rescue_target_pos.x, _rescue_target_pos.y + 600)
+		var player_target := Vector2(_rescue_target_pos.x, 601)
 		_player.global_position = lerp(_player.global_position, player_target, eased_t * 0.1)
 
 	# Update rescue visual (pulsating effect)
