@@ -243,6 +243,34 @@ func _enable_collision() -> void:
 	if _half_solid_collision != null:
 		_half_solid_collision.disabled = false
 
+	# Check for overlapping bodies (ball or vortex may already be touching)
+	_check_overlapping_bodies()
+
+
+## Checks for bodies already overlapping when spawn completes.
+func _check_overlapping_bodies() -> void:
+	if data_orb_area == null:
+		return
+
+	# Check for ball overlapping
+	var overlapping_bodies: Array[Node2D] = data_orb_area.get_overlapping_bodies()
+	for body: Node2D in overlapping_bodies:
+		if body.is_in_group("ball"):
+			# Check if ball is rescuing
+			if body.has_method("is_rescuing") and body.is_rescuing():
+				continue
+			# Ball is already touching - collect immediately
+			on_orb_collected()
+			return
+
+	# Check for vortex effect overlapping (vortex uses Area2D)
+	var overlapping_areas: Array[Area2D] = data_orb_area.get_overlapping_areas()
+	for area: Area2D in overlapping_areas:
+		if area.is_in_group("vortex_effect"):
+			# Vortex is already touching - collect immediately
+			on_orb_collected()
+			return
+
 
 ## Disables all collision immediately (called before despawn).
 func _disable_collision() -> void:

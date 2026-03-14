@@ -293,14 +293,38 @@ WORKING STYLE
 ================================================================================
 
 1) Read this file first.
-2) Identify the smallest set of files to change.
-3) Implement the change.
-4) Run validation:
+2) Evaluate the request and split into discrete tasks using TaskCreate.
+3) Work through tasks one at a time, marking them in_progress and completed.
+4) For each task, identify the smallest set of files to change.
+5) Implement the change.
+6) Run validation:
    ./devscripts/import.sh (if needed)
    ./devscripts/test.sh
-5) Commit ALL files:
+7) Commit ALL files:
    git add .
    git commit -m "type: description\n\nAI assisted"
-6) Repeat until complete.
+8) Repeat until all tasks are complete.
 
 Exit criteria: All required commands succeed with exit code 0.
+
+================================================================================
+TASK WORKFLOW
+================================================================================
+
+For any non-trivial request (multiple features, bug fixes, or changes):
+
+1. EVALUATE: Break down the request into discrete, actionable tasks.
+2. CREATE: Use TaskCreate to add each task with a clear subject and description.
+3. EXECUTE: Work through tasks in order, one at a time:
+   - TaskUpdate(taskId, status="in_progress") before starting
+   - Implement the change
+   - TaskUpdate(taskId, status="completed") when done
+4. TRACK: Use TaskList to monitor progress and find next available task.
+
+Example task breakdown for "add new orb type and fix mobile UI":
+- Task #1: Create OrbData resource for new orb
+- Task #2: Add behavior script for new orb
+- Task #3: Register orb in OrbSpawner
+- Task #4: Fix mobile UI button positioning
+
+This ensures systematic progress tracking and allows resumption if interrupted.

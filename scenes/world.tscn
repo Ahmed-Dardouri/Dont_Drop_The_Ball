@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3jb2ccbbd4pp"]
+[gd_scene load_steps=9 format=3 uid="uid://c3jb2ccbbd4pp"]
 
 [ext_resource type="PackedScene" uid="uid://ddkwcva4w8fu5" path="res://scenes/ball.tscn" id="2_qfnet"]
 [ext_resource type="PackedScene" uid="uid://g6dvsvhwvvtc" path="res://scenes/physics_player.tscn" id="3_i7141"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_7r4gi"]
 [ext_resource type="PackedScene" uid="uid://c0vru7ptghj0t" path="res://scenes/const_objs.tscn" id="5_qfnet"]
 [ext_resource type="PackedScene" uid="uid://byvv311306aa0" path="res://scenes/mode_objs.tscn" id="6_i7141"]
+[ext_resource type="Script" path="res://scripts/camera_controller.gd" id="7_camera"]
 
 [sub_resource type="Resource" id="Resource_qfnet"]
 script = ExtResource("5_7r4gi")
@@ -14,6 +15,7 @@ transition = 0
 ease = 2
 
 [node name="world" type="Node2D"]
+script = ExtResource("7_camera")
 
 [node name="ball" parent="." instance=ExtResource("2_qfnet")]
 position = Vector2(580, -432.137)
