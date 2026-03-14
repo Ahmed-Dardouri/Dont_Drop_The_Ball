@@ -10,7 +10,7 @@ var game_over: bool = false
 
 # Rescue state
 var _is_rescuing: bool = false
-var _rescue_target_pos: Vector2 = Vector2(580, 100)
+var _rescue_target_pos: Vector2 = Vector2(580, 200)
 var _player_target : Vector2 = Vector2(580, 601)
 var _rescue_progress: float = 0.0
 var _rescue_duration: float = 1.5
