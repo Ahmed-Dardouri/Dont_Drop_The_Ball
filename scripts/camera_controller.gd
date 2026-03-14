@@ -1,30 +1,45 @@
 extends Node2D
-## Adjusts camera zoom based on device type (mobile vs desktop).
+## Adjusts PhantomCamera2D properties based on device type (mobile vs desktop).
+## Works with the Phantom Camera plugin to adjust zoom and offset together.
 
-@export var desktop_zoom: Vector2 = Vector2(1.8, 1.8)
+#region Exported Properties
+
+## Desktop camera settings
+@export var desktop_zoom: Vector2 = Vector2(1, 1)
+@export var desktop_follow_offset: Vector2 = Vector2(0, -220)
+
+## Mobile camera settings (more zoomed in, adjusted offset to show ground)
 @export var mobile_zoom: Vector2 = Vector2(2.5, 2.5)
+@export var mobile_follow_offset: Vector2 = Vector2(0, -100)
 
-@onready var phantom_camera: Node2D = $PhantomCamera2D
+#endregion
+
+#region Node References
+
+@onready var phantom_camera: PhantomCamera2D = $PhantomCamera2D
+
+#endregion
 
 
 func _ready() -> void:
-	_adjust_zoom_for_device()
+	_adjust_camera_for_device()
 
 
-func _adjust_zoom_for_device() -> void:
+func _adjust_camera_for_device() -> void:
 	if phantom_camera == null:
 		return
 
-	# Detect if we're on a mobile device
 	var is_mobile: bool = _is_mobile_device()
 
 	var target_zoom: Vector2 = mobile_zoom if is_mobile else desktop_zoom
+	var target_offset: Vector2 = mobile_follow_offset if is_mobile else desktop_follow_offset
+
+	# Set PhantomCamera2D properties
 	phantom_camera.zoom = target_zoom
+	phantom_camera.follow_offset = target_offset
 
 
 func _is_mobile_device() -> bool:
-	# Check for touch screen capability as a proxy for mobile
-	# Also check OS
 	var os_name: String = OS.get_name()
 
 	# Mobile platforms
@@ -35,7 +50,6 @@ func _is_mobile_device() -> bool:
 		return true
 
 	# Desktop with touch screen - treat as mobile if touch is available
-	# This handles tablets and touch-enabled laptops
 	if DisplayServer.is_touchscreen_available():
 		return true
 

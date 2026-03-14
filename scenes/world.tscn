@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_7r4gi"]
 [ext_resource type="PackedScene" uid="uid://c0vru7ptghj0t" path="res://scenes/const_objs.tscn" id="5_qfnet"]
 [ext_resource type="PackedScene" uid="uid://byvv311306aa0" path="res://scenes/mode_objs.tscn" id="6_i7141"]
-[ext_resource type="Script" path="res://scripts/camera_controller.gd" id="7_camera"]
+[ext_resource type="Script" uid="uid://brx6nkgi7p0jh" path="res://scripts/camera_controller.gd" id="7_camera"]
 
 [sub_resource type="Resource" id="Resource_qfnet"]
 script = ExtResource("5_7r4gi")
