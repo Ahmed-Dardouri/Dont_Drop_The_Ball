@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://balyptg0kdnp5"
-path="res://.godot/imported/life_orb_effect.png-f731d638d732f1abefb54be5445b6355.ctex"
+uid="uid://bd1bektw026iq"
+path="res://.godot/imported/life_orb_aura.png-4d8fe5c7f7f40ff8a5d2140751612b1b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/life_orb_effect.png"
-dest_files=["res://.godot/imported/life_orb_effect.png-f731d638d732f1abefb54be5445b6355.ctex"]
+source_file="res://sprites/life_orb_aura.png"
+dest_files=["res://.godot/imported/life_orb_aura.png-4d8fe5c7f7f40ff8a5d2140751612b1b.ctex"]
 
 [params]
 

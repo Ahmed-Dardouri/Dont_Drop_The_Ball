@@ -4,7 +4,7 @@ class_name LifeOrbEffect extends Node2D
 #region Configuration
 
 ## How long the effect lasts in seconds
-@export var duration: float = 2.0
+@export var duration: float = 1
 
 ## Final scale multiplier
 @export var max_scale: float = 2.0
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	var eased_progress: float = 1.0 - pow(1.0 - progress, 2)
 
 	# Expand scale
-	scale = Vector2.ONE * (1.0 + (max_scale - 1.0) * eased_progress)
+	scale = Vector2.ONE * (0.2 + (max_scale - 0.2) * eased_progress)
 
 	# Fade out
 	if _visual_sprite != null:

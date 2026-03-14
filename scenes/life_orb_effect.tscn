@@ -1,8 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://b68yvmwc4du6j"]
+[gd_scene load_steps=2 format=3 uid="uid://dd6uhytcw7rgg"]
 
-[ext_resource type="Script" uid="uid://lifeorbeffect" path="res://scripts/life_orb_effect.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://f68k1veocn33" path="res://scripts/life_orb_effect.gd" id="1_script"]
 
 [node name="LifeOrbEffect" type="Node2D"]
 script = ExtResource("1_script")
-duration = 2.0
-max_scale = 2.0
