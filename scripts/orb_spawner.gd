@@ -45,7 +45,8 @@ func _process(delta: float) -> void:
 	# Check if it's time to spawn a life orb
 	if life_orb_data != null and _game_time_elapsed >= _life_orb_next_spawn_time:
 		_try_spawn_life_orb()
-		_life_orb_next_spawn_time = _game_time_elapsed + life_orb_spawn_interval
+		# Use += to maintain fixed intervals (60, 120, 180...) not relative to current time
+		_life_orb_next_spawn_time += life_orb_spawn_interval
 
 
 func _try_spawn_life_orb() -> void:
