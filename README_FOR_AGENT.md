@@ -9,43 +9,170 @@ You MUST:
 - Keep changes minimal and targeted to the current task.
 - Validate your work using the commands listed below before claiming completion.
 - Prefer code and text assets; placeholders are OK for art.
+- Always add ALL files when committing (use `git add .` before commit).
 
+================================================================================
 PROJECT SUMMARY
-- Engine: Godot 4.x
-- Language: GDScript
-- Goal: Work mainly on code (.gd) and text scenes/resources (.tscn/.tres).
-- The game must be runnable/testable via CLI (no editor clicking required for normal iterations).
+================================================================================
 
-IMPORTANT MAIN SCENE SETTING
-The smoke test loads the configured Main Scene. Make sure it is set in the editor:
-Project -> Project Settings -> Application -> Run -> Main Scene
+Engine: Godot 4.4
+Language: GDScript (typed)
 
+Game Concept:
+A physics-based arcade game where the player controls a head to keep a ball
+bouncing while collecting orbs that fall from above. The ball bounces off the
+player's head and half-solid orbs. Collecting orbs awards points with a combo
+system that grows exponentially between ball-player hits.
+
+Core Gameplay Loop:
+1. Ball bounces on player's head
+2. Orbs spawn and fall
+3. Ball collects orbs (collision)
+4. Combo grows with each orb collected (1, 2, 4, 8, 16...)
+5. Ball hits player head -> combo resets
+6. Ball hits ground -> game over
+
+================================================================================
 REPO LAYOUT (AUTHORITATIVE)
+================================================================================
+
 Repo root = folder containing project.godot (this is also Godot project root, res://)
 
-Inside the Godot project (must be under repo root so Godot can load them):
-- scenes/   : .tscn scenes
-- scripts/  : gameplay GDScript (.gd)
-- assets/   : sprites/audio/etc (placeholders OK)
-- addons/   : optional addons (e.g., GUT)
-- tools/    : automation helper scripts used by CLI (e.g., tools/smoke_test.gd)
+scripts/
+  core/           - Singleton managers (ScoreManager, ComboManager, ModeManager, GameState)
+  data/           - Data resources (OrbData, configs, behaviors)
+    behaviors/    - OrbBehavior implementations (ScoreBehavior, MovementBehavior, etc.)
+  events/         - Event classes for the event system
+  modes/          - Game mode implementations (EndlessMode, ModeBase)
+  systems/        - Physics and input systems
+    physics/      - Ball and player physics
+    input/        - Player input state machine
+  utils/          - Utilities (Constants, Enums, Variables, adapters)
 
-Outside runtime game content (still in repo root):
-- devscripts/ : shell scripts for Ralph/CI automation (do NOT treat as game assets)
+scenes/            - .tscn scene files
+  main.tscn       - Main game scene
+  world.tscn      - Game world with ball, player, orbs
+  hud.tscn        - HUD with score display
+  generic_orb.tscn - Data-driven orb scene
 
-Expected automation files:
-- tools/smoke_test.gd
-- devscripts/_common.sh
-- devscripts/import.sh
-- devscripts/smoke_test.sh
-- devscripts/test.sh
-- devscripts/export.sh (optional)
+resources/
+  orbs/           - OrbData .tres files defining orb types
+  modes/          - ModeConfig .tres files
 
-If the repo uses different names (e.g. src/ instead of scripts/ or scripts/ instead of devscripts/),
-follow the existing structure and update paths consistently.
+tests/
+  unit/           - Unit tests for isolated logic
+  integration/    - Integration tests for system interactions
 
+assets/            - Sprites, audio, etc. (placeholders OK)
+addons/            - GUT (testing), dynamic_event_manager, phantom_camera
+tools/             - CLI automation helpers (smoke_test.gd)
+devscripts/        - Shell scripts for CI/automation
+
+================================================================================
+AUTOLOAD SINGLETONS (load order)
+================================================================================
+
+PhantomCameraManager - Camera system (addon)
+Events               - Event bus for decoupled communication
+Constants            - Game constants loaded from config
+GameSaveMngr         - Save/load system
+Variables            - Runtime game variables
+GameState            - Game state machine (MENU, PLAYING, PAUSED, GAME_OVER)
+ScoreManager         - Score tracking with signals
+ModeManager          - Game mode management
+EffectManager        - Timed effects system (double_value, slow_fall, etc.)
+ComboManager         - Combo tracking with exponential growth
+
+================================================================================
+EVENT-DRIVEN ARCHITECTURE
+================================================================================
+
+The game uses an event system (dynamic_event_manager addon) for decoupled communication.
+
+Creating a new event:
+```gdscript
+class_name MyEvent extends Event
+
+var _data: String
+
+func _init(data: String) -> void:
+    _data = data
+
+static func invoke(data: String) -> void:
+    Events.invoke(MyEvent.new(data))
+```
+
+Listening to events:
+```gdscript
+func _ready() -> void:
+    Events.add_listener(MyEvent, _on_my_event)
+
+func _on_my_event(event: MyEvent) -> void:
+    print(event._data)
+```
+
+Key Events:
+- BallHeadHitEvent   - Ball hits player head (resets combo)
+- OrbCollectedEvent  - Orb collected by ball
+- GameOverEvent      - Ball hits ground
+- PauseEvent         - Game pause/unpause
+- ScoreChanged       - Via ScoreManager.score_changed signal
+
+================================================================================
+DATA-DRIVEN ORB SYSTEM
+================================================================================
+
+Orbs are defined via OrbData resources (.tres files) with attached behaviors.
+
+OrbData properties:
+- display_name: String
+- texture: Texture2D
+- scale: Vector2
+- base_score: int
+- lifespan: float
+- rarity: Enums.OrbRarity
+- collision_radius: float
+- is_half_solid: bool
+- behaviors: Array[OrbBehavior]
+
+Creating a new orb type:
+1. Create OrbData resource in resources/orbs/
+2. Add ScoreBehavior (required for scoring)
+3. Add optional behaviors (MovementBehavior, BurstBehavior, etc.)
+4. Add to OrbSpawner.orb_data_array
+
+Available Behaviors:
+- ScoreBehavior         - Awards base score + combo bonus
+- MovementBehavior      - Horizontal drift movement
+- TimedModifierBehavior - Applies timed effects (slow_fall, double_value)
+- StickyBehavior        - Dampens ball velocity on bounce
+- BurstBehavior         - Destroys nearby orbs in radius
+- LineClearBehavior     - Clears orbs in horizontal/vertical line
+
+================================================================================
+COMBO SYSTEM
+================================================================================
+
+Combo bonus grows exponentially between ball-player head hits:
+- First orb:  +1 combo bonus
+- Second orb: +2 combo bonus
+- Third orb:  +4 combo bonus
+- Fourth orb: +8 combo bonus
+- etc.
+
+Combo resets when:
+- Ball hits player's head (BallHeadHitEvent)
+
+FloatingScore display:
+- White label: base score
+- Gold label: combo bonus
+- Floats up and fades out
+
+================================================================================
 DEFINITION OF DONE (MANDATORY COMMANDS)
-Before declaring any task complete, these must pass from repo root:
+================================================================================
+
+Before declaring any task complete, run from repo root:
 
 1) Import step (safe to run repeatedly):
    ./devscripts/import.sh
@@ -53,48 +180,72 @@ Before declaring any task complete, these must pass from repo root:
 2) Smoke test (fast boot check; must pass):
    ./devscripts/smoke_test.sh
 
-3) Tests (falls back to smoke test if no test framework is installed):
+3) Full test suite (311 tests):
    ./devscripts/test.sh
 
-Optional (only if required by the task and export presets exist):
-   ./devscripts/export.sh "<Preset Name>" build/output_file
+Rule: If any command fails, fix the issue and rerun until all succeed.
 
-Rule: If any command fails, fix the issue and rerun until all required commands succeed.
+================================================================================
+GIT COMMIT GUIDELINES
+================================================================================
 
-Each major step must be committed in git.
+IMPORTANT: Always add ALL files when committing.
 
+Correct approach:
+```bash
+git add .
+git status  # Verify all files are staged
+git commit -m "type: description"
+```
+
+Commit message format:
+- feat:     New feature
+- fix:      Bug fix
+- refactor: Code restructuring
+- test:     Adding/updating tests
+- docs:     Documentation changes
+- tweak:    Minor adjustments
+- chore:    Maintenance tasks
+
+Include "AI assisted" at the end of commit messages.
+
+================================================================================
 GODOT CLI REQUIREMENTS
-- Godot must be callable from terminal:
+================================================================================
+
+Godot must be callable from terminal:
   godot --version  (or)  godot4 --version
 
 Scripts auto-detect godot4 then godot.
 
-If detection fails, run with an explicit binary path:
-  GODOT_BIN=/absolute/path/to/Godot_v4.x.x_linux.x86_64 ./devscripts/test.sh
+If detection fails:
+  GODOT_BIN=/path/to/Godot_v4.x.x_linux.x86_64 ./devscripts/test.sh
 
 Automation runs headlessly. Godot 4 uses --headless.
 
+Godot may print leak warnings during headless runs; treat as non-fatal if
+./devscripts/test.sh exits 0 and GUT passes.
 
+================================================================================
+ASSET AND FILE FORMAT RULES
+================================================================================
 
-Godot may print leak warnings (ObjectDB/RID/resources in use) during headless runs; treat them as non-fatal if ./devscripts/test.sh exits 0 and GUT passes.
-
-ASSET AND FILE FORMAT RULES (VERY IMPORTANT)
 Prefer text formats:
 - .tscn (text scene)
 - .tres (text resource)
 - .gd   (scripts)
 
 Avoid binary formats unless explicitly requested:
-- .scn
-- .res
+- .scn, .res
 
-Do not modify large imported assets unless the task explicitly requires it.
-Placeholders are acceptable; focus on code correctness.
-
+================================================================================
 CODING RULES (GDSCRIPT)
+================================================================================
+
 Typed GDScript:
-- Use typed variables and typed function signatures where possible.
+- Use typed variables and typed function signatures.
 - Prefer enums/constants for state.
+- Use class_name for globally accessible classes.
 
 Keep changes small:
 - Do not reformat unrelated files.
@@ -104,82 +255,52 @@ Keep changes small:
 Prefer code-driven setup:
 - Prefer spawning/configuring nodes from code.
 - Keep scenes small and modular.
-- Avoid relying on manual drag/drop + inspector tweaking unless unavoidable.
 
-PHASE-SPECIFIC DEVELOPMENT RULES (CURRENT PRIORITY: ORB SYSTEM EXPANSION)
-
-Current priority is expanding the orb system in a modular, data-driven, and testable way.
-
-For this phase:
-- Prioritize orb architecture, orb behaviors, orb spawning, orb effect handling, and orb-related tests.
-- Do not introduce large unrelated refactors unless required to support orb modularity or testability.
-- Do not add monetization, progression systems, or major UI redesign in this phase unless explicitly requested.
-- Avoid changing the core player-ball bounce mechanic.
-- Preserve current game feel unless an orb feature explicitly extends it.
-
-Orb implementation guidance:
-- Prefer a data-driven orb structure so future orb types can be added with minimal code duplication.
-- Keep orb behavior modular and isolated where possible.
-- Clearly define effect lifetime rules such as instant, timed, stackable, refresh, replace, or mutually exclusive.
-- Add tests for deterministic orb logic and effect resolution.
-- If an orb requires manual gameplay verification, keep the implementation small and make the verification steps explicit in the final summary.
-
-Definition of done for orb-related work:
-- ./devscripts/test.sh exits 0
-- GUT tests exist for new deterministic orb logic
-- Existing gameplay is not unintentionally broken
-- New orb behaviors are structured so future orb types can be added more easily
-
-ORB CODE ORGANIZATION
-When adding orb-related systems, prefer consistent structure and naming.
-Examples:
-- orb definitions/configs in a dedicated orb-related folder
-- orb effect logic separated from scene glue
-- shared orb utilities kept in reusable modules rather than duplicated across orb scripts
-
-Follow the existing project structure first. Only create new folders if the current structure is clearly limiting maintainability.
-
-SAFETY BOUNDARIES (MUST NOT DO)
-- Do not delete major folders (scenes/, scripts/, assets/, etc.) unless explicitly instructed.
-- Do not change project settings (input map, rendering settings, main scene, etc.) unless required.
-- Do not introduce editor-only steps as the only way to validate correctness.
-- Do not add complex systems when a simpler solution meets the requirement.
-
+================================================================================
 TESTING GUIDANCE
-This repo uses a smoke test to ensure "the game boots headlessly":
-- It loads the configured Main Scene and exits with code 0 on success.
-- It exits non-zero on failure.
-- Tests live under: tests/ (e.g., tests/unit, tests/integration)
-- Naming convention: files start with test_ and end with .gd
-- Running tests: ./devscripts/test.sh now runs GUT (not just smoke)
-- .gutconfig.json is used automatically by GUT CLI (so the agent shouldn’t hardcode test dirs).
+================================================================================
 
-If a unit test framework (like GUT) is installed:
-- ./devscripts/test.sh should run it headlessly.
-- Add tests for new pure logic (state machines, movement math, inventory, etc.).
-- Prefer designing gameplay logic in testable modules (minimal engine dependencies).
+Test structure:
+- tests/unit/       - Isolated unit tests for pure logic
+- tests/integration - Tests for system interactions
 
-LOGGING / DEBUGGING
-- Prefer push_error() / push_warning() for issues.
-- Avoid leaving noisy print() spam in final code.
-- Remove temporary debug logs before finishing a task.
+Naming convention:
+- Files: test_*.gd
+- Classes: TestClassName extends GutTest
 
-EXPORTING NOTES (OPTIONAL)
-Exporting requires:
-- export templates installed
-- an export preset defined in the editor (export_presets.cfg)
+GUT configuration in .gutconfig.json:
+- Auto-discovers tests in tests/
+- Runs headlessly
+- Exits after completion
 
-If exporting is needed:
-  ./devscripts/export.sh "<Preset Name>" build/output_file
+Key test patterns:
+- Use before_each() to reset state (ScoreManager, ComboManager, EffectManager)
+- Use autofree/autoqfree for nodes created in tests
+- Test edge cases and boundary conditions
 
-WORKING STYLE FOR RALPH LOOPS
-To keep iteration stable and fast:
+================================================================================
+SAFETY BOUNDARIES (MUST NOT DO)
+================================================================================
+
+- Do not delete major folders unless explicitly instructed.
+- Do not change project settings unless required.
+- Do not introduce editor-only steps as the only validation method.
+- Do not add complex systems when simpler solutions work.
+- Do not leave files uncommitted after making changes.
+
+================================================================================
+WORKING STYLE
+================================================================================
+
 1) Read this file first.
 2) Identify the smallest set of files to change.
 3) Implement the change.
-4) Run:
+4) Run validation:
    ./devscripts/import.sh (if needed)
    ./devscripts/test.sh
-5) Repeat until green.
+5) Commit ALL files:
+   git add .
+   git commit -m "type: description\n\nAI assisted"
+6) Repeat until complete.
 
-Exit criteria: all required commands succeed with exit code 0.
+Exit criteria: All required commands succeed with exit code 0.
