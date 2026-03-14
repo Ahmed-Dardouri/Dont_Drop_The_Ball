@@ -1,12 +1,9 @@
 extends CanvasLayer
 
 @onready var button_controls: Control = $button_controls
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+@onready var fps_label: Label = $FPSLabel
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	print(button_controls.visible)
+func _process(_delta: float) -> void:
+	if fps_label != null:
+		fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
