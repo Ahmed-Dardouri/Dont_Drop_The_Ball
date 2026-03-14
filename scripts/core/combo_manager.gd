@@ -1,7 +1,10 @@
 extends Node
 ## Combo Manager - Tracks combo state for orb collection between ball-player hits.
-## Combo bonus grows exponentially: 1, 2, 4, 8, 16...
+## Combo bonus grows exponentially: 1, 2, 4, 8, 16... capped at 256.
 ## Resets when the ball hits the player's head.
+
+## Maximum combo bonus (cap for exponential growth)
+const MAX_COMBO_BONUS: int = 256
 
 ## Emitted when combo resets (ball hit player)
 signal combo_reset
@@ -9,7 +12,7 @@ signal combo_reset
 ## Emitted when combo bonus changes (orb collected)
 signal combo_bonus_changed(base_score: int, combo_bonus: int, total: int)
 
-## Current combo bonus (exponential: starts at 1, doubles each orb)
+## Current combo bonus (exponential: starts at 1, doubles each orb, capped at 256)
 var _current_combo_bonus: int = 1
 
 
@@ -51,8 +54,8 @@ func add_orb_score(base_score: int) -> Dictionary:
 	# Emit signal for UI
 	combo_bonus_changed.emit(adjusted_base, combo_bonus, total)
 
-	# Double combo bonus for next orb (exponential growth)
-	_current_combo_bonus *= 2
+	# Double combo bonus for next orb (exponential growth, capped at MAX_COMBO_BONUS)
+	_current_combo_bonus = mini(_current_combo_bonus * 2, MAX_COMBO_BONUS)
 
 	return {"base_score": adjusted_base, "combo_bonus": combo_bonus, "total": total}
 
@@ -62,6 +65,6 @@ func get_combo_bonus() -> int:
 	return _current_combo_bonus
 
 
-## Gets the next combo bonus multiplier (preview).
+## Gets the next combo bonus multiplier (preview, capped).
 func get_next_combo_bonus() -> int:
-	return _current_combo_bonus * 2
+	return mini(_current_combo_bonus * 2, MAX_COMBO_BONUS)
