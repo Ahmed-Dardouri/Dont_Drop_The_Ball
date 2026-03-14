@@ -51,6 +51,6 @@ class_name OrbData extends Resource
 #region Spawn Animation
 
 ## Duration of spawn fade-in animation in seconds
-@export var spawn_animation_duration: float = 1.5
+@export var spawn_animation_duration: float = 0.5
 
 #endregion

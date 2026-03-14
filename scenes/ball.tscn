@@ -8,7 +8,7 @@
 bounce = 0.6
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n1dj2"]
-radius = 15.0
+radius = 19.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f7cbr"]
 radius = 15.0
@@ -16,7 +16,7 @@ radius = 15.0
 [node name="ball" type="RigidBody2D"]
 mass = 20.0
 physics_material_override = SubResource("PhysicsMaterial_cxlvu")
-gravity_scale = 0.95
+gravity_scale = 0.5
 continuous_cd = 2
 contact_monitor = true
 max_contacts_reported = 50
@@ -34,8 +34,8 @@ MAX_LENGTH = 50
 main_body = NodePath("..")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-0.342665, -2.23669)
-scale = Vector2(0.039, 0.039)
+position = Vector2(-0.38139, -2.82227)
+scale = Vector2(0.05, 0.05)
 texture = ExtResource("1_7s4qf")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]

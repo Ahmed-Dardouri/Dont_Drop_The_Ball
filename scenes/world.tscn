@@ -19,8 +19,8 @@ script = ExtResource("7_camera")
 
 [node name="ball" parent="." instance=ExtResource("2_qfnet")]
 position = Vector2(580, -432.137)
-mass = 1.0
-gravity_scale = 0.9
+mass = 3.0
+gravity_scale = 1.0
 
 [node name="PhysicsPlayer" parent="." instance=ExtResource("3_i7141")]
 position = Vector2(584, 573)

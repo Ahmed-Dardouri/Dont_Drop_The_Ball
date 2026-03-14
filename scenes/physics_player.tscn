@@ -15,22 +15,23 @@ script = ExtResource("1_5evuk")
 
 [node name="groundcast" type="ShapeCast2D" parent="."]
 position = Vector2(0, -3.12501)
-scale = Vector2(1.617, 0.961)
+scale = Vector2(1.8, 1.07)
 shape = SubResource("RectangleShape2D_lvk83")
 target_position = Vector2(0, 0)
 max_results = 1
 
 [node name="ceilingcast" type="ShapeCast2D" parent="."]
-position = Vector2(0, -28.125)
+position = Vector2(0, -33)
+scale = Vector2(1.15, 1.15)
 shape = SubResource("RectangleShape2D_lvk83")
 target_position = Vector2(0, 0)
 max_results = 1
 
 [node name="PolygonCollider2D" type="CollisionPolygon2D" parent="."]
-scale = Vector2(1.40781, 1.21094)
+scale = Vector2(1.8, 1.548)
 polygon = PackedVector2Array(-2.6, -28.003, -6.116, -27.599, -8.824, -27.102, -11.431, -26.439, -19.06, -23.917, -15.6317, 3.2583, -10.6548, 4.12902, 10.6548, 4.12902, 15.6223, 3.76676, 19.0604, -23.4677, 11.4306, -26.4387, 8.82363, -27.1018, 6.11638, -27.599, 2.62487, -27.987)
 
 [node name="Polygon2D2" type="Polygon2D" parent="."]
-scale = Vector2(0.972005, 1.1723)
+scale = Vector2(1.2, 1.447)
 color = Color(0, 0.207029, 0.207029, 1)
 polygon = PackedVector2Array(0.0116186, -28.0303, -2.62683, -28.0028, -9.1939, -26.9656, -15.5285, -26.0609, -14.4476, 4.14856, 14.4476, 4.14856, 15.5285, -26.0609, 9.1939, -26.9656, 2.62683, -28.0028)

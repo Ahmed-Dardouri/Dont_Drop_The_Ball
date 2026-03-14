@@ -3,9 +3,9 @@ extends RigidBody2D
 @onready var shape_cast: ShapeCast2D = $ShapeCast2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
-var max_speed := 1500.0
-var fall_speed := 1500.0
-var air_friction := 1
+var max_speed := 900.0
+var fall_speed := 900.0
+var air_friction := 3
 var game_over: bool = false
 
 # Rescue state

@@ -23,8 +23,8 @@ var player_gravity : float = 1.0
 #region ball_constants
 
 var ball_max_speed := 900.0
-var ball_fall_speed := 500.0
-var ball_air_friction := 9
+var ball_fall_speed := 430.0
+var ball_air_friction := 10
 
 #endregion
 
