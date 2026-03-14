@@ -15,7 +15,6 @@ behavior_id = ""
 [sub_resource type="Resource" id="BurstBehavior_1"]
 script = ExtResource("2_burstbehavior")
 radius = 150.0
-bonus_per_orb = 3
 explosion_texture = ExtResource("3_517sf")
 explosion_duration = 0.3
 behavior_id = ""

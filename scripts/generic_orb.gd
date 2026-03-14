@@ -143,8 +143,8 @@ func _setup_half_solid(orb_data: OrbData) -> void:
 
 	# Add bouncy physics material for smooth bouncing
 	var physics_mat := PhysicsMaterial.new()
-	physics_mat.bounce = 0.5
-	physics_mat.friction = 0.0  # No friction to prevent sticking
+	physics_mat.bounce = 0.3
+	physics_mat.friction = 0.01  # No friction to prevent sticking
 	_half_solid_body.physics_material_override = physics_mat
 
 	_half_solid_collision = CollisionPolygon2D.new()
