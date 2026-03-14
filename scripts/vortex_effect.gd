@@ -68,6 +68,10 @@ func _process(delta: float) -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
+	# Skip collection if ball is in rescue mode
+	if _ball != null and _ball.has_method("is_rescuing") and _ball.is_rescuing():
+		return
+
 	# Find the orb node - it's the parent of the DataOrbArea
 	var orb_node: Node = area.get_parent()
 	if orb_node == null:
