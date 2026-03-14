@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj0gcy2vvremo"]
+
+[ext_resource type="Script" path="res://scripts/horizontal_wave.gd" id="1_script"]
+
+[node name="HorizontalWave" type="Area2D"]
+script = ExtResource("1_script")
+duration = 0.5
+wave_range = 500.0
+bonus_per_orb = 4

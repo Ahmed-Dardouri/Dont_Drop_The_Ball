@@ -1,16 +1,23 @@
 class_name LineClearBehavior extends OrbBehavior
-## Behavior that clears orbs in a vertical or horizontal line from the orb's position.
+## Behavior that creates a horizontal wave expanding from the orb's position.
+## The wave collects any orb it touches as it expands.
 
 #region Properties
 
-## Direction of the line clear: "vertical" or "horizontal"
-@export var direction: String = "vertical"
+## Direction of the wave: "horizontal" (vertical removed for now)
+@export var direction: String = "horizontal"
 
-## How far in each direction to clear (pixels from center).
+## How far the wave travels in each direction (pixels from center).
 @export var range_distance: float = 500.0
 
-## Bonus score per orb cleared.
-@export var bonus_per_orb: int = 3
+## Bonus score per orb collected by the wave.
+@export var bonus_per_orb: int = 4
+
+## Texture for the wave visual effect.
+@export var wave_texture: Texture2D
+
+## How long the wave lasts in seconds.
+@export var wave_duration: float = 0.5
 
 #endregion
 
@@ -21,39 +28,22 @@ func execute(context: Dictionary) -> void:
 	if orb == null:
 		return
 
+	if direction == "horizontal":
+		_spawn_horizontal_wave(orb)
+
+
+func _spawn_horizontal_wave(orb: Node) -> void:
 	var center: Vector2 = orb.global_position if orb.has_method("get") else Vector2.ZERO
 
-	# Find all orbs in the "orbs" group
-	var all_orbs: Array[Node] = orb.get_tree().get_nodes_in_group("orbs")
-	var collected_count: int = 0
+	var scene: PackedScene = load("res://scenes/horizontal_wave.tscn")
+	var wave: HorizontalWave = scene.instantiate()
 
-	for nearby_orb: Node in all_orbs:
-		if nearby_orb == orb:
-			continue  # Skip self
+	wave.setup(wave_texture, range_distance, bonus_per_orb)
+	wave.duration = wave_duration
+	wave.global_position = center
 
-		if not nearby_orb.is_inside_tree():
-			continue
-
-		var orb_pos: Vector2 = nearby_orb.global_position
-		var should_clear: bool = false
-
-		if direction == "vertical":
-			# Check if within vertical line (same x, within y range)
-			if abs(orb_pos.x - center.x) < 50.0 and abs(orb_pos.y - center.y) <= range_distance:
-				should_clear = true
-		elif direction == "horizontal":
-			# Check if within horizontal line (same y, within x range)
-			if abs(orb_pos.y - center.y) < 50.0 and abs(orb_pos.x - center.x) <= range_distance:
-				should_clear = true
-
-		if should_clear:
-			ScoreManager.add_score(bonus_per_orb)
-			collected_count += 1
-			nearby_orb.queue_free()
-
-	# Bonus for chain
-	if collected_count > 0:
-		ScoreManager.add_score(collected_count * bonus_per_orb)
+	# Add to the scene tree
+	orb.get_tree().current_scene.add_child(wave)
 
 
 func process(_orb: Node, _delta: float) -> void:

@@ -1,25 +1,32 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://dbl1siyxaowr5"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=7 format=3 uid="uid://dbl1siyxaowr5"]
 
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_vunfd"]
 [ext_resource type="Script" uid="uid://ba7n58n0pj75x" path="res://scripts/data/behaviors/line_clear_behavior.gd" id="2_lineclearbehavior"]
-[ext_resource type="Texture2D" uid="uid://c8f7gwmxuqim8" path="res://sprites/blue_ball.png" id="3_texture"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x8s7b"]
+load_path = "res://.godot/imported/horizontal_wave.png-b1437dd79399d9c0b91daf0b9309d9e6.ctex"
 
 [sub_resource type="Resource" id="LineClearBehavior_1"]
 script = ExtResource("2_lineclearbehavior")
 direction = "horizontal"
 range_distance = 500.0
 bonus_per_orb = 4
+wave_texture = SubResource("CompressedTexture2D_x8s7b")
+wave_duration = 0.5
 behavior_id = ""
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vunfd"]
+load_path = "res://.godot/imported/horizontal_orb.png-7b22d76e11be879f90261d64036c3cc1.ctex"
 
 [resource]
 script = ExtResource("1_orbdata")
-display_name = "Horizontal Line Orb"
-texture = ExtResource("3_texture")
-scale = Vector2(1, 1)
+display_name = "Horizontal Wave Orb"
+texture = SubResource("CompressedTexture2D_vunfd")
+scale = Vector2(0.5, 0.5)
 base_score = 8
 lifespan = 25.0
-rarity = 1
+spawn_weight = 0.1
 collision_radius = 32.0
 is_half_solid = false
 behaviors = Array[ExtResource("1_vunfd")]([SubResource("LineClearBehavior_1")])
