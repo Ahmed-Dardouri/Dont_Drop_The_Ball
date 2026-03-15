@@ -206,9 +206,6 @@ func _complete_rescue() -> void:
 	# Notify systems
 	BallRescueEvent.invoke(false)
 
-	# Reset combo
-	ComboManager.reset_combo()
-
 
 func _on_ball_rescue_event(event: BallRescueEvent) -> void:
 	# Handle external rescue events if needed
