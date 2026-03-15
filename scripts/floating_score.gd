@@ -15,17 +15,6 @@ class_name FloatingScore extends Node2D
 ## Vertical offset between base and combo labels
 @export var label_offset: float = 30.0
 
-## Colors for each tier (0-6) - matches bonus_meter.gd
-const TIER_COLORS: Array[Color] = [
-	Color.WHITE,       # Tier 0: +1
-	Color.LIGHT_BLUE,  # Tier 1: +2
-	Color.CYAN,        # Tier 2: +5
-	Color.LIME,        # Tier 3: +10
-	Color.YELLOW,      # Tier 4: +20
-	Color.ORANGE,      # Tier 5: +50
-	Color.GOLD,        # Tier 6: +100
-]
-
 var _time_elapsed: float = 0.0
 var _base_score: int = 0
 var _combo_bonus: int = 0
@@ -74,8 +63,8 @@ func set_scores(base_score: int, combo_bonus: int, tier: int = 0) -> void:
 	if combo_label != null:
 		if combo_bonus > 0:
 			combo_label.text = "+%d" % combo_bonus
-			var clamped_tier: int = clampi(tier, 0, TIER_COLORS.size() - 1)
-			var tier_color: Color = TIER_COLORS[clamped_tier]
+			var clamped_tier: int = clampi(tier, 0, ComboManager.TIER_COLORS.size() - 1)
+			var tier_color: Color = ComboManager.TIER_COLORS[clamped_tier]
 			combo_label.add_theme_color_override("font_color", tier_color)
 			combo_label.show()
 		else:

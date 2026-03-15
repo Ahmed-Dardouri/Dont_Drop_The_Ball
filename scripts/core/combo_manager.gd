@@ -32,6 +32,17 @@ const TIER_DRAIN_RATES: Array[float] = [
 	50.0,   # Tier 6 (+100): fastest drain
 ]
 
+## Colors for each tier (0-6) - single source of truth for UI elements
+const TIER_COLORS: Array[Color] = [
+	Color.WHITE,       # Tier 0: +1
+	Color.LIGHT_BLUE,  # Tier 1: +2
+	Color.CYAN,        # Tier 2: +5
+	Color.LIME,        # Tier 3: +10
+	Color.YELLOW,      # Tier 4: +20
+	Color.ORANGE,      # Tier 5: +50
+	Color(1.0, 0.4, 0.7),  # Tier 6: +100 (purple-pinkish)
+]
+
 ## How much score contributes to meter fill per point of score
 const SCORE_TO_METER_RATIO: float = 1
 
@@ -66,7 +77,8 @@ func _process(delta: float) -> void:
 #region Public API
 
 ## Called when score is gained. Fills the meter and returns bonus info.
-## Returns a dictionary with base_score, combo_bonus, and total.
+## Returns a dictionary with base_score, combo_bonus, tier, and total.
+## tier is captured BEFORE the meter fills to ensure correct color matching.
 func add_orb_score(base_score: int) -> Dictionary:
 	# Apply double value if active (doubles the score)
 	var adjusted_base: int = base_score
@@ -78,8 +90,11 @@ func add_orb_score(base_score: int) -> Dictionary:
 	if multiplier != null:
 		adjusted_base = int(adjusted_base * float(multiplier))
 
+	# Capture tier BEFORE any changes (for correct UI color matching)
+	var tier_at_collection: int = _current_tier
+
 	# Get current bonus tier value
-	var bonus: int = BONUS_TIERS[_current_tier]
+	var bonus: int = BONUS_TIERS[tier_at_collection]
 	var total: int = adjusted_base + bonus
 
 	# Add to score
@@ -88,7 +103,7 @@ func add_orb_score(base_score: int) -> Dictionary:
 	# Fill the meter based on score gained
 	_fill_meter(float(adjusted_base))
 
-	return {"base_score": adjusted_base, "combo_bonus": bonus, "total": total}
+	return {"base_score": adjusted_base, "combo_bonus": bonus, "tier": tier_at_collection, "total": total}
 
 
 ## Gets the current meter value (0.0 to MAX_METER_VALUE)

@@ -83,8 +83,8 @@ func test_tier_progression_to_tier_5() -> void:
 
 
 func test_tier_progression_to_max_tier_6() -> void:
-	ComboManager.add_orb_score(260)
-	assert_eq(ComboManager.get_current_tier(), 6, "Should reach tier 6 at 250 meter points")
+	ComboManager.add_orb_score(295)
+	assert_eq(ComboManager.get_current_tier(), 6, "Should reach tier 6 at 290 meter points")
 	assert_eq(ComboManager.get_current_bonus(), 100, "Tier 6 should give +100 bonus")
 
 
@@ -109,7 +109,7 @@ func test_tier_ordering_is_correct() -> void:
 	assert_eq(ComboManager.TIER_THRESHOLDS[3], 60.0, "Fourth tier threshold should be 60")
 	assert_eq(ComboManager.TIER_THRESHOLDS[4], 100.0, "Fifth tier threshold should be 100")
 	assert_eq(ComboManager.TIER_THRESHOLDS[5], 160.0, "Sixth tier threshold should be 160")
-	assert_eq(ComboManager.TIER_THRESHOLDS[6], 280.0, "Seventh tier threshold should be 250")
+	assert_eq(ComboManager.TIER_THRESHOLDS[6], 290.0, "Seventh tier threshold should be 290")
 
 
 func test_meter_drains_over_time() -> void:
@@ -136,13 +136,13 @@ func test_drain_at_tier_0_rate() -> void:
 	assert_eq(ComboManager.get_current_tier(), 0, "Should be at tier 0")
 	var initial: float = ComboManager.get_meter_value()
 	ComboManager._process(1.0)
-	var expected: float = maxf(initial - 2.0, 0.0)
-	assert_almost_eq(ComboManager.get_meter_value(), expected, 0.1, "Tier 0 should drain at 2.0/sec")
+	var expected: float = maxf(initial - 0.5, 0.0)
+	assert_almost_eq(ComboManager.get_meter_value(), expected, 0.1, "Tier 0 should drain at 0.5/sec")
 
 
 func test_higher_tier_drains_faster() -> void:
 	# Reach tier 6
-	ComboManager.add_orb_score(260)
+	ComboManager.add_orb_score(295)
 	assert_eq(ComboManager.get_current_tier(), 6, "Should be at tier 6")
 	var initial_tier6: float = ComboManager.get_meter_value()
 
@@ -160,7 +160,7 @@ func test_higher_tier_drains_faster() -> void:
 	ComboManager._process(1.0)
 	var after_tier0: float = ComboManager.get_meter_value()
 
-	# Tier 6 should drain faster than tier 0 (rate is 25 vs 2)
+	# Tier 6 should drain faster than tier 0 (rate is 50 vs 0.5)
 	assert_gt(initial_tier6 - after_tier6, initial_tier0 - after_tier0, "Tier 6 should drain faster than tier 0")
 
 
@@ -226,7 +226,7 @@ func test_get_next_combo_bonus_returns_next_tier() -> void:
 
 
 func test_get_next_combo_bonus_at_max_tier() -> void:
-	ComboManager.add_orb_score(260)
+	ComboManager.add_orb_score(295)
 	assert_eq(ComboManager.get_next_combo_bonus(), 100, "At max tier, next combo bonus should equal current")
 
 
@@ -240,7 +240,7 @@ func test_get_progress_to_next_tier() -> void:
 
 
 func test_get_progress_to_next_tier_at_max() -> void:
-	ComboManager.add_orb_score(260)
+	ComboManager.add_orb_score(295)
 	assert_eq(ComboManager.get_progress_to_next_tier(), 1.0, "At max tier, progress should be 1.0")
 
 
@@ -255,7 +255,19 @@ func test_add_orb_score_returns_correct_dictionary() -> void:
 	var result: Dictionary = ComboManager.add_orb_score(5)
 	assert_has(result, "base_score", "Result should have base_score")
 	assert_has(result, "combo_bonus", "Result should have combo_bonus")
+	assert_has(result, "tier", "Result should have tier")
 	assert_has(result, "total", "Result should have total")
 	assert_eq(result.base_score, 5, "base_score should be 5")
 	assert_eq(result.combo_bonus, 1, "combo_bonus should be 1")
+	assert_eq(result.tier, 0, "tier should be 0")
 	assert_eq(result.total, 6, "total should be 6")
+
+
+func test_tier_returned_is_tier_at_collection_time() -> void:
+	# Add score to reach just below tier 1 threshold (10)
+	ComboManager.add_orb_score(9)
+	assert_eq(ComboManager.get_current_tier(), 0, "Should be at tier 0")
+	# Add score that pushes into tier 1 - tier in result should still be 0
+	var result: Dictionary = ComboManager.add_orb_score(2)
+	assert_eq(result.tier, 0, "Returned tier should be 0 (before meter fill)")
+	assert_eq(ComboManager.get_current_tier(), 1, "Current tier should now be 1")

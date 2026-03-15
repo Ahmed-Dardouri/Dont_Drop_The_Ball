@@ -20,16 +20,14 @@ func execute(context: Dictionary) -> void:
 	var orb: Node = context.get("orb")
 	if orb != null and orb is Node2D:
 		var world_pos: Vector2 = orb.global_position
-		_spawn_floating_score(orb, world_pos, result.base_score, result.combo_bonus)
+		_spawn_floating_score(orb, world_pos, result.base_score, result.combo_bonus, result.tier)
 
 
-func _spawn_floating_score(orb: Node, world_pos: Vector2, base_score: int, combo_bonus: int) -> void:
+func _spawn_floating_score(orb: Node, world_pos: Vector2, base_score: int, combo_bonus: int, tier: int) -> void:
 	# Find a suitable parent for the floating score (world or root)
 	var parent: Node = orb.get_tree().current_scene
 	if parent == null:
 		return  # Skip floating score in test environments
-	# Get current tier for color matching with bonus meter
-	var tier: int = ComboManager.get_current_tier()
 	FloatingScore.spawn_at(parent, world_pos, base_score, combo_bonus, tier)
 
 

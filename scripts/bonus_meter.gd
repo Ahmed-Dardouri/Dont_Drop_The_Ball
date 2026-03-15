@@ -13,17 +13,6 @@ const METER_WIDTH: int = 60
 #endregion
 
 #region Configuration
-## Colors for each tier (0-6)
-const TIER_COLORS: Array[Color] = [
-	Color.WHITE,       # Tier 0: +1
-	Color.LIGHT_BLUE,  # Tier 1: +2
-	Color.CYAN,        # Tier 2: +5
-	Color.LIME,        # Tier 3: +10
-	Color.YELLOW,      # Tier 4: +20
-	Color.ORANGE,      # Tier 5: +50
-	Color.GOLD,        # Tier 6: +100
-]
-
 ## Dimmed color for inactive tiers
 const INACTIVE_COLOR: Color = Color(0.4, 0.4, 0.4, 1.0)
 #endregion
@@ -114,7 +103,7 @@ func _update_tier_highlight() -> void:
 
 	# Update meter bar color using tint
 	if meter_bar != null:
-		var tier_color: Color = TIER_COLORS[current_tier]
+		var tier_color: Color = ComboManager.TIER_COLORS[current_tier]
 		meter_bar.tint_progress = tier_color
 
 	# Update tier label highlights
@@ -122,7 +111,7 @@ func _update_tier_highlight() -> void:
 		var label: Label = _tier_labels[i]
 		if i <= current_tier:
 			# Active tier or below - use tier color
-			label.add_theme_color_override("font_color", TIER_COLORS[i])
+			label.add_theme_color_override("font_color", ComboManager.TIER_COLORS[i])
 			label.modulate.a = 1.0
 		else:
 			# Inactive tier above current
