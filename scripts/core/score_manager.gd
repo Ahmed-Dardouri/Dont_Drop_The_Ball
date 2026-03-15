@@ -48,3 +48,9 @@ func reset_score() -> void:
 ## Set high score directly (for save system integration)
 func set_high_score(value: int) -> void:
 	_high_score = value
+
+
+## Set current score directly (for testing purposes only)
+func set_score(value: int) -> void:
+	_current_score = value
+	score_changed.emit(_current_score)

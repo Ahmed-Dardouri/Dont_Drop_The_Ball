@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3e8retqk0tvx"]
+[gd_scene load_steps=11 format=3 uid="uid://c3e8retqk0tvx"]
 
 [ext_resource type="Script" uid="uid://c3uyi4uydif2v" path="res://scripts/orb_mngr.gd" id="1_yyp6m"]
 [ext_resource type="PackedScene" uid="uid://be05yexebg7c8" path="res://scenes/orb_spawner.tscn" id="2_8wc3p"]
@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://dbl1siyxaowr5" path="res://resources/orbs/horizontal_line_orb.tres" id="6_wu0mi"]
 [ext_resource type="Resource" uid="uid://ca8q48rqtohcc" path="res://resources/orbs/vortex_orb.tres" id="7_qwjb5"]
 [ext_resource type="Resource" uid="uid://b753p33b8idp1" path="res://resources/orbs/spawn_speedup_orb.tres" id="8_kdp1m"]
+[ext_resource type="Resource" path="res://resources/progression/default_progression.tres" id="9_progression"]
 
 [node name="orb_mngr" type="Node2D"]
 script = ExtResource("1_yyp6m")
@@ -17,4 +18,5 @@ script = ExtResource("1_yyp6m")
 spawn_zone = Rect2(50, 130, 1075, 280)
 orb_data_array = Array[ExtResource("3_orbdata")]([ExtResource("6_nh687"), ExtResource("5_aov1d"), ExtResource("6_wu0mi"), ExtResource("7_qwjb5"), ExtResource("8_kdp1m")])
 max_orbs = 20
+progression_config = ExtResource("9_progression")
 life_orb_data = ExtResource("6_aov1d")

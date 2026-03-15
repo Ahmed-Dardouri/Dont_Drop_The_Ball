@@ -26,6 +26,8 @@ func execute(context: Dictionary) -> void:
 func _spawn_floating_score(orb: Node, world_pos: Vector2, base_score: int, combo_bonus: int) -> void:
 	# Find a suitable parent for the floating score (world or root)
 	var parent: Node = orb.get_tree().current_scene
+	if parent == null:
+		return  # Skip floating score in test environments
 	FloatingScore.spawn_at(parent, world_pos, base_score, combo_bonus)
 
 

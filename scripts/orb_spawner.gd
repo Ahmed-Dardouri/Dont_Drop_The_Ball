@@ -9,6 +9,9 @@ extends Node2D
 @export var spawn_interval: float = 2.0
 @export var max_orbs: int = 10
 
+# Progression settings
+@export var progression_config: ProgressionConfig
+
 # Life orb settings
 @export var life_orb_data: OrbData
 @export var life_orb_first_spawn_delay: float = 30.0  # First spawn after 30 seconds
@@ -26,7 +29,7 @@ var _total_spawns: int = 0
 func _ready() -> void:
 	# Set up regular orb spawn timer
 	_timer = Timer.new()
-	_timer.wait_time = spawn_interval
+	_timer.wait_time = _get_current_spawn_interval()
 	_timer.autostart = true
 	_timer.timeout.connect(_on_timeout)
 	add_child(_timer)
@@ -43,7 +46,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_game_time_elapsed += delta
 
-	# Update spawn timer based on speedup effect
+	# Update spawn timer based on speedup effect and progression
 	_update_spawn_timer()
 
 	# Check if it's time to spawn a life orb
@@ -53,13 +56,25 @@ func _process(delta: float) -> void:
 		_life_orb_next_spawn_time += life_orb_spawn_interval
 
 
-func _update_spawn_timer() -> void:
-	# Check for spawn speedup effect
+func _get_current_spawn_interval() -> float:
 	var current_interval: float = spawn_interval
+
+	# Apply progression-based spawn rate if config exists
+	if progression_config != null:
+		var score: int = ScoreManager.get_score()
+		current_interval = progression_config.get_spawn_interval_for_score(score)
+
+	# Apply spawn speedup effect (multiplicative)
 	if EffectManager.has_effect("spawn_speedup"):
 		var multiplier: Variant = EffectManager.get_effect_value("spawn_speedup")
 		if multiplier != null and multiplier > 0:
-			current_interval = spawn_interval / float(multiplier)
+			current_interval = current_interval / float(multiplier)
+
+	return current_interval
+
+
+func _update_spawn_timer() -> void:
+	var current_interval: float = _get_current_spawn_interval()
 
 	# Update timer if interval changed
 	if _timer != null and abs(_timer.wait_time - current_interval) > 0.001:
@@ -124,30 +139,48 @@ func _spawn_orb() -> Node:
 
 
 func _get_weighted_random_orb() -> OrbData:
-	if orb_data_array.is_empty():
+	# Get available orbs filtered by progression
+	var available_orbs: Array[OrbData] = _get_available_orbs()
+
+	if available_orbs.is_empty():
 		return null
 
 	# Calculate total weight
 	var total_weight: float = 0.0
-	for data: OrbData in orb_data_array:
+	for data: OrbData in available_orbs:
 		total_weight += data.spawn_weight
 
 	if total_weight <= 0.0:
 		# Fallback to uniform random if all weights are 0
-		var idx := randi() % orb_data_array.size()
-		return orb_data_array[idx]
+		var idx := randi() % available_orbs.size()
+		return available_orbs[idx]
 
 	# Weighted random selection
 	var roll: float = randf() * total_weight
 	var cumulative: float = 0.0
 
-	for data: OrbData in orb_data_array:
+	for data: OrbData in available_orbs:
 		cumulative += data.spawn_weight
 		if roll <= cumulative:
 			return data
 
 	# Fallback (shouldn't reach here)
-	return orb_data_array.back()
+	return available_orbs.back()
+
+
+func _get_available_orbs() -> Array[OrbData]:
+	# If no progression config, all orbs are available
+	if progression_config == null:
+		return orb_data_array
+
+	var current_score: int = ScoreManager.get_score()
+	var available: Array[OrbData] = []
+
+	for data: OrbData in orb_data_array:
+		if progression_config.is_orb_available(data.display_name, current_score):
+			available.append(data)
+
+	return available
 
 
 func _record_spawn(orb_name: String) -> void:
@@ -188,3 +221,12 @@ func get_total_spawns() -> int:
 ## Returns a copy of the spawn counts dictionary.
 func get_all_spawn_counts() -> Dictionary:
 	return _spawn_counts.duplicate()
+
+
+## Returns the current list of available orbs based on score progression.
+## Useful for testing and debugging.
+func get_available_orb_names() -> Array[String]:
+	var result: Array[String] = []
+	for data: OrbData in _get_available_orbs():
+		result.append(data.display_name)
+	return result

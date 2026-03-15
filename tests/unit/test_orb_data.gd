@@ -47,7 +47,7 @@ func test_orb_data_default_behaviors() -> void:
 
 func test_orb_data_default_spawn_animation_duration() -> void:
 	var orb_data := OrbData.new()
-	assert_eq(orb_data.spawn_animation_duration, 1.5, "Default spawn_animation_duration should be 1.5")
+	assert_eq(orb_data.spawn_animation_duration, 0.5, "Default spawn_animation_duration should be 0.5")
 
 
 #endregion

@@ -3,6 +3,10 @@ extends GutTest
 ## Tests lifecycle hooks and default endless behavior
 
 
+func before_each() -> void:
+	ScoreManager.reset_score()
+
+
 #region ModeBase Tests
 
 func test_mode_base_extends_ref_counted() -> void:
