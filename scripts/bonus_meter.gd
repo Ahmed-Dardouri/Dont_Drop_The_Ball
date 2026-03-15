@@ -2,8 +2,13 @@ extends Control
 ## Bonus Meter UI - Displays the vertical bonus meter with tier indicators.
 ## Polls ComboManager every frame for smooth drain animation.
 
+#region Constants
+const METER_HEIGHT: int = 600
+const METER_WIDTH: int = 60
+#endregion
+
 #region Node References
-@onready var meter_bar: ProgressBar = $VBoxContainer/MeterBar
+@onready var meter_bar: TextureProgressBar = $VBoxContainer/MeterBar
 @onready var tier_labels_container: VBoxContainer = $VBoxContainer/TierLabels
 #endregion
 
@@ -46,11 +51,23 @@ func _setup_meter_bar() -> void:
 	if meter_bar == null:
 		return
 
-	# Configure progress bar
+	# Configure TextureProgressBar for vertical fill from bottom to top
 	meter_bar.min_value = 0.0
 	meter_bar.max_value = ComboManager.MAX_METER_VALUE
 	meter_bar.value = 0.0
-	meter_bar.show_percentage = false
+	meter_bar.fill_mode = TextureProgressBar.FILL_BOTTOM_TO_TOP
+
+	# Create a simple white texture for the fill (will be tinted by modulate)
+	var fill_image := Image.create(METER_WIDTH, METER_HEIGHT, false, Image.FORMAT_RGBA8)
+	fill_image.fill(Color.WHITE)
+	var fill_texture := ImageTexture.create_from_image(fill_image)
+	meter_bar.texture_progress = fill_texture
+
+	# Create background texture (dark gray)
+	var bg_image := Image.create(METER_WIDTH, METER_HEIGHT, false, Image.FORMAT_RGBA8)
+	bg_image.fill(Color(0.2, 0.2, 0.2, 1.0))
+	var bg_texture := ImageTexture.create_from_image(bg_image)
+	meter_bar.texture_under = bg_texture
 
 
 func _setup_tier_labels() -> void:
@@ -95,12 +112,10 @@ func _update_tier_highlight() -> void:
 
 	_last_tier = current_tier
 
-	# Update meter bar color
+	# Update meter bar color using tint
 	if meter_bar != null:
 		var tier_color: Color = TIER_COLORS[current_tier]
-		var style_box: StyleBoxFlat = StyleBoxFlat.new()
-		style_box.bg_color = tier_color
-		meter_bar.add_theme_stylebox_override("fill", style_box)
+		meter_bar.tint_progress = tier_color
 
 	# Update tier label highlights
 	for i: int in range(_tier_labels.size()):
@@ -116,7 +131,7 @@ func _update_tier_highlight() -> void:
 #endregion
 
 #region Event Handlers
-func _on_tier_changed(event: TierChangedEvent) -> void:
+func _on_tier_changed(_event: TierChangedEvent) -> void:
 	# Tier changed - could play sound or particles here
 	# The display update happens in _process via polling
 	pass

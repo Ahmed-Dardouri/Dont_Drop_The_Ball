@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=16 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="Script" uid="uid://raqe3onpyrij" path="res://scripts/hud.gd" id="1_hd3ao"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://bo7u33l1lie1b" path="res://scripts/score_mngr.gd" id="8_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://b0m2uc6nwrvby" path="res://sprites/vortex_orb.png" id="9_0i1j5"]
 [ext_resource type="Texture2D" uid="uid://d2koxxjlwafl5" path="res://sprites/spawn_speedup_orb.png" id="10_mphia"]
-[ext_resource type="Script" path="res://scripts/bonus_meter.gd" id="11_bonus_meter"]
+[ext_resource type="Script" uid="uid://titq33l4cv12" path="res://scripts/bonus_meter.gd" id="11_bonus_meter"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_0m4u7"]
 points = PackedVector2Array(-85, -85, 130, -85, 130, 85, -85, 85)
@@ -20,6 +20,8 @@ points = PackedVector2Array(-130, -85, 85, -85, 85, 85, -130, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uo2fv"]
 size = Vector2(570, 500)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0m4u7"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 5
@@ -149,77 +151,118 @@ layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -120.0
-offset_top = 120.0
-offset_right = -50.0
-offset_bottom = 420.0
+offset_left = -119.0
+offset_top = 204.0
+offset_right = -49.0
+offset_bottom = 666.0
 grow_horizontal = 0
 script = ExtResource("11_bonus_meter")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BonusMeter"]
+[node name="VBoxContainer" type="HBoxContainer" parent="BonusMeter"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.931
+offset_left = -10.0
+offset_top = -43.0
+offset_right = -9.0
+offset_bottom = 126.878
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MeterBar" type="ProgressBar" parent="BonusMeter/VBoxContainer"]
-custom_minimum_size = Vector2(30, 250)
-layout_mode = 2
-size_flags_vertical = 3
 
 [node name="TierLabels" type="VBoxContainer" parent="BonusMeter/VBoxContainer"]
 layout_mode = 2
 
+[node name="VSeparator2" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+layout_mode = 2
+theme_override_constants/separation = 55
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
+
 [node name="Tier6" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+100"
 horizontal_alignment = 1
+
+[node name="VSeparator" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+layout_mode = 2
+theme_override_constants/separation = 135
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
 
 [node name="Tier5" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+50"
 horizontal_alignment = 1
+
+[node name="VSeparator3" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+layout_mode = 2
+theme_override_constants/separation = 75
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
 
 [node name="Tier4" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+20"
 horizontal_alignment = 1
+
+[node name="VSeparator4" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+layout_mode = 2
+theme_override_constants/separation = 35
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
 
 [node name="Tier3" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+10"
 horizontal_alignment = 1
+
+[node name="VSeparator5" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+layout_mode = 2
+theme_override_constants/separation = 25
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
 
 [node name="Tier2" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+5"
 horizontal_alignment = 1
+
+[node name="VSeparator6" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
 
 [node name="Tier1" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+2"
 horizontal_alignment = 1
+
+[node name="VSeparator7" type="HSeparator" parent="BonusMeter/VBoxContainer/TierLabels"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxEmpty_0m4u7")
 
 [node name="Tier0" type="Label" parent="BonusMeter/VBoxContainer/TierLabels"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
 text = "+1"
 horizontal_alignment = 1
+
+[node name="MeterBar" type="TextureProgressBar" parent="BonusMeter/VBoxContainer"]
+custom_minimum_size = Vector2(50, 600)
+layout_mode = 2
+size_flags_vertical = 3
 
 [connection signal="pressed" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_pressed"]
 [connection signal="released" from="button_controls/right_touch_button" to="button_controls" method="_on_right_touch_button_released"]

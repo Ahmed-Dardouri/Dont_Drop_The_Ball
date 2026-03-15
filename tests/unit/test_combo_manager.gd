@@ -24,7 +24,7 @@ func test_meter_fill_amount_proportional_to_score() -> void:
 
 func test_meter_capped_at_max() -> void:
     ComboManager.add_orb_score(500)
-    assert_almost_eq(ComboManager.get_meter_value(), 250.0, 0.1, "Meter should be capped at 250")
+    assert_almost_eq(ComboManager.get_meter_value(), 300.0, 0.1, "Meter should be capped at 300")
 
 
 func test_multiple_score_gains_accumulate() -> void:
@@ -160,8 +160,8 @@ func test_higher_tier_drains_faster() -> void:
     ComboManager._process(1.0)
     var after_tier0: float = ComboManager.get_meter_value()
 
-    # Tier 6 should drain faster than tier 0 (rate is 25 vs 3)
-    assert_gt(initial_tier0 - after_tier0, initial_tier6 - after_tier6, "Tier 6 should drain faster than tier 0")
+    # Tier 6 should drain faster than tier 0 (rate is 25 vs 2)
+    assert_gt(initial_tier6 - after_tier6, initial_tier0 - after_tier0, "Tier 6 should drain faster than tier 0")
 
 
 func test_meter_draining_reduces_tier() -> void:
