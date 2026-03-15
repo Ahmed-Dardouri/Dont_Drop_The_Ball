@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://b753p33b8idp1"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=8 format=3 uid="uid://b753p33b8idp1"]
 
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" path="res://scripts/data/behaviors/spawn_speedup_behavior.gd" id="2_speedupbehavior"]
+[ext_resource type="Script" uid="uid://bk0sdde0ofy4b" path="res://scripts/data/behaviors/score_behavior.gd" id="3_ie8ub"]
 [ext_resource type="Texture2D" uid="uid://d2koxxjlwafl5" path="res://sprites/spawn_speedup_orb.png" id="3_texture"]
 
 [sub_resource type="Resource" id="SpawnSpeedupBehavior_1"]
@@ -10,6 +11,12 @@ script = ExtResource("2_speedupbehavior")
 speedup_duration = 30.0
 speed_multiplier = 2.0
 behavior_id = ""
+
+[sub_resource type="Resource" id="Resource_cbrun"]
+script = ExtResource("3_ie8ub")
+base_score = 20
+behavior_id = ""
+metadata/_custom_type_script = "uid://bk0sdde0ofy4b"
 
 [resource]
 script = ExtResource("1_orbdata")
@@ -21,5 +28,5 @@ lifespan = 30.0
 spawn_weight = 0.02
 collision_radius = 32.0
 is_half_solid = false
-behaviors = Array[ExtResource("1_behavior")]([SubResource("SpawnSpeedupBehavior_1")])
+behaviors = Array[ExtResource("1_behavior")]([SubResource("SpawnSpeedupBehavior_1"), SubResource("Resource_cbrun")])
 spawn_animation_duration = 0.5

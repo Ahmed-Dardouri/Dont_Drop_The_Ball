@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="ScoreBehavior_1"]
 script = ExtResource("2_scorebehavior")
-base_score = 2
+base_score = 4
 behavior_id = ""
 
 [resource]

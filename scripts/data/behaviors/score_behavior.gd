@@ -28,7 +28,9 @@ func _spawn_floating_score(orb: Node, world_pos: Vector2, base_score: int, combo
 	var parent: Node = orb.get_tree().current_scene
 	if parent == null:
 		return  # Skip floating score in test environments
-	FloatingScore.spawn_at(parent, world_pos, base_score, combo_bonus)
+	# Get current tier for color matching with bonus meter
+	var tier: int = ComboManager.get_current_tier()
+	FloatingScore.spawn_at(parent, world_pos, base_score, combo_bonus, tier)
 
 
 func process(_orb: Node, _delta: float) -> void:

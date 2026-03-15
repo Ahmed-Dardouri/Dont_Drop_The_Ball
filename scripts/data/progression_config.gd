@@ -11,22 +11,22 @@ class_name ProgressionConfig extends Resource
 	"Burst Orb": 20,
 	"Vortex Orb": 100,
 	"Horizontal Wave Orb": 500,
-	"Spawn Speedup Orb": 1500,
+	"Spawn Speedup Orb": 1000,
 }
 #endregion
 
 #region Spawn Rate Progression
 ## Base spawn interval in seconds (at score 0).
-@export var base_spawn_interval: float = 2.5
+@export var base_spawn_interval: float = 2
 
 ## Minimum spawn interval (fastest possible spawning).
-@export var min_spawn_interval: float = 0.6
+@export var min_spawn_interval: float = 0.3
 
 ## Score at which minimum spawn interval is reached.
-@export var max_progression_score: float = 3000.0
+@export var max_progression_score: float = 6000.0
 
 ## Exponent for spawn rate curve (1.0 = linear, higher = faster initial decrease).
-@export var progression_exponent: float = 0.7
+@export var progression_exponent: float = 18
 #endregion
 
 

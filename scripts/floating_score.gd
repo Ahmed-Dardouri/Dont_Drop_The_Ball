@@ -1,6 +1,7 @@
 class_name FloatingScore extends Node2D
 ## Floating score label that shows base score and combo bonus.
 ## Floats up and fades out over time.
+## Colors match the bonus meter tier colors.
 
 ## Base score label (white/yellow)
 @onready var base_label: Label = $BaseLabel
@@ -13,6 +14,17 @@ class_name FloatingScore extends Node2D
 @export var float_speed: float = 60.0
 ## Vertical offset between base and combo labels
 @export var label_offset: float = 30.0
+
+## Colors for each tier (0-6) - matches bonus_meter.gd
+const TIER_COLORS: Array[Color] = [
+	Color.WHITE,       # Tier 0: +1
+	Color.LIGHT_BLUE,  # Tier 1: +2
+	Color.CYAN,        # Tier 2: +5
+	Color.LIME,        # Tier 3: +10
+	Color.YELLOW,      # Tier 4: +20
+	Color.ORANGE,      # Tier 5: +50
+	Color.GOLD,        # Tier 6: +100
+]
 
 var _time_elapsed: float = 0.0
 var _base_score: int = 0
@@ -41,16 +53,22 @@ func _process(delta: float) -> void:
 		queue_free()
 
 
-## Sets the scores to display.
-## base_score: The normal orb score (white)
-## combo_bonus: The combo bonus (gold/orange)
-func set_scores(base_score: int, combo_bonus: int) -> void:
+## Sets the scores to display with tier-based coloring.
+## base_score: The normal orb score
+## combo_bonus: The combo bonus
+## tier: Current combo tier (0-6) for color selection
+func set_scores(base_score: int, combo_bonus: int, tier: int = 0) -> void:
 	_base_score = base_score
 	_combo_bonus = combo_bonus
+
+	# Clamp tier to valid range
+	var clamped_tier: int = clampi(tier, 0, TIER_COLORS.size() - 1)
+	var tier_color: Color = TIER_COLORS[clamped_tier]
 
 	if base_label != null:
 		if base_score > 0:
 			base_label.text = "+%d" % base_score
+			base_label.add_theme_color_override("font_color", tier_color)
 			base_label.show()
 		else:
 			base_label.hide()
@@ -58,17 +76,20 @@ func set_scores(base_score: int, combo_bonus: int) -> void:
 	if combo_label != null:
 		if combo_bonus > 0:
 			combo_label.text = "+%d" % combo_bonus
+			combo_label.add_theme_color_override("font_color", tier_color)
 			combo_label.show()
 		else:
 			combo_label.hide()
 
 
-## Spawns a floating score at the given world position.
+## Spawns a floating score at the given world position with tier coloring.
 ## Returns the spawned node.
-static func spawn_at(parent: Node, world_pos: Vector2, base_score: int, combo_bonus: int) -> Node:
+static func spawn_at(parent: Node, world_pos: Vector2, base_score: int, combo_bonus: int, tier: int = 0) -> Node:
+	if parent == null:
+		return null
 	var scene := preload("res://scenes/floating_score.tscn")
 	var instance := scene.instantiate()
 	instance.position = world_pos
 	parent.add_child(instance)
-	instance.set_scores(base_score, combo_bonus)
+	instance.set_scores(base_score, combo_bonus, tier)
 	return instance

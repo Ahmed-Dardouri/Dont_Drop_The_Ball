@@ -17,23 +17,23 @@ const TIER_THRESHOLDS: Array[float] = [
 	60.0,   # Tier 3 (+10): 60 points needed (30 more)
 	100.0,  # Tier 4 (+20): 100 points needed (40 more)
 	160.0,  # Tier 5 (+50): 160 points needed (60 more)
-	250.0,  # Tier 6 (+100): 250 points needed (90 more)
+	290.0,  # Tier 6 (+100): 250 points needed (130 more)
 ]
 
 ## Base drain rate (meter points per second) at each tier
 ## Higher tiers drain faster
 const TIER_DRAIN_RATES: Array[float] = [
-	2.0,    # Tier 0 (+1):  slow drain
-	3.0,    # Tier 1 (+2):  slow drain
-	5.0,    # Tier 2 (+5):  medium drain
-	8.0,    # Tier 3 (+10): medium-fast drain
+	0.5,    # Tier 0 (+1):  slow drain
+	1.0,    # Tier 1 (+2):  slow drain
+	2.0,    # Tier 2 (+5):  medium drain
+	6.0,    # Tier 3 (+10): medium-fast drain
 	12.0,   # Tier 4 (+20): fast drain
-	18.0,   # Tier 5 (+50): faster drain
-	25.0,   # Tier 6 (+100): fastest drain
+	25.0,   # Tier 5 (+50): faster drain
+	50.0,   # Tier 6 (+100): fastest drain
 ]
 
 ## How much score contributes to meter fill per point of score
-const SCORE_TO_METER_RATIO: float = 1.0
+const SCORE_TO_METER_RATIO: float = 1
 
 ## Maximum meter value (capped at highest threshold)
 const MAX_METER_VALUE: float = 300.0

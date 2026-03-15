@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=7 format=3 uid="uid://dbl1siyxaowr5"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=9 format=3 uid="uid://dbl1siyxaowr5"]
 
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_vunfd"]
 [ext_resource type="Script" uid="uid://ba7n58n0pj75x" path="res://scripts/data/behaviors/line_clear_behavior.gd" id="2_lineclearbehavior"]
+[ext_resource type="Script" uid="uid://bk0sdde0ofy4b" path="res://scripts/data/behaviors/score_behavior.gd" id="3_vunfd"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x8s7b"]
 load_path = "res://.godot/imported/horizontal_wave.png-b1437dd79399d9c0b91daf0b9309d9e6.ctex"
@@ -15,6 +16,12 @@ bonus_per_orb = 4
 wave_texture = SubResource("CompressedTexture2D_x8s7b")
 wave_duration = 0.5
 behavior_id = ""
+
+[sub_resource type="Resource" id="Resource_8xj2v"]
+script = ExtResource("3_vunfd")
+base_score = 15
+behavior_id = ""
+metadata/_custom_type_script = "uid://bk0sdde0ofy4b"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vunfd"]
 load_path = "res://.godot/imported/horizontal_orb.png-7b22d76e11be879f90261d64036c3cc1.ctex"
@@ -29,5 +36,5 @@ lifespan = 25.0
 spawn_weight = 0.1
 collision_radius = 32.0
 is_half_solid = false
-behaviors = Array[ExtResource("1_vunfd")]([SubResource("LineClearBehavior_1")])
+behaviors = Array[ExtResource("1_vunfd")]([SubResource("LineClearBehavior_1"), SubResource("Resource_8xj2v")])
 spawn_animation_duration = 0.5
