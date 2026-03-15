@@ -20,6 +20,7 @@ extends Node2D
 var _timer: Timer
 var _game_time_elapsed: float = 0.0
 var _life_orb_next_spawn_time: float = 0.0
+var _debug_print_timer: float = 0.0
 
 # Spawn metrics
 var _spawn_counts: Dictionary = {}  # orb_name -> count
@@ -45,6 +46,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_game_time_elapsed += delta
+
+	# Debug: Print spawn rate every second
+	_debug_print_timer += delta
+	if _debug_print_timer >= 1.0:
+		_debug_print_timer = 0.0
+		var current_interval: float = _get_current_spawn_interval()
+		var score: int = ScoreManager.get_score()
+		var available_count: int = _get_available_orbs().size()
+		print("[Progression] Score: %d | Spawn Interval: %.2fs | Available Orbs: %d" % [score, current_interval, available_count])
 
 	# Update spawn timer based on speedup effect and progression
 	_update_spawn_timer()
