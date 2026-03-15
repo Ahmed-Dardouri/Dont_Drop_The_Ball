@@ -54,28 +54,28 @@ func _process(delta: float) -> void:
 
 
 ## Sets the scores to display with tier-based coloring.
-## base_score: The normal orb score
-## combo_bonus: The combo bonus
-## tier: Current combo tier (0-6) for color selection
+## base_score: The normal orb score (always white)
+## combo_bonus: The combo bonus (colored by tier)
+## tier: Current combo tier (0-6) for bonus color selection
 func set_scores(base_score: int, combo_bonus: int, tier: int = 0) -> void:
 	_base_score = base_score
 	_combo_bonus = combo_bonus
 
-	# Clamp tier to valid range
-	var clamped_tier: int = clampi(tier, 0, TIER_COLORS.size() - 1)
-	var tier_color: Color = TIER_COLORS[clamped_tier]
-
+	# Base score is always white
 	if base_label != null:
 		if base_score > 0:
 			base_label.text = "+%d" % base_score
-			base_label.add_theme_color_override("font_color", tier_color)
+			base_label.add_theme_color_override("font_color", Color.WHITE)
 			base_label.show()
 		else:
 			base_label.hide()
 
+	# Combo bonus is colored by tier
 	if combo_label != null:
 		if combo_bonus > 0:
 			combo_label.text = "+%d" % combo_bonus
+			var clamped_tier: int = clampi(tier, 0, TIER_COLORS.size() - 1)
+			var tier_color: Color = TIER_COLORS[clamped_tier]
 			combo_label.add_theme_color_override("font_color", tier_color)
 			combo_label.show()
 		else:
