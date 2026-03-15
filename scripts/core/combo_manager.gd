@@ -36,26 +36,7 @@ const TIER_DRAIN_RATES: Array[float] = [
 const SCORE_TO_METER_RATIO: float = 1.0
 
 ## Maximum meter value (capped at highest threshold)
-const MAX_METER_VALUE: float = 250.0
-
-#endregion
-
-#region Signals
-
-## Emitted when meter value changes (for UI binding)
-signal meter_changed(meter_value: float, tier_index: int)
-
-## Emitted when bonus tier changes
-signal tier_changed(old_tier: int, new_tier: int)
-
-## Emitted when score is added (for UI feedback)
-signal score_added(base_score: int, bonus: int, total: int)
-
-## Backward compatibility: Emitted when bonus changes (like old combo_bonus_changed)
-signal combo_bonus_changed(base_score: int, combo_bonus: int, total: int)
-
-## Backward compatibility: Emitted when meter resets (like old combo_reset)
-signal combo_reset
+const MAX_METER_VALUE: float = 300.0
 
 #endregion
 
@@ -107,10 +88,6 @@ func add_orb_score(base_score: int) -> Dictionary:
 	# Fill the meter based on score gained
 	_fill_meter(float(adjusted_base))
 
-	# Emit signal for UI
-	score_added.emit(adjusted_base, bonus, total)
-	combo_bonus_changed.emit(adjusted_base, bonus, total)
-
 	return {"base_score": adjusted_base, "combo_bonus": bonus, "total": total}
 
 
@@ -141,10 +118,12 @@ func reset_combo() -> void:
 	var old_tier: int = _current_tier
 	_meter_value = 0.0
 	_current_tier = 0
-	meter_changed.emit(_meter_value, _current_tier)
+
+	# Fire events for UI
+	MeterChangedEvent.invoke(_meter_value, _current_tier)
 	if old_tier != _current_tier:
-		tier_changed.emit(old_tier, _current_tier)
-	combo_reset.emit()
+		TierChangedEvent.invoke(old_tier, _current_tier)
+	ComboResetEvent.invoke()
 
 
 ## Gets the number of available tiers
@@ -191,11 +170,11 @@ func _fill_meter(score_amount: float) -> void:
 	# Update tier based on new meter value
 	_update_tier()
 
-	# Emit change signal
-	meter_changed.emit(_meter_value, _current_tier)
+	# Fire event for UI
+	MeterChangedEvent.invoke(_meter_value, _current_tier)
 
 	if old_tier != _current_tier:
-		tier_changed.emit(old_tier, _current_tier)
+		TierChangedEvent.invoke(old_tier, _current_tier)
 
 
 func _update_tier() -> void:
@@ -209,8 +188,8 @@ func _update_tier() -> void:
 	if new_tier != _current_tier:
 		var old_tier: int = _current_tier
 		_current_tier = new_tier
-		tier_changed.emit(old_tier, _current_tier)
-		meter_changed.emit(_meter_value, _current_tier)
+		TierChangedEvent.invoke(old_tier, _current_tier)
+		MeterChangedEvent.invoke(_meter_value, _current_tier)
 
 
 func _on_game_over(_event: GameOverEvent) -> void:
