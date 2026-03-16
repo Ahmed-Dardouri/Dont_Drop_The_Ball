@@ -2,11 +2,16 @@ extends RigidBody2D
 
 @onready var shape_cast: ShapeCast2D = $ShapeCast2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var sprite: Sprite2D = $Sprite2D
 
 var max_speed := 900.0
 var fall_speed := 900.0
 var air_friction := 3
 var game_over: bool = false
+
+# Easy mode slowdown
+var _slowdown_multiplier: float = 1.0
+var _slowdown_timer: float = 0.0
 
 # Rescue state
 var _is_rescuing: bool = false
@@ -27,7 +32,9 @@ var _player_collision: CollisionPolygon2D = null
 func _ready() -> void:
 	add_to_group("ball")
 	load_constants()
+	apply_easy_mode_settings()
 	Events.add_listener(BallRescueEvent, _on_ball_rescue_event)
+	Events.add_listener(OrbCollectedEvent, _on_orb_collected)
 
 
 func _process(delta: float) -> void:
@@ -35,12 +42,22 @@ func _process(delta: float) -> void:
 	if _is_rescuing:
 		_update_rescue(delta)
 
+	# Handle slowdown timer
+	if _slowdown_timer > 0.0:
+		_slowdown_timer -= delta
+		if _slowdown_timer <= 0.0:
+			_slowdown_multiplier = 1.0
+
 
 func _physics_process(_delta: float) -> void:
 	if _is_rescuing:
 		# Disable physics during rescue
 		linear_velocity = Vector2.ZERO
 		return
+
+	# Apply slowdown if active
+	if _slowdown_multiplier < 1.0:
+		linear_velocity *= _slowdown_multiplier
 
 	clamp_max_speed()
 	clamp_fall_speed()
@@ -74,7 +91,7 @@ func _on_body_entered(body: Node) -> void:
 
 	if body.is_in_group("ground") && !game_over:
 		# Check for life before game over
-		if EffectManager.has_effect("has_life"):
+		if _has_life():
 			_trigger_rescue()
 		else:
 			game_over = true
@@ -89,6 +106,25 @@ func _on_body_entered(body: Node) -> void:
 		linear_velocity = linear_velocity * 0.4
 
 
+## Check if player has a life (either temporary effect or permanent)
+func _has_life() -> bool:
+	if EffectManager.has_effect("has_life"):
+		return true
+	if Variables.permanent_lives > 0:
+		return true
+	return false
+
+
+## Consume a life (prefers permanent lives in easy mode, then temporary effect)
+func _consume_life() -> void:
+	if GameRules.get_permanent_life_pickups() and Variables.permanent_lives > 0:
+		Variables.permanent_lives -= 1
+		LifeChangedEvent.invoke(false)
+	elif EffectManager.has_effect("has_life"):
+		EffectManager.remove_effect("has_life")
+		LifeChangedEvent.invoke(false)
+
+
 #region Rescue Logic
 
 func _trigger_rescue() -> void:
@@ -100,9 +136,8 @@ func _trigger_rescue() -> void:
 	if collision_shape != null:
 		collision_shape.disabled = true
 
-	# Consume the life
-	EffectManager.remove_effect("has_life")
-	LifeChangedEvent.invoke(false)
+	# Consume the life (handles both permanent and temporary)
+	_consume_life()
 
 	# Find player for rescue positioning
 	_find_player()
@@ -228,6 +263,30 @@ func load_constants():
 	max_speed = GameRules.get_ball_max_speed()
 	fall_speed = GameRules.get_ball_fall_speed()
 	air_friction = int(GameRules.get_ball_air_friction())
+
+
+## Apply easy mode assist settings from GameRules
+func apply_easy_mode_settings():
+	# Apply ball gravity scale if set
+	var mode_gravity_scale: float = GameRules.get_ball_gravity_scale()
+	if mode_gravity_scale > 0.0:
+		gravity_scale = mode_gravity_scale
+
+	# Apply ball scale if set
+	var ball_scale: float = GameRules.get_ball_scale()
+	if ball_scale > 0.0:
+		scale = Vector2(ball_scale, ball_scale)
+		# Also scale collision shape
+		if collision_shape != null and collision_shape.shape is CircleShape2D:
+			collision_shape.shape.radius *= ball_scale
+
+
+## Handle orb collected event for ball slowdown
+func _on_orb_collected(_event: OrbCollectedEvent) -> void:
+	var slowdown: float = GameRules.get_ball_slowdown_on_orb()
+	if slowdown > 0.0 and slowdown < 1.0:
+		_slowdown_multiplier = slowdown
+		_slowdown_timer = GameRules.get_ball_slowdown_duration()
 
 
 func apply_constants():

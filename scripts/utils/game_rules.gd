@@ -185,3 +185,67 @@ static func _get_player_physics_config() -> PlayerPhysicsConfig:
 	return ModeManager.current_mode.player_physics_config
 
 #endregion
+
+#region Easy Mode Assist Features
+
+## Get the ball gravity scale multiplier for the current mode.
+## Returns 0.0 (use scene default) if no mode or not set.
+static func get_ball_gravity_scale() -> float:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return 0.0
+	return ModeManager.current_mode.ball_gravity_scale
+
+
+## Get the ball size scale multiplier for the current mode.
+## Returns 0.0 (use scene default) if no mode or not set.
+static func get_ball_scale() -> float:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return 0.0
+	return ModeManager.current_mode.ball_scale
+
+
+## Get the orb size scale multiplier for the current mode.
+## Returns 0.0 (use scene default) if no mode or not set.
+static func get_orb_scale() -> float:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return 0.0
+	return ModeManager.current_mode.orb_scale
+
+
+## Get the starting lives for the current mode.
+## Returns 0 (use default behavior) if no mode or not set.
+static func get_starting_lives() -> int:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return 0
+	return ModeManager.current_mode.starting_lives
+
+
+## Get whether life orb pickups give permanent lives in this mode.
+static func get_permanent_life_pickups() -> bool:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return false
+	return ModeManager.current_mode.permanent_life_pickups
+
+
+## Get the ball speed multiplier after orb pickup (0.0 = disabled).
+## Returns 0.0 if no mode or not set.
+static func get_ball_slowdown_on_orb() -> float:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return 0.0
+	return ModeManager.current_mode.ball_slowdown_on_orb
+
+
+## Get the duration of ball slowdown after orb pickup in seconds.
+static func get_ball_slowdown_duration() -> float:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return 0.5
+	return ModeManager.current_mode.ball_slowdown_duration
+
+
+## Get whether to show the landing marker (ball trajectory prediction).
+static func get_show_landing_marker() -> bool:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return false
+	return ModeManager.current_mode.show_landing_marker
+
+#endregion

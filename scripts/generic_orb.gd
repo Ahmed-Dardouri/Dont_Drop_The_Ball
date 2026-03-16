@@ -64,17 +64,24 @@ func _process(delta: float) -> void:
 func set_orb_data(orb_data: OrbData) -> void:
 	_orb_data = orb_data
 
+	# Get mode-specific orb scale multiplier
+	var mode_scale: float = GameRules.get_orb_scale()
+
 	# Create visual sprite from OrbData texture
 	if orb_data.texture != null:
 		_visual_sprite = Sprite2D.new()
 		_visual_sprite.texture = orb_data.texture
-		_visual_sprite.scale = orb_data.scale
+		# Apply mode scale multiplier if set
+		var final_scale: Vector2 = orb_data.scale
+		if mode_scale > 0.0:
+			final_scale = final_scale * mode_scale
+		_visual_sprite.scale = final_scale
 		_visual_sprite.modulate.a = 0.0  # Start invisible for spawn animation
 		add_child(_visual_sprite)
 
-	# Handle half-solid orb setup
+	# Handle half-solid orb setup (pass mode scale for collision)
 	if orb_data.is_half_solid:
-		_setup_half_solid(orb_data)
+		_setup_half_solid(orb_data, mode_scale)
 
 	# Defer collision setup if @onready variables aren't initialized yet
 	if data_orb_collision == null or data_orb_area == null:
@@ -99,10 +106,15 @@ func _setup_orb_data_collision() -> void:
 	data_orb_area.monitoring = false
 	data_orb_area.monitorable = false
 
+	# Get mode-specific scale multiplier for collision
+	var mode_scale: float = GameRules.get_orb_scale()
+	var radius: float = _orb_data.collision_radius
+	if mode_scale > 0.0:
+		radius *= mode_scale
+
 	if _orb_data.is_half_solid:
 		# For half-solid orbs, use a semi-circle polygon for BOTTOM half (collectible)
 		var collision_poly := CollisionPolygon2D.new()
-		var radius: float = _orb_data.collision_radius
 		var points: PackedVector2Array = []
 		var segments: int = 16
 
@@ -124,7 +136,7 @@ func _setup_orb_data_collision() -> void:
 	else:
 		# Regular orb: use full circle
 		var shape := CircleShape2D.new()
-		shape.radius = _orb_data.collision_radius
+		shape.radius = radius
 		data_orb_collision.shape = shape
 
 	if not data_orb_area.body_entered.is_connected(_on_data_orb_area_body_entered):
@@ -133,7 +145,7 @@ func _setup_orb_data_collision() -> void:
 
 ## Sets up half-solid orb components (static body for TOP half).
 ## Uses a single sprite centered at origin with both halves.
-func _setup_half_solid(orb_data: OrbData) -> void:
+func _setup_half_solid(orb_data: OrbData, mode_scale: float = 0.0) -> void:
 	# Sprite stays centered at origin (single sprite with both halves)
 	if _visual_sprite != null:
 		_visual_sprite.position = Vector2.ZERO
@@ -151,6 +163,8 @@ func _setup_half_solid(orb_data: OrbData) -> void:
 
 	# Create a semi-circle polygon for the TOP half (platform)
 	var radius: float = orb_data.collision_radius
+	if mode_scale > 0.0:
+		radius *= mode_scale
 	var points: PackedVector2Array = []
 	var segments: int = 16
 

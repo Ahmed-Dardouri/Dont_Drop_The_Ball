@@ -64,6 +64,34 @@ class_name ModeConfig extends Resource
 
 #endregion
 
+#region Easy Mode Assist Features
+
+## Ball gravity scale multiplier (1.0 = normal, lower = floatier). 0 = use scene default.
+@export var ball_gravity_scale: float = 0.0
+
+## Ball size scale multiplier (1.0 = normal size). 0 = use scene default.
+@export var ball_scale: float = 0.0
+
+## Orb size scale multiplier (1.0 = normal size). 0 = use scene default.
+@export var orb_scale: float = 0.0
+
+## Starting lives for this mode (0 = no extra lives, uses default behavior)
+@export var starting_lives: int = 0
+
+## If true, life orb pickups give permanent +1 life instead of temporary effect.
+@export var permanent_life_pickups: bool = false
+
+## Ball speed multiplier after orb pickup (0.0 = disabled, 0.7 = 70% speed).
+@export var ball_slowdown_on_orb: float = 0.0
+
+## Duration of ball slowdown after orb pickup in seconds.
+@export var ball_slowdown_duration: float = 0.5
+
+## Whether to show the landing marker (ball trajectory prediction).
+@export var show_landing_marker: bool = false
+
+#endregion
+
 #region Validation
 
 ## Returns true if required fields are populated

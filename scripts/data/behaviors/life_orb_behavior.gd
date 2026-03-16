@@ -1,11 +1,11 @@
 class_name LifeOrbBehavior extends OrbBehavior
 ## Behavior that grants an extra life (saves from game over once).
-## Maximum of 1 life can be held at a time.
-## Life effect lasts 60 seconds or until consumed by dropping the ball.
+## In normal mode: Maximum of 1 life can be held at a time, lasts 60 seconds.
+## In permanent_life_pickups mode: Life is permanent and stackable.
 
 #region Properties
 
-## Duration of the life effect in seconds
+## Duration of the life effect in seconds (only used in normal mode)
 const LIFE_DURATION: float = 60.0
 
 ## Texture for the collection visual effect
@@ -22,10 +22,16 @@ func execute(context: Dictionary) -> void:
 	if orb != null and effect_texture != null:
 		_spawn_effect(orb)
 
-	# Only grant life if player doesn't already have one
-	if not EffectManager.has_effect("has_life"):
-		EffectManager.apply_effect("has_life", true, LIFE_DURATION)
+	# Check if permanent life pickups mode is active
+	if GameRules.get_permanent_life_pickups():
+		# Permanent mode: add to permanent lives counter
+		Variables.permanent_lives += 1
 		LifeChangedEvent.invoke(true)
+	else:
+		# Normal mode: only grant life if player doesn't already have one
+		if not EffectManager.has_effect("has_life"):
+			EffectManager.apply_effect("has_life", true, LIFE_DURATION)
+			LifeChangedEvent.invoke(true)
 
 
 func _spawn_effect(orb: Node) -> void:

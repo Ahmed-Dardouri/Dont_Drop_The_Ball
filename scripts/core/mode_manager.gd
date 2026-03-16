@@ -86,8 +86,18 @@ func start_mode(mode_id: String) -> void:
 		return
 
 	current_mode = _available_modes[mode_id]
+	_initialize_mode_settings()
 	_instantiate_mode_implementation()
 	mode_started.emit(mode_id)
+
+
+## Initialize mode-specific settings like starting lives
+func _initialize_mode_settings() -> void:
+	if current_mode == null:
+		return
+
+	# Initialize permanent lives for easy mode
+	Variables.permanent_lives = current_mode.starting_lives
 
 
 ## End the current mode with a result dictionary.

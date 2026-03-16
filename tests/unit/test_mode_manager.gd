@@ -151,3 +151,31 @@ func test_mode_manager_get_current_metric_with_mode() -> void:
 
 
 #endregion
+
+
+#region Starting Lives Tests
+
+func test_mode_manager_initializes_starting_lives() -> void:
+	# Reset permanent lives
+	Variables.permanent_lives = 0
+
+	# Get beginner config and ensure it has starting_lives
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.starting_lives = 3
+
+	ModeManager.start_mode("beginner")
+
+	assert_eq(Variables.permanent_lives, 3, "Should initialize permanent_lives to starting_lives value")
+
+
+func test_mode_manager_zero_starting_lives() -> void:
+	# Reset permanent lives
+	Variables.permanent_lives = 0
+
+	# Get endless config (should have 0 starting_lives by default)
+	ModeManager.start_mode("endless")
+
+	assert_eq(Variables.permanent_lives, 0, "Should not add lives when starting_lives is 0")
+
+
+#endregion

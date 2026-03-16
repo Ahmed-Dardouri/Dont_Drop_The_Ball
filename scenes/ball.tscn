@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://ddkwcva4w8fu5"]
+[gd_scene load_steps=8 format=3 uid="uid://ddkwcva4w8fu5"]
 
 [ext_resource type="Texture2D" uid="uid://dauyf7rg7mh8y" path="res://sprites/acorn.png" id="1_7s4qf"]
 [ext_resource type="Script" uid="uid://3ft3e7fctn7q" path="res://scripts/ball.gd" id="1_cxlvu"]
 [ext_resource type="PackedScene" uid="uid://v3r6fyokxtxr" path="res://scenes/trail.tscn" id="3_f7cbr"]
+[ext_resource type="Script" path="res://scripts/landing_marker.gd" id="4_landing"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cxlvu"]
 bounce = 0.6
@@ -40,5 +41,9 @@ texture = ExtResource("1_7s4qf")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
 shape = SubResource("CircleShape2D_f7cbr")
+
+[node name="LandingMarker" type="Node2D" parent="."]
+script = ExtResource("4_landing")
+ground_y = 700.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

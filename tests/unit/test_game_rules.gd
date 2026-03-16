@@ -211,3 +211,128 @@ func test_game_rules_resets_on_mode_end() -> void:
 
 
 #endregion
+
+
+#region Easy Mode Assist Features Tests
+
+func test_get_ball_gravity_scale_returns_zero_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: float = GameRules.get_ball_gravity_scale()
+	assert_eq(result, 0.0, "Should return 0.0 when no mode is active")
+
+
+func test_get_ball_gravity_scale_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.ball_gravity_scale = 0.35
+
+	ModeManager.start_mode("beginner")
+	var result: float = GameRules.get_ball_gravity_scale()
+	assert_eq(result, 0.35, "Should return mode-specific ball_gravity_scale")
+
+
+func test_get_ball_scale_returns_zero_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: float = GameRules.get_ball_scale()
+	assert_eq(result, 0.0, "Should return 0.0 when no mode is active")
+
+
+func test_get_ball_scale_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.ball_scale = 1.3
+
+	ModeManager.start_mode("beginner")
+	var result: float = GameRules.get_ball_scale()
+	assert_eq(result, 1.3, "Should return mode-specific ball_scale")
+
+
+func test_get_orb_scale_returns_zero_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: float = GameRules.get_orb_scale()
+	assert_eq(result, 0.0, "Should return 0.0 when no mode is active")
+
+
+func test_get_orb_scale_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.orb_scale = 1.3
+
+	ModeManager.start_mode("beginner")
+	var result: float = GameRules.get_orb_scale()
+	assert_eq(result, 1.3, "Should return mode-specific orb_scale")
+
+
+func test_get_starting_lives_returns_zero_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: int = GameRules.get_starting_lives()
+	assert_eq(result, 0, "Should return 0 when no mode is active")
+
+
+func test_get_starting_lives_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.starting_lives = 3
+
+	ModeManager.start_mode("beginner")
+	var result: int = GameRules.get_starting_lives()
+	assert_eq(result, 3, "Should return mode-specific starting_lives")
+
+
+func test_get_permanent_life_pickups_returns_false_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: bool = GameRules.get_permanent_life_pickups()
+	assert_false(result, "Should return false when no mode is active")
+
+
+func test_get_permanent_life_pickups_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.permanent_life_pickups = true
+
+	ModeManager.start_mode("beginner")
+	var result: bool = GameRules.get_permanent_life_pickups()
+	assert_true(result, "Should return mode-specific permanent_life_pickups")
+
+
+func test_get_ball_slowdown_on_orb_returns_zero_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: float = GameRules.get_ball_slowdown_on_orb()
+	assert_eq(result, 0.0, "Should return 0.0 when no mode is active")
+
+
+func test_get_ball_slowdown_on_orb_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.ball_slowdown_on_orb = 0.7
+
+	ModeManager.start_mode("beginner")
+	var result: float = GameRules.get_ball_slowdown_on_orb()
+	assert_eq(result, 0.7, "Should return mode-specific ball_slowdown_on_orb")
+
+
+func test_get_ball_slowdown_duration_returns_default_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: float = GameRules.get_ball_slowdown_duration()
+	assert_eq(result, 0.5, "Should return default 0.5 when no mode is active")
+
+
+func test_get_ball_slowdown_duration_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.ball_slowdown_duration = 1.0
+
+	ModeManager.start_mode("beginner")
+	var result: float = GameRules.get_ball_slowdown_duration()
+	assert_eq(result, 1.0, "Should return mode-specific ball_slowdown_duration")
+
+
+func test_get_show_landing_marker_returns_false_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: bool = GameRules.get_show_landing_marker()
+	assert_false(result, "Should return false when no mode is active")
+
+
+func test_get_show_landing_marker_returns_mode_value() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.show_landing_marker = true
+
+	ModeManager.start_mode("beginner")
+	var result: bool = GameRules.get_show_landing_marker()
+	assert_true(result, "Should return mode-specific show_landing_marker")
+
+
+#endregion
