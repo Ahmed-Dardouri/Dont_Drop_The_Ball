@@ -44,6 +44,5 @@ shape = SubResource("CircleShape2D_f7cbr")
 
 [node name="LandingMarker" type="Node2D" parent="."]
 script = ExtResource("4_landing")
-ground_y = 700.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -12,6 +12,8 @@ var game_over: bool = false
 # Easy mode slowdown
 var _slowdown_multiplier: float = 1.0
 var _slowdown_timer: float = 0.0
+var _slowdown_active: bool = false
+var _pre_slowdown_velocity: Vector2 = Vector2.ZERO
 
 # Rescue state
 var _is_rescuing: bool = false
@@ -46,7 +48,7 @@ func _process(delta: float) -> void:
 	if _slowdown_timer > 0.0:
 		_slowdown_timer -= delta
 		if _slowdown_timer <= 0.0:
-			_slowdown_multiplier = 1.0
+			_end_slowdown()
 
 
 func _physics_process(_delta: float) -> void:
@@ -55,10 +57,7 @@ func _physics_process(_delta: float) -> void:
 		linear_velocity = Vector2.ZERO
 		return
 
-	# Apply slowdown if active
-	if _slowdown_multiplier < 1.0:
-		linear_velocity *= _slowdown_multiplier
-
+	# No special handling needed - velocity was scaled at slowdown start
 	clamp_max_speed()
 	clamp_fall_speed()
 	apply_air_friction()
@@ -285,8 +284,28 @@ func apply_easy_mode_settings():
 func _on_orb_collected(_event: OrbCollectedEvent) -> void:
 	var slowdown: float = GameRules.get_ball_slowdown_on_orb()
 	if slowdown > 0.0 and slowdown < 1.0:
-		_slowdown_multiplier = slowdown
-		_slowdown_timer = GameRules.get_ball_slowdown_duration()
+		_start_slowdown(slowdown, GameRules.get_ball_slowdown_duration())
+
+
+## Start ball slowdown - scales velocity down
+func _start_slowdown(multiplier: float, duration: float) -> void:
+	# If already in slowdown, just extend duration
+	if not _slowdown_active:
+		# Scale velocity down by multiplier
+		linear_velocity *= multiplier
+		_slowdown_active = true
+	_slowdown_multiplier = multiplier
+	_slowdown_timer = duration
+
+
+## End ball slowdown - scales velocity back up
+func _end_slowdown() -> void:
+	if _slowdown_active:
+		# Scale velocity back up
+		if _slowdown_multiplier > 0.0:
+			linear_velocity /= _slowdown_multiplier
+		_slowdown_active = false
+		_slowdown_multiplier = 1.0
 
 
 func apply_constants():
