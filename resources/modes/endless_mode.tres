@@ -15,3 +15,5 @@ spawn_interval = 0.0
 max_orbs = 0
 hud_metric = "score"
 has_win = false
+ball_physics_config = null
+progression_config = null

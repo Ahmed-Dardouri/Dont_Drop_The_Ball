@@ -225,9 +225,9 @@ func is_rescuing() -> bool:
 
 
 func load_constants():
-	max_speed = Constants.ball_max_speed
-	fall_speed = Constants.ball_fall_speed
-	air_friction = Constants.ball_air_friction
+	max_speed = GameRules.get_ball_max_speed()
+	fall_speed = GameRules.get_ball_fall_speed()
+	air_friction = int(GameRules.get_ball_air_friction())
 
 
 func apply_constants():

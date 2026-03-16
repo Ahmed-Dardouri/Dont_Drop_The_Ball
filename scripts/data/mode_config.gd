@@ -45,6 +45,16 @@ class_name ModeConfig extends Resource
 
 #endregion
 
+#region Mode-Specific Tuning
+
+## Ball physics configuration for this mode (null = use global defaults)
+@export var ball_physics_config: BallPhysicsConfig
+
+## Progression configuration for this mode (null = use global defaults)
+@export var progression_config: ProgressionConfig
+
+#endregion
+
 #region Validation
 
 ## Returns true if required fields are populated

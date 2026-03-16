@@ -69,10 +69,14 @@ func _process(delta: float) -> void:
 func _get_current_spawn_interval() -> float:
 	var current_interval: float = spawn_interval
 
+	# Try mode-specific progression config first, then fallback to local config
+	var mode_progression: ProgressionConfig = GameRules.get_progression_config()
+	var active_progression: ProgressionConfig = mode_progression if mode_progression != null else progression_config
+
 	# Apply progression-based spawn rate if config exists
-	if progression_config != null:
+	if active_progression != null:
 		var score: int = ScoreManager.get_score()
-		current_interval = progression_config.get_spawn_interval_for_score(score)
+		current_interval = active_progression.get_spawn_interval_for_score(score)
 
 	# Apply spawn speedup effect (multiplicative)
 	if EffectManager.has_effect("spawn_speedup"):
@@ -179,15 +183,19 @@ func _get_weighted_random_orb() -> OrbData:
 
 
 func _get_available_orbs() -> Array[OrbData]:
+	# Try mode-specific progression config first, then fallback to local config
+	var mode_progression: ProgressionConfig = GameRules.get_progression_config()
+	var active_progression: ProgressionConfig = mode_progression if mode_progression != null else progression_config
+
 	# If no progression config, all orbs are available
-	if progression_config == null:
+	if active_progression == null:
 		return orb_data_array
 
 	var current_score: int = ScoreManager.get_score()
 	var available: Array[OrbData] = []
 
 	for data: OrbData in orb_data_array:
-		if progression_config.is_orb_available(data.display_name, current_score):
+		if active_progression.is_orb_available(data.display_name, current_score):
 			available.append(data)
 
 	return available
