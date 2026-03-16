@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://ctv8diqughvc5" path="res://sounds/classic-game-action-negative-21-224579.wav" id="7_a8y0u"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_o6xl0"]
 [ext_resource type="AudioStream" uid="uid://dwohu6objkqbi" path="res://sounds/ball_bounce_heavy.wav" id="8_jkv2x"]
-[ext_resource type="PackedScene" path="res://scenes/mode_select_menu.tscn" id="9_mode_select"]
+[ext_resource type="PackedScene" uid="uid://ce41746fgyld2" path="res://scenes/mode_select_menu.tscn" id="9_mode_select"]
 
 [sub_resource type="Resource" id="Resource_u7y87"]
 script = ExtResource("5_eb6dy")
@@ -48,7 +48,10 @@ visible = false
 [node name="mode_select" type="Node2D" parent="."]
 
 [node name="mode_select_menu" parent="." instance=ExtResource("9_mode_select")]
-visible = false
+offset_left = 960.0
+offset_top = 540.0
+offset_right = 960.0
+offset_bottom = 540.0
 
 [node name="settings_menu" parent="." instance=ExtResource("3_tipki")]
 

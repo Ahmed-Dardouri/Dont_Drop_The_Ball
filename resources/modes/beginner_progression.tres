@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ProgressionConfig" load_steps=2 format=3 uid="uid://dbeginnerprog001"]
+
+[ext_resource type="Script" uid="uid://b4iiej4wyxibu" path="res://scripts/data/progression_config.gd" id="1_progression"]
+
+[resource]
+script = ExtResource("1_progression")
+orb_unlock_thresholds = {
+"Blue Orb": 0,
+"Burst Orb": 50,
+"Horizontal Wave Orb": 1000,
+"Spawn Speedup Orb": 2000,
+"Vortex Orb": 200
+}
+base_spawn_interval = 3.0
+min_spawn_interval = 0.8
+max_progression_score = 8000.0
+progression_exponent = 0.3

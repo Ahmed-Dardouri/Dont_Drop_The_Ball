@@ -53,6 +53,9 @@ class_name ModeConfig extends Resource
 ## Progression configuration for this mode (null = use global defaults)
 @export var progression_config: ProgressionConfig
 
+## Background color for this mode (Color(0, 0, 0, 0) = use default dark)
+@export var background_color: Color = Color(0, 0, 0, 0)
+
 #endregion
 
 #region Validation

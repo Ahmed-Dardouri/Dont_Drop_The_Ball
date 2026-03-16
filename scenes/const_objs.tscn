@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0vru7ptghj0t"]
+[gd_scene load_steps=4 format=3 uid="uid://c0vru7ptghj0t"]
 
 [ext_resource type="PackedScene" uid="uid://bxy82qrpua865" path="res://scenes/static.tscn" id="1_v3q01"]
 [ext_resource type="PackedScene" uid="uid://3ewuh7jdv8qv" path="res://scenes/ground.tscn" id="2_dcf5b"]
+[ext_resource type="Script" path="res://scripts/const_objs.gd" id="3_background"]
 
 [node name="const_objs" type="Node2D"]
+script = ExtResource("3_background")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -4096

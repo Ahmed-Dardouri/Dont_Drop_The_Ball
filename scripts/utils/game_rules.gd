@@ -3,6 +3,9 @@ class_name GameRules
 ## Provides a centralized way to get tuning values that can vary by mode.
 ## Falls back to global defaults (Constants) when no mode is active or mode doesn't override.
 
+## Default background color (dark gray)
+const DEFAULT_BACKGROUND_COLOR: Color = Color(0.158, 0.158, 0.158, 1.0)
+
 #region Ball Physics
 
 ## Get the ball max speed for the current mode.
@@ -48,5 +51,22 @@ static func get_progression_config() -> ProgressionConfig:
 	if ModeManager == null or ModeManager.current_mode == null:
 		return null
 	return ModeManager.current_mode.progression_config
+
+#endregion
+
+#region Visual Settings
+
+## Get the background color for the current mode.
+## Returns mode-specific color if set (non-zero), otherwise returns default dark gray.
+static func get_background_color() -> Color:
+	if ModeManager == null or ModeManager.current_mode == null:
+		return DEFAULT_BACKGROUND_COLOR
+
+	var mode_color: Color = ModeManager.current_mode.background_color
+	# Check if a custom color was set (non-zero alpha or non-default values)
+	if mode_color.a > 0 and (mode_color.r != 0 or mode_color.g != 0 or mode_color.b != 0):
+		return mode_color
+
+	return DEFAULT_BACKGROUND_COLOR
 
 #endregion

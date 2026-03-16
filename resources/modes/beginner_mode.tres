@@ -1,13 +1,15 @@
-[gd_resource type="Resource" script_class="ModeConfig" load_steps=3 format=3 uid="uid://dbeginnermode0001"]
+[gd_resource type="Resource" script_class="ModeConfig" load_steps=4 format=3 uid="uid://dbeginnermode0001"]
 
 [ext_resource type="Script" path="res://scripts/data/mode_config.gd" id="1_modeconfig"]
 [ext_resource type="GDScript" path="res://scripts/modes/beginner_mode.gd" id="2_beginner_mode"]
+[ext_resource type="Resource" path="res://resources/modes/beginner_ball_physics.tres" id="3_physics"]
+[ext_resource type="Resource" path="res://resources/modes/beginner_progression.tres" id="4_progression"]
 
 [resource]
 script = ExtResource("1_modeconfig")
 mode_id = "beginner"
 display_name = "Beginner"
-description = "An easier mode for learning the basics. (Currently identical to Endless)"
+description = "An easier mode for learning the basics. Slower ball, gentler progression."
 icon = null
 implementation = ExtResource("2_beginner_mode")
 orb_pool = []
@@ -15,5 +17,6 @@ spawn_interval = 0.0
 max_orbs = 0
 hud_metric = "score"
 has_win = false
-ball_physics_config = null
-progression_config = null
+ball_physics_config = ExtResource("3_physics")
+progression_config = ExtResource("4_progression")
+background_color = Color(0.35, 0.35, 0.4, 1)

@@ -17,3 +17,4 @@ hud_metric = "score"
 has_win = false
 ball_physics_config = null
 progression_config = null
+background_color = Color(0, 0, 0, 0)

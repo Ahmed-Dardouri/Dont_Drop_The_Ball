@@ -29,10 +29,43 @@ func _reset_mode_configs() -> void:
 	if endless_config != null:
 		endless_config.ball_physics_config = null
 		endless_config.progression_config = null
+		endless_config.background_color = Color(0, 0, 0, 0)
 
 	if beginner_config != null:
 		beginner_config.ball_physics_config = null
 		beginner_config.progression_config = null
+		beginner_config.background_color = Color(0, 0, 0, 0)
+
+
+#region Background Color Tests
+
+func test_get_background_color_returns_default_when_no_mode() -> void:
+	ModeManager.current_mode = null
+	var result: Color = GameRules.get_background_color()
+	assert_eq(result, GameRules.DEFAULT_BACKGROUND_COLOR, "Should return default background color when no mode")
+
+
+func test_get_background_color_returns_mode_color_when_set() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.background_color = Color(0.5, 0.5, 0.5, 1.0)
+
+	ModeManager.start_mode("beginner")
+	var result: Color = GameRules.get_background_color()
+	assert_eq(result, Color(0.5, 0.5, 0.5, 1.0), "Should return mode-specific background color")
+
+
+func test_get_background_color_returns_default_when_zero_color() -> void:
+	var config: ModeConfig = ModeManager.get_mode_config("beginner")
+	config.background_color = Color(0, 0, 0, 0)  # Zero color means use default
+
+	ModeManager.start_mode("beginner")
+	var result: Color = GameRules.get_background_color()
+	assert_eq(result, GameRules.DEFAULT_BACKGROUND_COLOR, "Should return default when mode color is zero")
+
+	ModeManager.end_mode({"win": false})
+
+
+#endregion
 
 
 #region Default Fallback Tests
