@@ -16,5 +16,7 @@ max_orbs = 0
 hud_metric = "score"
 has_win = false
 ball_physics_config = null
+player_physics_config = null
 progression_config = null
 background_color = Color(0, 0, 0, 0)
+show_parallax_background = true

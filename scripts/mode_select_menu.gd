@@ -1,8 +1,8 @@
 extends Control
 ## Mode selection menu - allows player to choose between game modes.
 
-## Currently selected mode ID
-var selected_mode_id: String = "endless"
+## Currently selected mode ID (default to beginner for easier experience)
+var selected_mode_id: String = "beginner"
 
 @onready var endless_button: Button = $PanelContainer/VBoxContainer/endless_button
 @onready var beginner_button: Button = $PanelContainer/VBoxContainer/beginner_button

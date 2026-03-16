@@ -12,8 +12,8 @@ var _index : int = 0
 var _scene_path := "res://scenes/world_builder.tscn"
 var _current_scene : Enums.MainScene = Enums.MainScene.MAIN_MENU
 
-## Currently selected game mode ID (default to endless)
-var _selected_mode_id: String = "endless"
+## Currently selected game mode ID (default to beginner)
+var _selected_mode_id: String = "beginner"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

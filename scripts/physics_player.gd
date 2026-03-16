@@ -231,18 +231,18 @@ func _input(event: InputEvent) -> void:
 		MoveEvent.invoke(Enums.PlayerMoves.RIGHT, false, 0)
 
 func load_constants():
-	keyboard_move_power = Constants.player_keyboard_move_power
-	jump_power = Constants.player_jump_power
-	initial_move_speed = Constants.player_initial_move_speed
-	coyote_timeout = Constants.player_coyote_timeout
-	jump_buffer_timeout = Constants.player_jump_buffer_timeout
-	grounding_force = Constants.player_grounding_force
-	fall_acceleration = Constants.player_fall_acceleration
-	max_fall_speed = Constants.player_max_fall_speed
-	Jump_ended_early_gravity_modifier = Constants.player_Jump_ended_early_gravity_modifier
-	move_acceleration = Constants.player_move_acceleration
-	initial_move_acceleration = Constants.player_initial_move_acceleration
-	move_deceleration = Constants.player_move_deceleration
+	keyboard_move_power = GameRules.get_player_keyboard_move_power()
+	jump_power = GameRules.get_player_jump_power()
+	initial_move_speed = GameRules.get_player_initial_move_speed()
+	coyote_timeout = GameRules.get_player_coyote_timeout()
+	jump_buffer_timeout = GameRules.get_player_jump_buffer_timeout()
+	grounding_force = GameRules.get_player_grounding_force()
+	fall_acceleration = GameRules.get_player_fall_acceleration()
+	max_fall_speed = GameRules.get_player_max_fall_speed()
+	Jump_ended_early_gravity_modifier = GameRules.get_player_early_jump_gravity_modifier()
+	move_acceleration = GameRules.get_player_acceleration()
+	initial_move_acceleration = GameRules.get_player_initial_acceleration()
+	move_deceleration = GameRules.get_player_deceleration()
 	stop_on_ceiled = Constants.player_stop_on_ceiled
 	mass_const = Constants.player_mass_const
 	gravity = Constants.player_gravity

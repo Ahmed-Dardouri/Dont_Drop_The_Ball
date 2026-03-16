@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="PlayerPhysicsConfig" load_steps=2 format=3 uid="uid://dbeginnerplayer001"]
+
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://scripts/data/player_physics_config.gd" id="1_player"]
+
+[resource]
+script = ExtResource("1_player")
+keyboard_move_power = 500
+jump_power = -900
+move_speed = 140
+acceleration = 1500.0
+initial_acceleration = 2000.0
+deceleration = 10000.0
+coyote_timeout = 200.0
+jump_buffer_timeout = 200.0
+fall_acceleration = 1600.0
+max_fall_speed = 750.0
+grounding_force = 1.5
+early_jump_gravity_modifier = 2.5

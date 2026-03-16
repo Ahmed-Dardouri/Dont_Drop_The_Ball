@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ProgressionConfig" load_steps=2 format=3 uid="uid://dbeginnerprog001"]
+[gd_resource type="Resource" script_class="ProgressionConfig" load_steps=2 format=3 uid="uid://buenqp0vfgvg"]
 
 [ext_resource type="Script" uid="uid://b4iiej4wyxibu" path="res://scripts/data/progression_config.gd" id="1_progression"]
 

@@ -50,11 +50,17 @@ class_name ModeConfig extends Resource
 ## Ball physics configuration for this mode (null = use global defaults)
 @export var ball_physics_config: BallPhysicsConfig
 
+## Player physics configuration for this mode (null = use global defaults)
+@export var player_physics_config: PlayerPhysicsConfig
+
 ## Progression configuration for this mode (null = use global defaults)
 @export var progression_config: ProgressionConfig
 
 ## Background color for this mode (Color(0, 0, 0, 0) = use default dark)
 @export var background_color: Color = Color(0, 0, 0, 0)
+
+## Whether to show parallax background (true = show forest parallax, false = solid color only)
+@export var show_parallax_background: bool = true
 
 #endregion
 
