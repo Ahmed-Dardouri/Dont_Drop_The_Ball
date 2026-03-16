@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/data/mode_config.gd" id="1_modeconfig"]
 [ext_resource type="GDScript" path="res://scripts/modes/beginner_mode.gd" id="2_beginner_mode"]
-[ext_resource type="Resource" path="res://resources/modes/beginner_ball_physics.tres" id="3_ball_physics"]
-[ext_resource type="Resource" path="res://resources/modes/beginner_progression.tres" id="4_progression"]
-[ext_resource type="Resource" path="res://resources/modes/beginner_player_physics.tres" id="5_player_physics"]
+[ext_resource type="Resource" path="res://resources/configs/beginner_ball_physics.tres" id="3_ball_physics"]
+[ext_resource type="Resource" path="res://resources/configs/beginner_progression.tres" id="4_progression"]
+[ext_resource type="Resource" path="res://resources/configs/beginner_player_physics.tres" id="5_player_physics"]
 
 [resource]
 script = ExtResource("1_modeconfig")

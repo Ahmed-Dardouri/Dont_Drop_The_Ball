@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BallPhysicsConfig" load_steps=2 format=3 uid="uid://buenqpp6rgvg"]
 
-[ext_resource type="Script" uid="uid://d8g8x6yv1wkjp" path="res://scripts/data/ball_physics_config.gd" id="1_physics"]
+[ext_resource type="Script" uid="uid://d1cgkr0i8xpws" path="res://scripts/data/ball_physics_config.gd" id="1_physics"]
 
 [resource]
 script = ExtResource("1_physics")

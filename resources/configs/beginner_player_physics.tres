@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="PlayerPhysicsConfig" load_steps=2 format=3 uid="uid://dbeginnerplayer001"]
+[gd_resource type="Resource" script_class="PlayerPhysicsConfig" load_steps=2 format=3 uid="uid://xkg1mews6fc"]
 
-[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://scripts/data/player_physics_config.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://dfijo3h04d8lf" path="res://scripts/data/player_physics_config.gd" id="1_player"]
 
 [resource]
 script = ExtResource("1_player")

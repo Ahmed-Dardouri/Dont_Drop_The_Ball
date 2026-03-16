@@ -12,6 +12,34 @@ You MUST:
 - Always add ALL files when committing (use `git add .` before commit).
 
 ================================================================================
+CRITICAL: GAME MUST ALWAYS RUN
+================================================================================
+
+**THE GAME MUST ALWAYS BE ABLE TO RUN AFTER YOUR CHANGES.**
+
+If any of these commands fail, STOP and report the error to the user immediately:
+1. `./devscripts/smoke_test.sh` - Must output "[smoke] OK."
+2. `./devscripts/test.sh` - Must output "All tests passed!"
+
+**DO NOT:**
+- Pretend the game works when it doesn't
+- Ignore errors or warnings that indicate the game won't run
+- Claim completion if the game fails to start
+
+**When you see errors:**
+1. Report them to the user immediately with the exact error message
+2. Work with the user to debug and fix the issue
+3. Only claim completion after ALL validation commands pass
+
+Common issues to watch for:
+- Wrong UIDs in .tres files (copying UIDs from other files)
+- Scripts not inheriting from the correct base class
+- Missing @export variables that exist in the resource file
+- Resource files in wrong directories (e.g., ModeManager loads ALL .tres from resources/modes/)
+
+================================================================================
+
+================================================================================
 PROJECT SUMMARY
 ================================================================================
 
