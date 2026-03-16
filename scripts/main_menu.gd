@@ -10,6 +10,10 @@ func _on_play_botton_pressed() -> void:
 	ButtonEvent.invoke(Enums.MainButtonType.PLAY)
 
 
+func _on_mode_button_pressed() -> void:
+	ButtonEvent.invoke(Enums.MainButtonType.MODE_SELECT)
+
+
 func _on_settings_button_pressed() -> void:
 	ButtonEvent.invoke(Enums.MainButtonType.SETTINGS)
 

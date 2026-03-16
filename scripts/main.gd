@@ -4,12 +4,17 @@ extends Node2D
 @onready var phantom_camera_2d: PhantomCamera2D = $PhantomCamera2D
 @onready var main_menu: Control = $main_menu
 @onready var settings_menu: Control = $settings_menu
+@onready var mode_select_menu: Control = $mode_select_menu
 
 @onready var camera_2d: Camera2D = $Camera2D
 
 var _index : int = 0
 var _scene_path := "res://scenes/world_builder.tscn"
 var _current_scene : Enums.MainScene = Enums.MainScene.MAIN_MENU
+
+## Currently selected game mode ID (default to endless)
+var _selected_mode_id: String = "endless"
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_events() # keep first
@@ -20,7 +25,7 @@ func replay_handler(event: ReplayEvent):
 	ScoreManager.reset_score()
 	_reload_world()
 	PauseEvent.invoke(false)
-	
+
 func get_world_builder():
 	world_builder = get_child(_index)
 
@@ -28,13 +33,13 @@ func get_world_builder():
 func _reload_world():
 	# Load and instance a new copy
 	var new_scene = load(_scene_path).instantiate()
-	
+
 	# get old scene
 	get_world_builder()
 
 	# Remove the old instance
 	world_builder.queue_free()
-	
+
 	# wait for node to be removed
 	await Engine.get_main_loop().process_frame
 	await Engine.get_main_loop().process_frame
@@ -44,51 +49,69 @@ func _reload_world():
 	await Engine.get_main_loop().process_frame
 	await Engine.get_main_loop().process_frame
 	await Engine.get_main_loop().process_frame
-	
+
 	world_builder = new_scene
 	#add node to main
 	add_child(world_builder)
 	world_builder.position = Vector2.ZERO
 	move_child(world_builder, _index)  # keep the same position in the tree
 	world_builder.load_world()
-	
-	
+
+
 func handle_pause(event: PauseEvent):
 	get_tree().paused = event._pause
 
 func handle_buttons(event: ButtonEvent):
-	
+
 	phantom_camera_2d.priority = 5
 	match event._type:
 		Enums.MainButtonType.PLAY:
 			play_button_handle()
 		Enums.MainButtonType.SETTINGS:
-			settngs_button_handle()
+			settings_button_handle()
+		Enums.MainButtonType.MODE_SELECT:
+			mode_select_button_handle()
 		Enums.MainButtonType.BACK:
 			back_button_handle()
 		Enums.MainButtonType.EXIT:
 			exit_button_handle()
 		_:
 			pass
-			
-			
+
+
 func play_button_handle():
+	# Get selected mode from mode_select_menu if available
+	if mode_select_menu != null and mode_select_menu.has_method("get_selected_mode"):
+		_selected_mode_id = mode_select_menu.get_selected_mode()
+
+	# Start the selected game mode
+	ModeManager.start_mode(_selected_mode_id)
+
 	ScoreManager.reset_score()
 	_reload_world()
 	PauseEvent.invoke(false)
 	phantom_camera_2d.priority = 0
 	switch_scene(Enums.MainScene.WORLD_BUILDER)
-	
-func settngs_button_handle():
+
+
+func settings_button_handle():
 	switch_scene(Enums.MainScene.SETTINGS_MENU)
-		
+
+
+func mode_select_button_handle():
+	switch_scene(Enums.MainScene.MODE_SELECT_MENU)
+
+
 func back_button_handle():
 	match _current_scene:
 		Enums.MainScene.WORLD_BUILDER:
 			PauseEvent.invoke(true)
 			world_builder.unload_world()
+			ModeManager.end_mode({"win": false})
 			switch_scene(Enums.MainScene.MAIN_MENU)
 		Enums.MainScene.SETTINGS_MENU:
+			switch_scene(Enums.MainScene.MAIN_MENU)
+		Enums.MainScene.MODE_SELECT_MENU:
 			switch_scene(Enums.MainScene.MAIN_MENU)
 		Enums.MainScene.MAIN_MENU:
 			switch_scene(Enums.MainScene.MAIN_MENU)
@@ -109,7 +132,7 @@ func add_events():
 	Events.add_listener(ReplayEvent, replay_handler)
 	Events.add_listener(PauseEvent, handle_pause)
 	Events.add_listener(ButtonEvent, handle_buttons)
-	
+
 
 func switch_scene(scene: Enums.MainScene):
 	_current_scene = scene
@@ -121,12 +144,15 @@ func switch_scene(scene: Enums.MainScene):
 			main_menu.visible = true
 		Enums.MainScene.SETTINGS_MENU:
 			settings_menu.visible = true
-		
-		
+		Enums.MainScene.MODE_SELECT_MENU:
+			mode_select_menu.visible = true
+
+
 func hide_scenes():
 	world_builder.visible = false
 	main_menu.visible = false
 	settings_menu.visible = false
+	mode_select_menu.visible = false
 
 func exit_game():
 	get_tree().quit()

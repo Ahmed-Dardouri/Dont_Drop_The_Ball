@@ -36,12 +36,14 @@ enum MainButtonType {
 	SETTINGS,
 	BACK,
 	EXIT,
+	MODE_SELECT,
 }
 
 enum MainScene {
 	WORLD_BUILDER,
 	MAIN_MENU,
 	SETTINGS_MENU,
+	MODE_SELECT_MENU,
 	TUTORIAL
 }
 
