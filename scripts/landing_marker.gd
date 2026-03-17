@@ -58,8 +58,10 @@ func _process(_delta: float) -> void:
 		global_rotation = 0  # Keep marker upright
 		visible = true
 		_marker.color = marker_color  # Ensure color is applied
+		_marker.visible = true  # Ensure child is visible
 	else:
 		visible = false
+		_marker.visible = false
 
 
 func _create_marker() -> void:

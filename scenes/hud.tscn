@@ -117,14 +117,23 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.7)
 theme_override_font_sizes/font_size = 20
 text = "FPS: 60"
 
-[node name="LifeIndicator" type="TextureRect" parent="."]
+[node name="LifeIndicator" type="HBoxContainer" parent="."]
 visible = false
 offset_left = 34.0
-offset_top = 161.0
-offset_right = 174.0
-offset_bottom = 301.0
-scale = Vector2(0.5, 0.5)
+offset_top = 60.0
+offset_right = 200.0
+offset_bottom = 130.0
+
+[node name="LifeIcon" type="TextureRect" parent="LifeIndicator"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
 stretch_mode = 4
+
+[node name="LifeCountLabel" type="Label" parent="LifeIndicator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "x0"
+vertical_alignment = 1
 
 [node name="VortexIndicator" type="TextureRect" parent="."]
 visible = false

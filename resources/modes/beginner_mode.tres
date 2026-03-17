@@ -28,6 +28,6 @@ ball_scale = 1.3
 orb_scale = 1.3
 starting_lives = 3
 permanent_life_pickups = true
-ball_slowdown_on_orb = 0.7
+ball_slowdown_on_orb = 0.0
 ball_slowdown_duration = 0.5
 show_landing_marker = true

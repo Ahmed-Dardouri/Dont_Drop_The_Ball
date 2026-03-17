@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dauyf7rg7mh8y" path="res://sprites/acorn.png" id="1_7s4qf"]
 [ext_resource type="Script" uid="uid://3ft3e7fctn7q" path="res://scripts/ball.gd" id="1_cxlvu"]
 [ext_resource type="PackedScene" uid="uid://v3r6fyokxtxr" path="res://scenes/trail.tscn" id="3_f7cbr"]
-[ext_resource type="Script" path="res://scripts/landing_marker.gd" id="4_landing"]
+[ext_resource type="Script" uid="uid://bctob8xm17o43" path="res://scripts/landing_marker.gd" id="4_landing"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cxlvu"]
 bounce = 0.6
