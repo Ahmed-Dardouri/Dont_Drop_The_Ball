@@ -67,7 +67,7 @@ class_name ModeConfig extends Resource
 #region Easy Mode Assist Features
 
 ## Ball gravity scale multiplier (1.0 = normal, lower = floatier). 0 = use scene default.
-@export var ball_gravity_scale: float = 0.0
+@export var ball_gravity_scale: float = 5.0
 
 ## Ball size scale multiplier (1.0 = normal size). 0 = use scene default.
 @export var ball_scale: float = 0.0

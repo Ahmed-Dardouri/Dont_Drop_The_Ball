@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://7st5pqg6mdke"]
+[gd_scene load_steps=17 format=3 uid="uid://7st5pqg6mdke"]
 
 [ext_resource type="Script" uid="uid://raqe3onpyrij" path="res://scripts/hud.gd" id="1_hd3ao"]
 [ext_resource type="Script" uid="uid://dqyietw8t0qy5" path="res://scripts/button_controls.gd" id="2_hd3ao"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dyvle2c4krphw" path="res://sprites/left_semi_solid.png" id="5_047uy"]
 [ext_resource type="Script" uid="uid://bo7u33l1lie1b" path="res://scripts/score_mngr.gd" id="8_hd3ao"]
 [ext_resource type="Texture2D" uid="uid://b0m2uc6nwrvby" path="res://sprites/vortex_orb.png" id="9_0i1j5"]
+[ext_resource type="Texture2D" uid="uid://dwxf4p6xbmeee" path="res://sprites/life_orb.png" id="9_apjy4"]
 [ext_resource type="Texture2D" uid="uid://d2koxxjlwafl5" path="res://sprites/spawn_speedup_orb.png" id="10_mphia"]
 [ext_resource type="Script" uid="uid://titq33l4cv12" path="res://scripts/bonus_meter.gd" id="11_bonus_meter"]
 
@@ -118,15 +119,15 @@ theme_override_font_sizes/font_size = 20
 text = "FPS: 60"
 
 [node name="LifeIndicator" type="HBoxContainer" parent="."]
-visible = false
-offset_left = 34.0
-offset_top = 60.0
-offset_right = 200.0
-offset_bottom = 130.0
+offset_left = 46.0
+offset_top = 188.0
+offset_right = 212.0
+offset_bottom = 258.0
 
 [node name="LifeIcon" type="TextureRect" parent="LifeIndicator"]
-custom_minimum_size = Vector2(70, 70)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
+texture = ExtResource("9_apjy4")
 stretch_mode = 4
 
 [node name="LifeCountLabel" type="Label" parent="LifeIndicator"]
