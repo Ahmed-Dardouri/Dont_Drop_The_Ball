@@ -49,12 +49,16 @@ const SCORE_TO_METER_RATIO: float = 1
 ## Maximum meter value (capped at highest threshold)
 const MAX_METER_VALUE: float = 300.0
 
+## Pause duration after orb collection before drain resumes (seconds)
+const DRAIN_PAUSE_DURATION: float = 0.1
+
 #endregion
 
 #region Private State
 
 var _meter_value: float = 0.0
 var _current_tier: int = 0
+var _drain_pause_timer: float = 0.0
 
 #endregion
 
@@ -66,6 +70,11 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# Update drain pause timer
+	if _drain_pause_timer > 0.0:
+		_drain_pause_timer = maxf(_drain_pause_timer - delta, 0.0)
+		return
+
 	# Drain the meter continuously
 	if _meter_value > 0.0:
 		var drain_rate: float = TIER_DRAIN_RATES[_current_tier]
@@ -133,6 +142,7 @@ func reset_combo() -> void:
 	var old_tier: int = _current_tier
 	_meter_value = 0.0
 	_current_tier = 0
+	_drain_pause_timer = 0.0
 
 	# Fire events for UI
 	MeterChangedEvent.invoke(_meter_value, _current_tier)
@@ -178,6 +188,9 @@ func get_next_combo_bonus() -> int:
 
 func _fill_meter(score_amount: float) -> void:
 	var old_tier: int = _current_tier
+
+	# Pause drain after orb collection
+	_drain_pause_timer = DRAIN_PAUSE_DURATION
 
 	# Add to meter, capped at max
 	_meter_value = minf(_meter_value + score_amount * SCORE_TO_METER_RATIO, MAX_METER_VALUE)
