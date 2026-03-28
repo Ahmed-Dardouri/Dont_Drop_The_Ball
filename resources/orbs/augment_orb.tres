@@ -8,7 +8,7 @@
 
 [sub_resource type="Resource" id="AugmentOrbBehavior_1"]
 script = ExtResource("2_augmentbehavior")
-effect_texture = ExtResource("3_effect")
+effect_texture = ExtResource("5_s8vae")
 behavior_id = ""
 
 [resource]
