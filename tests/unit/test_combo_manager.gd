@@ -115,18 +115,23 @@ func test_tier_ordering_is_correct() -> void:
 func test_meter_drains_over_time() -> void:
 	ComboManager.add_orb_score(20)
 	var initial_value: float = ComboManager.get_meter_value()
+	# Skip past the pause period (0.1 seconds)
+	ComboManager._process(0.1)
 	ComboManager._process(1.0)
 	assert_lt(ComboManager.get_meter_value(), initial_value, "Meter should drain over time")
 
 
 func test_meter_does_not_go_negative() -> void:
 	ComboManager.add_orb_score(3)
+	# Skip past the pause period (0.1 seconds)
+	ComboManager._process(0.1)
 	ComboManager._process(10.0)
 	assert_true(ComboManager.get_meter_value() >= 0.0, "Meter should not go negative")
 
 
 func test_drain_stops_at_zero() -> void:
 	ComboManager.reset_combo()
+	# Ensure no pause timer is active
 	ComboManager._process(5.0)
 	assert_eq(ComboManager.get_meter_value(), 0.0, "Drain should stop at zero")
 
@@ -135,6 +140,8 @@ func test_drain_at_tier_0_rate() -> void:
 	ComboManager.add_orb_score(5)
 	assert_eq(ComboManager.get_current_tier(), 0, "Should be at tier 0")
 	var initial: float = ComboManager.get_meter_value()
+	# Skip past the pause period (0.1 seconds)
+	ComboManager._process(0.1)
 	ComboManager._process(1.0)
 	var expected: float = maxf(initial - 0.5, 0.0)
 	assert_almost_eq(ComboManager.get_meter_value(), expected, 0.1, "Tier 0 should drain at 0.5/sec")
@@ -146,7 +153,8 @@ func test_higher_tier_drains_faster() -> void:
 	assert_eq(ComboManager.get_current_tier(), 6, "Should be at tier 6")
 	var initial_tier6: float = ComboManager.get_meter_value()
 
-	# Process 1 second at tier 6
+	# Skip past pause then process 1 second at tier 6
+	ComboManager._process(0.1)
 	ComboManager._process(1.0)
 	var after_tier6: float = ComboManager.get_meter_value()
 
@@ -156,7 +164,8 @@ func test_higher_tier_drains_faster() -> void:
 	assert_eq(ComboManager.get_current_tier(), 0, "Should be at tier 0")
 	var initial_tier0: float = ComboManager.get_meter_value()
 
-	# Process 1 second at tier 0
+	# Skip past pause then Process 1 second at tier 0
+	ComboManager._process(0.1)
 	ComboManager._process(1.0)
 	var after_tier0: float = ComboManager.get_meter_value()
 
@@ -167,6 +176,8 @@ func test_higher_tier_drains_faster() -> void:
 func test_meter_draining_reduces_tier() -> void:
 	ComboManager.add_orb_score(50)
 	assert_eq(ComboManager.get_current_tier(), 2, "Should start at tier 2")
+	# Skip past pause period
+	ComboManager._process(0.1)
 	while ComboManager.get_meter_value() > 25.0:
 		ComboManager._process(0.1)
 	assert_eq(ComboManager.get_current_tier(), 1, "Tier should drop when meter drains")
@@ -249,6 +260,50 @@ func test_reset_combo_sets_meter_to_zero() -> void:
 	ComboManager.reset_combo()
 	assert_eq(ComboManager.get_meter_value(), 0.0, "Reset should set meter to 0")
 	assert_eq(ComboManager.get_current_tier(), 0, "Reset should set tier to 0")
+
+
+func test_combo_reset_clears_pause_timer() -> void:
+	ComboManager.add_orb_score(10)
+	ComboManager.reset_combo()
+	assert_eq(ComboManager._drain_pause_timer, 0.0, "Pause timer should be cleared on combo reset")
+
+
+func test_add_orb_score_sets_pause_timer() -> void:
+	ComboManager.add_orb_score(10)
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.1, 0.001, "Adding orb score should set pause timer")
+
+
+func test_drain_paused_during_pause() -> void:
+	ComboManager.add_orb_score(10)
+	# Verify drain is paused
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.1, 0.001, "Pause timer should be set after orb collection")
+	# Process during pause - should not drain
+	ComboManager._process(0.05)
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.05, 0.001, "Pause timer should decrement by 0.05 seconds")
+	assert_eq(ComboManager.get_meter_value(), 10.0, "Meter should not drain during pause")
+
+
+func test_drain_resumes_after_pause() -> void:
+	ComboManager.add_orb_score(10)
+	# Verify drain is paused
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.1, 0.001, "Pause timer should be set after orb collection")
+	# Process during pause - should not drain
+	ComboManager._process(0.05)
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.05, 0.001, "Pause timer should be 0.05 after 0.05 seconds")
+	# Process after pause ends - drain should happen
+	ComboManager._process(0.05)
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.0, 0.001, "Pause timer should be zero after 0.1 seconds total")
+	assert_almost_eq(ComboManager.get_meter_value(), 9.5, 0.1, "Meter should drain after pause ends")
+
+
+func test_multiple_orb_scores_extend_pause() -> void:
+	ComboManager.add_orb_score(10)
+	ComboManager.add_orb_score(15)
+	assert_almost_eq(ComboManager._drain_pause_timer, 0.1, 0.001, "Pause timer should be reset after each orb collection")
+
+
+func test_pause_duration_is_correct() -> void:
+	assert_eq(ComboManager.DRAIN_PAUSE_DURATION, 0.1, "Drain pause duration should be 0.1 seconds")
 
 
 func test_add_orb_score_returns_correct_dictionary() -> void:
