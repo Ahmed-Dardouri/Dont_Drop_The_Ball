@@ -170,14 +170,14 @@ func _on_card_selected(index: int) -> void:
 
 
 func _trigger_augment_rescue() -> void:
-	# Find the ball and trigger its rescue state
 	var balls := get_tree().get_nodes_in_group("ball")
 	if balls.is_empty():
 		return
 
 	var ball: Node = balls[0]
-	if ball.has_method("_trigger_rescue"):
-		ball._trigger_rescue()
+	if ball.has_method("start_rescue_movement"):
+		var augment_texture: Texture2D = load("res://resources/orbs/augment_orb.tres").texture
+		ball.start_rescue_movement(augment_texture)
 
 
 #endregion

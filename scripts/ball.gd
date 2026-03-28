@@ -1,36 +1,50 @@
-extends RigidBody2D
+class_name Ball extends RigidBody2D
+
+#region Exports
+
+@export var max_speed: float = 900.0
+@export var fall_speed: float = 900.0
+@export var air_friction: int = 3
+@export var game_over: bool = false
+
+@export var rescue_duration: float = 1.5
+@export var rescue_target_pos: Vector2 = Vector2(580, 200)
+@export var player_target: Vector2 = Vector2(580, 601)
+
+#endregion
+
+#region Node References
 
 @onready var shape_cast: ShapeCast2D = $ShapeCast2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var sprite: Sprite2D = $Sprite2D
 
-var max_speed := 900.0
-var fall_speed := 900.0
-var air_friction := 3
-var game_over: bool = false
+#endregion
 
-# Easy mode slowdown
+#region State
+
+# Slowdown
 var _slowdown_multiplier: float = 1.0
 var _slowdown_timer: float = 0.0
 var _slowdown_active: bool = false
-var _pre_slowdown_velocity: Vector2 = Vector2.ZERO
 
 # Rescue state
 var _is_rescuing: bool = false
-var _rescue_target_pos: Vector2 = Vector2(580, 200)
-var _player_target : Vector2 = Vector2(580, 601)
 var _rescue_progress: float = 0.0
-var _rescue_duration: float = 1.5
 
 # Rescue visual
 var _rescue_sprite: Sprite2D = null
+var _rescue_visual_texture: Texture2D = null
 
 # Player reference for rescue
 var _player: Node2D = null
 var _player_collision: CollisionPolygon2D = null
 
+#endregion
 
-# Called when the node enters the scene tree for the first time.
+
+#region Lifecycle
+
 func _ready() -> void:
 	add_to_group("ball")
 	load_constants()
@@ -63,6 +77,10 @@ func _physics_process(_delta: float) -> void:
 	apply_air_friction()
 
 
+#endregion
+
+#region Physics Helpers
+
 func clamp_max_speed():
 	if max_speed > 0.0:
 		var v := linear_velocity
@@ -83,6 +101,10 @@ func apply_air_friction():
 	linear_velocity.x = linear_velocity.x * (1.0 - air_friction/1000.0)
 
 
+#endregion
+
+#region Collision Handling
+
 func _on_body_entered(body: Node) -> void:
 	# Ignore all collisions during rescue
 	if _is_rescuing:
@@ -91,7 +113,7 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("ground") && !game_over:
 		# Check for life before game over
 		if _has_life():
-			_trigger_rescue()
+			_trigger_life_rescue()
 		else:
 			game_over = true
 			GameOverEvent.invoke()
@@ -104,6 +126,10 @@ func _on_body_entered(body: Node) -> void:
 		# Gentle velocity reduction for smoother bounce feel
 		linear_velocity = linear_velocity * 0.4
 
+
+#endregion
+
+#region Life Management
 
 ## Check if player has a life (either temporary effect or permanent)
 func _has_life() -> bool:
@@ -124,9 +150,14 @@ func _consume_life() -> void:
 		LifeChangedEvent.invoke(false)
 
 
-#region Rescue Logic
+#endregion
 
-func _trigger_rescue() -> void:
+#region Rescue Movement
+
+## Start rescue movement to safe position with optional custom visual sprite.
+## This is the generic rescue that can be reused by different systems (life orb, augment orb, etc.)
+## sprite_texture: The texture to use for the rescue visual. If null, uses life orb texture.
+func start_rescue_movement(sprite_texture: Texture2D = null) -> void:
 	_is_rescuing = true
 	_rescue_progress = 0.0
 	freeze = true  # Freeze physics
@@ -134,9 +165,6 @@ func _trigger_rescue() -> void:
 	# Disable collisions during rescue
 	if collision_shape != null:
 		collision_shape.disabled = true
-
-	# Consume the life (handles both permanent and temporary)
-	_consume_life()
 
 	# Find player for rescue positioning
 	_find_player()
@@ -150,12 +178,22 @@ func _trigger_rescue() -> void:
 		_player_collision.disabled = true
 
 	# Create rescue visual
-	_create_rescue_visual()
+	_create_rescue_visual(sprite_texture)
 
 	# Notify systems
 	BallRescueEvent.invoke(true)
 
 	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.BALL_RESCUE)
+
+
+## Trigger life rescue when ball hits ground with a life.
+## This consumes a life and uses life orb visual.
+func _trigger_life_rescue() -> void:
+	# Consume the life FIRST
+	_consume_life()
+
+	# Start rescue movement with life orb visual
+	start_rescue_movement(_get_life_texture())
 
 
 func _find_player() -> void:
@@ -166,15 +204,21 @@ func _find_player() -> void:
 		_player_collision = _player.get_node_or_null("PolygonCollider2D")
 
 
-func _create_rescue_visual() -> void:
+func _create_rescue_visual(sprite_texture: Texture2D) -> void:
+	# Use provided texture or or fallback to life orb texture
+	var texture_to_use: Texture2D = sprite_texture if sprite_texture != null else _get_life_texture()
+
 	# Create sprite behind ball to indicate rescue
 	_rescue_sprite = Sprite2D.new()
-	_rescue_sprite.texture = _get_life_texture()
-	_rescue_sprite.scale = Vector2(0.4, 0.4)  # Visible scale
-	_rescue_sprite.z_index = -1
-	_rescue_sprite.modulate = Color(1, 1, 1, 0.7)
-	_rescue_sprite.position = Vector2(0, 0)  # Center on ball
+	_rescue_sprite.texture = texture_to_use
+	_rescue_sprite.scale = Vector2(0.4, 0.4)
+	_rescue_sprite.modulate.a = 0.7
+	_rescue_sprite.z_index = -1  # Behind ball
+	_rescue_sprite.position = rescue_target_pos
 	add_child(_rescue_sprite)
+
+	# Store for reference
+	_rescue_visual_texture = texture_to_use
 
 
 func _get_life_texture() -> Texture2D:
@@ -184,21 +228,20 @@ func _get_life_texture() -> Texture2D:
 
 func _update_rescue(delta: float) -> void:
 	_rescue_progress += delta
-	var t: float = clamp(_rescue_progress / _rescue_duration, 0.0, 1.0)
+	var t: float = clamp(_rescue_progress / rescue_duration, 0.0, 1.0)
 
 	# Ease out for smooth deceleration
 	var eased_t: float = 1.0 - pow(1.0 - t, 3)
 
 	# Move ball to target
-	global_position = lerp(global_position, _rescue_target_pos, eased_t * 0.1)
+	global_position = lerp(global_position, rescue_target_pos, eased_t * 0.1)
 
 	# Smoothly rotate ball back to 0
 	rotation = lerp(rotation, 0.0, eased_t * 0.1)
 
 	# Move player to neutral position (below ball)
 	if _player != null:
-
-		_player.global_position = lerp(_player.global_position, _player_target, eased_t * 0.1)
+		_player.global_position = lerp(_player.global_position, player_target, eased_t * 0.1)
 
 	# Update rescue visual (pulsating effect)
 	if _rescue_sprite != null:
@@ -207,7 +250,7 @@ func _update_rescue(delta: float) -> void:
 		_rescue_sprite.scale = Vector2(0.4 + 0.1 * pulse, 0.4 + 0.1 * pulse)
 
 	# Check if rescue complete
-	if t >= 1.0 and global_position.distance_to(_rescue_target_pos) < 5.0:
+	if _rescue_progress >= rescue_duration:
 		_complete_rescue()
 
 
@@ -233,7 +276,7 @@ func _complete_rescue() -> void:
 		_rescue_sprite.queue_free()
 		_rescue_sprite = null
 
-	# Reset velocity and rotation
+	# Reset velocity
 	linear_velocity = Vector2.ZERO
 	rotation = 0.0
 
@@ -241,72 +284,77 @@ func _complete_rescue() -> void:
 	BallRescueEvent.invoke(false)
 
 
+#endregion
+
+#region Slowdown
+
+## Start ball slowdown effect (used by easy mode assist)
+func start_slowdown(duration: float, multiplier: float = 1.0) -> void:
+	if multiplier <= 0.0 or multiplier == 1.0:
+		return
+
+	_slowdown_active = true
+	_slowdown_multiplier = multiplier
+	_slowdown_timer = duration
+
+	# Scale current velocity
+	linear_velocity *= multiplier
+
+
+## End ball slowdown effect
+func _end_slowdown() -> void:
+	if not _slowdown_active:
+		return
+
+	_slowdown_active = false
+	_slowdown_multiplier = 1.0
+	_slowdown_timer = 0.0
+
+	# Restore normal velocity
+	linear_velocity /= _slowdown_multiplier
+
+
+#endregion
+
+#region Event Handlers
+
 func _on_ball_rescue_event(event: BallRescueEvent) -> void:
 	# Handle external rescue events if needed
-	if event.is_rescuing():
-		_is_rescuing = true
-		freeze = true
-	else:
-		_is_rescuing = false
-		freeze = false
+	_is_rescuing = event.is_rescuing()
+	freeze = event.is_rescuing()
+	collision_shape.disabled = event.is_rescuing()
+
+
+func _on_orb_collected(_event: OrbCollectedEvent) -> void:
+	# Apply ball slowdown if active
+	var slowdown_strength := GameRules.get_ball_slowdown_on_orb()
+	if slowdown_strength > 0.0 and GameRules.get_ball_slowdown_duration() > 0.0:
+		start_slowdown(GameRules.get_ball_slowdown_duration(), slowdown_strength)
+
+
+#endregion
+
+#region Helpers
+
+func load_constants() -> void:
+	max_speed = GameRules.get_ball_max_speed()
+	fall_speed = GameRules.get_ball_fall_speed()
+	air_friction = GameRules.get_ball_air_friction()
+
+
+func apply_easy_mode_settings() -> void:
+	# Apply ball gravity scale from mode config
+	if GameRules.get_ball_gravity_scale() > 0.0:
+		gravity_scale = GameRules.get_ball_gravity_scale()
+
+	# Apply ball scale from mode config
+	if GameRules.get_ball_scale() > 0.0:
+		scale = Vector2(GameRules.get_ball_scale(), GameRules.get_ball_scale())
 
 
 ## Returns whether the ball is currently in rescue mode.
 func is_rescuing() -> bool:
 	return _is_rescuing
 
+
 #endregion
-
-
-func load_constants():
-	max_speed = GameRules.get_ball_max_speed()
-	fall_speed = GameRules.get_ball_fall_speed()
-	air_friction = int(GameRules.get_ball_air_friction())
-
-
-## Apply easy mode assist settings from GameRules
-func apply_easy_mode_settings():
-	# Apply ball gravity scale if set
-	var mode_gravity_scale: float = GameRules.get_ball_gravity_scale()
-	if mode_gravity_scale > 0.0:
-		gravity_scale = mode_gravity_scale
-
-	# Apply ball scale if set
-	var ball_scale: float = GameRules.get_ball_scale()
-	if ball_scale > 0.0:
-		scale = Vector2(ball_scale, ball_scale)
-		# Also scale collision shape
-		if collision_shape != null and collision_shape.shape is CircleShape2D:
-			collision_shape.shape.radius *= ball_scale
-
-
-## Handle orb collected event for ball slowdown
-func _on_orb_collected(_event: OrbCollectedEvent) -> void:
-	var slowdown: float = GameRules.get_ball_slowdown_on_orb()
-	if slowdown > 0.0 and slowdown < 1.0:
-		_start_slowdown(slowdown, GameRules.get_ball_slowdown_duration())
-
-
-## Start ball slowdown - scales velocity down
-func _start_slowdown(multiplier: float, duration: float) -> void:
-	# If already in slowdown, just extend duration
-	if not _slowdown_active:
-		# Scale velocity down by multiplier
-		linear_velocity *= multiplier
-		_slowdown_active = true
-	_slowdown_multiplier = multiplier
-	_slowdown_timer = duration
-
-
-## End ball slowdown - scales velocity back up
-func _end_slowdown() -> void:
-	if _slowdown_active:
-		# Scale velocity back up
-		if _slowdown_multiplier > 0.0:
-			linear_velocity /= _slowdown_multiplier
-		_slowdown_active = false
-		_slowdown_multiplier = 1.0
-
-
-func apply_constants():
-	pass

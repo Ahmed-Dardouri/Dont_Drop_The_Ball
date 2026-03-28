@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="OrbData" load_steps=7 format=3 uid="uid://cream1fobp4ys"]
+[gd_resource type="Resource" script_class="OrbData" load_steps=6 format=3 uid="uid://cream1fobp4ys"]
 
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
 [ext_resource type="Script" path="res://scripts/data/behaviors/augment_orb_behavior.gd" id="2_augmentbehavior"]
-[ext_resource type="Texture2D" uid="uid://bd1bektw026iq" path="res://sprites/life_orb_aura.png" id="3_effect"]
 [ext_resource type="Texture2D" uid="uid://dcnxi26scil3d" path="res://sprites/augment_orb.png" id="5_s8vae"]
 
 [sub_resource type="Resource" id="AugmentOrbBehavior_1"]
