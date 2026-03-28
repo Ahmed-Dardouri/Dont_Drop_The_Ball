@@ -27,6 +27,7 @@ ScoreManager="*res://scripts/core/score_manager.gd"
 ModeManager="*res://scripts/core/mode_manager.gd"
 EffectManager="*res://scripts/effect_manager.gd"
 ComboManager="*res://scripts/core/combo_manager.gd"
+AugmentManager="*res://scripts/core/augment_manager.gd"
 
 [display]
 

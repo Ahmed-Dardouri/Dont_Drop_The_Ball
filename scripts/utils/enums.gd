@@ -71,3 +71,15 @@ enum OrbRarity {
 	UNCOMMON,
 	RARE
 }
+
+## Types of augment effects for Phase 1 prototype
+enum AugmentEffect {
+	FLAT_SCORE_BONUS,        ## +X score per orb collected
+	SPAWN_RATE_MULTIPLIER,   ## Orb spawn rate multiplied by X
+	BURST_RADIUS_MULTIPLIER, ## Burst orb radius multiplied by X
+	LINE_CLEAR_RANGE_MULT,   ## Line clear range multiplied by X
+	VORTEX_RADIUS_MULT,      ## Vortex radius multiplied by X
+	MAX_LIVES_BONUS,         ## +X max lives
+	METER_FILL_MULT,         ## Bonus meter fill rate multiplied by X
+	BALL_SLOWDOWN_MULT       ## Ball slowdown strength multiplied by X
+}

@@ -17,9 +17,15 @@ extends Node2D
 @export var life_orb_first_spawn_delay: float = 30.0  # First spawn after 30 seconds
 @export var life_orb_spawn_interval: float = 90.0  # Spawn every 90 seconds after first
 
+# Augment orb settings
+@export var augment_orb_data: OrbData
+@export var augment_orb_first_spawn_delay: float = 60.0  # First spawn after 60 seconds
+@export var augment_orb_spawn_interval: float = 60.0  # Spawn every 60 seconds after first
+
 var _timer: Timer
 var _game_time_elapsed: float = 0.0
 var _life_orb_next_spawn_time: float = 0.0
+var _augment_orb_next_spawn_time: float = 0.0
 var _debug_print_timer: float = 0.0
 
 # Spawn metrics
@@ -42,6 +48,10 @@ func _ready() -> void:
 		_spawn_counts[life_orb_data.display_name] = 0
 		# First life orb spawns after first_spawn_delay seconds
 		_life_orb_next_spawn_time = life_orb_first_spawn_delay
+	if augment_orb_data != null:
+		_spawn_counts[augment_orb_data.display_name] = 0
+		# First augment orb spawns after first_spawn_delay seconds
+		_augment_orb_next_spawn_time = augment_orb_first_spawn_delay
 
 
 func _process(delta: float) -> void:
@@ -64,6 +74,11 @@ func _process(delta: float) -> void:
 		_try_spawn_life_orb()
 		# Use += to maintain fixed intervals (60, 120, 180...) not relative to current time
 		_life_orb_next_spawn_time += life_orb_spawn_interval
+
+	# Check if it's time to spawn an augment orb
+	if augment_orb_data != null and _game_time_elapsed >= _augment_orb_next_spawn_time:
+		_try_spawn_augment_orb()
+		_augment_orb_next_spawn_time += augment_orb_spawn_interval
 
 
 func _get_current_spawn_interval() -> float:
@@ -107,6 +122,21 @@ func _try_spawn_life_orb() -> void:
 	_record_spawn(life_orb_data.display_name)
 	_position_orb(orb)
 	add_child(orb)
+
+
+func _try_spawn_augment_orb() -> void:
+	if augment_orb_data == null:
+		return
+
+	# Don't spawn if max_orbs reached
+	if max_orbs > 0 and get_tree().get_nodes_in_group("orbs").size() >= max_orbs:
+		return
+
+	var orb := OrbAdapter.create_orb_from_data(generic_orb_scene, augment_orb_data)
+	_record_spawn(augment_orb_data.display_name)
+	_position_orb(orb)
+	add_child(orb)
+	print("[AugmentOrb] Spawned at time %.1f" % _game_time_elapsed)
 
 
 func _on_timeout() -> void:
@@ -214,6 +244,7 @@ func print_spawn_metrics() -> void:
 	print("Total orbs spawned: %d" % _total_spawns)
 	print("Game time elapsed: %.1f seconds" % _game_time_elapsed)
 	print("Next life orb spawn: %.1f seconds" % _life_orb_next_spawn_time)
+	print("Next augment orb spawn: %.1f seconds" % _augment_orb_next_spawn_time)
 	print("\nPer-type breakdown:")
 	for orb_name: String in _spawn_counts.keys():
 		var count: int = _spawn_counts[orb_name]

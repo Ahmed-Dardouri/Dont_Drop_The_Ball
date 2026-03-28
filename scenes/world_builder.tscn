@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://gdpcp3xup1lv"]
+[gd_scene load_steps=8 format=3 uid="uid://gdpcp3xup1lv"]
 
 [ext_resource type="PackedScene" uid="uid://c3jb2ccbbd4pp" path="res://scenes/world.tscn" id="1_lunhb"]
 [ext_resource type="Script" uid="uid://cx2kx6oilkwic" path="res://scripts/world_builder.gd" id="1_mj35w"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c3e8retqk0tvx" path="res://scenes/orb_mngr.tscn" id="4_mj35w"]
 [ext_resource type="PackedScene" uid="uid://b38pqy0ombawy" path="res://scenes/game_over_screen.tscn" id="5_ejpp2"]
 [ext_resource type="PackedScene" uid="uid://djyugvd15x3ir" path="res://scenes/pause_screen.tscn" id="5_xeick"]
+[ext_resource type="PackedScene" uid="uid://cqaugmentui001" path="res://scenes/augment_choice_ui.tscn" id="7_augment"]
 
 [node name="world_builder" type="Node2D"]
 script = ExtResource("1_mj35w")
@@ -24,3 +25,7 @@ visible = false
 
 [node name="pause_screen" parent="." instance=ExtResource("5_xeick")]
 visible = false
+
+[node name="augment_choice_ui" parent="." instance=ExtResource("7_augment")]
+visible = false
+process_mode = 3
