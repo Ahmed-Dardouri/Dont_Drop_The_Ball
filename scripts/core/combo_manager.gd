@@ -50,7 +50,7 @@ const SCORE_TO_METER_RATIO: float = 1
 const MAX_METER_VALUE: float = 300.0
 
 ## Pause duration after orb collection before drain resumes (seconds)
-const DRAIN_PAUSE_DURATION: float = 0.1
+const DRAIN_PAUSE_DURATION: float = 0.2
 
 #endregion
 
@@ -76,7 +76,7 @@ func _process(delta: float) -> void:
 		return
 
 	# Drain the meter continuously
-	if _meter_value > 0.0:
+	if _meter_value > 0.0 && _drain_pause_timer == 0.0:
 		var drain_rate: float = TIER_DRAIN_RATES[_current_tier]
 		_meter_value = maxf(_meter_value - drain_rate * delta, 0.0)
 		_update_tier()

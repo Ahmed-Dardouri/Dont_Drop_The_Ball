@@ -11,7 +11,7 @@ orb_unlock_thresholds = {
 "Spawn Speedup Orb": 2000,
 "Vortex Orb": 200
 }
-base_spawn_interval = 3.0
+base_spawn_interval = 2.75
 min_spawn_interval = 0.8
-max_progression_score = 8000.0
+max_progression_score = 10000.0
 progression_exponent = 0.3
