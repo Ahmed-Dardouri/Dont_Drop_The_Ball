@@ -165,6 +165,21 @@ func _on_card_selected(index: int) -> void:
 	AugmentChosenEvent.invoke(chosen_augment)
 	hide_ui()
 
+	# Trigger rescue to reset ball/player to safe state
+	_trigger_augment_rescue()
+
+
+func _trigger_augment_rescue() -> void:
+	# Find the ball and trigger its rescue state
+	var balls := get_tree().get_nodes_in_group("ball")
+	if balls.is_empty():
+		return
+
+	var ball: Node = balls[0]
+	if ball.has_method("_trigger_rescue"):
+		ball._trigger_rescue()
+
+
 #endregion
 
 #region Event Handlers

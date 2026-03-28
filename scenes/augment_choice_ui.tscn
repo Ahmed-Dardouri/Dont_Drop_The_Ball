@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqaugmentui001"]
+[gd_scene load_steps=2 format=3 uid="uid://c4a577dj0am3y"]
 
 [ext_resource type="Script" path="res://scripts/augment_choice_ui.gd" id="1_script"]
 

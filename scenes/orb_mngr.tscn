@@ -10,7 +10,7 @@
 [ext_resource type="Resource" uid="uid://ca8q48rqtohcc" path="res://resources/orbs/vortex_orb.tres" id="7_qwjb5"]
 [ext_resource type="Resource" uid="uid://b753p33b8idp1" path="res://resources/orbs/spawn_speedup_orb.tres" id="8_kdp1m"]
 [ext_resource type="Resource" uid="uid://iyur5shwmasv" path="res://resources/progression/default_progression.tres" id="9_progression"]
-[ext_resource type="Resource" uid="uid://baugmentorbtres1" path="res://resources/orbs/augment_orb.tres" id="10_augment"]
+[ext_resource type="Resource" uid="uid://cream1fobp4ys" path="res://resources/orbs/augment_orb.tres" id="10_augment"]
 
 [node name="orb_mngr" type="Node2D"]
 script = ExtResource("1_yyp6m")
