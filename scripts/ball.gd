@@ -172,6 +172,7 @@ func start_rescue_movement(sprite_texture: Texture2D = null) -> void:
 	# Freeze player during rescue
 	if _player != null and _player is RigidBody2D:
 		_player.freeze = true
+		_player.set_process_input(false)  # Disable input during rescue
 
 	# Disable player collision during rescue
 	if _player_collision != null:
@@ -266,6 +267,10 @@ func _complete_rescue() -> void:
 	if _player != null and _player is RigidBody2D:
 		_player.freeze = false
 		_player.linear_velocity = Vector2.ZERO
+		_player.set_process_input(true)  # Re-enable input after rescue
+		# Reset player movement state
+		if _player.has_method("reset_movement_state"):
+			_player.reset_movement_state()
 
 	# Re-enable player collision
 	if _player_collision != null:

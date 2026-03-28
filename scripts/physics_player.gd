@@ -216,6 +216,16 @@ func update_move():
 	else:
 		_move.x = 0
 
+
+## Reset movement state - call after rescue to clear any buffered inputs
+func reset_movement_state() -> void:
+	_move.x = 0
+	_leftHeld = false
+	_rightHeld = false
+	_targetHorizontalVelocity = 0
+	_addedHorizontalVelocity = 0
+	_frameVelocity.x = 0
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Jump"):
 		MoveEvent.invoke(Enums.PlayerMoves.JUMP, true, 0)
