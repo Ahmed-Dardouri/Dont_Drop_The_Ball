@@ -67,7 +67,7 @@ class_name ModeConfig extends Resource
 #region Easy Mode Assist Features
 
 ## Ball gravity scale multiplier (1.0 = normal, lower = floatier). 0 = use scene default.
-@export var ball_gravity_scale: float = 5.0
+@export var ball_gravity_scale: float = 0.0
 
 ## Ball size scale multiplier (1.0 = normal size). 0 = use scene default.
 @export var ball_scale: float = 0.0
@@ -75,7 +75,7 @@ class_name ModeConfig extends Resource
 ## Orb size scale multiplier (1.0 = normal size). 0 = use scene default.
 @export var orb_scale: float = 0.0
 
-## Starting lives for this mode (0 = no extra lives, uses default behavior)
+## Starting lives for this mode (0 = no extra lives, uses default sbehavior)
 @export var starting_lives: int = 0
 
 ## If true, life orb pickups give permanent +1 life instead of temporary effect.

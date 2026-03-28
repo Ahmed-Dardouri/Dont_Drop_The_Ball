@@ -1,19 +1,19 @@
-[gd_resource type="Resource" script_class="ModeConfig" load_steps=5 format=3 uid="uid://dbeginnermode0001"]
+[gd_resource type="Resource" script_class="ModeConfig" load_steps=7 format=3 uid="uid://buenqmwkdgvf1"]
 
-[ext_resource type="Script" path="res://scripts/data/mode_config.gd" id="1_modeconfig"]
-[ext_resource type="GDScript" path="res://scripts/modes/beginner_mode.gd" id="2_beginner_mode"]
-[ext_resource type="Resource" path="res://resources/configs/beginner_ball_physics.tres" id="3_ball_physics"]
-[ext_resource type="Resource" path="res://resources/configs/beginner_progression.tres" id="4_progression"]
-[ext_resource type="Resource" path="res://resources/configs/beginner_player_physics.tres" id="5_player_physics"]
+[ext_resource type="Script" uid="uid://r1kmlgt48ydm" path="res://scripts/data/mode_config.gd" id="1_modeconfig"]
+[ext_resource type="Script" uid="uid://diaif4nxmlv4v" path="res://scripts/modes/beginner_mode.gd" id="2_beginner_mode"]
+[ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="3_as45g"]
+[ext_resource type="Resource" uid="uid://buenqpp6rgvg" path="res://resources/configs/beginner_ball_physics.tres" id="3_ball_physics"]
+[ext_resource type="Resource" uid="uid://buenqp0vfgvg" path="res://resources/configs/beginner_progression.tres" id="4_progression"]
+[ext_resource type="Resource" uid="uid://xkg1mews6fc" path="res://resources/configs/beginner_player_physics.tres" id="5_player_physics"]
 
 [resource]
 script = ExtResource("1_modeconfig")
 mode_id = "beginner"
 display_name = "Beginner"
 description = "An easier mode for learning the basics. Slower ball, higher jumps, gentler progression."
-icon = null
 implementation = ExtResource("2_beginner_mode")
-orb_pool = []
+orb_pool = Array[ExtResource("3_as45g")]([])
 spawn_interval = 0.0
 max_orbs = 0
 hud_metric = "score"
@@ -23,11 +23,11 @@ player_physics_config = ExtResource("5_player_physics")
 progression_config = ExtResource("4_progression")
 background_color = Color(0.4, 0.4, 0.45, 1)
 show_parallax_background = false
-ball_gravity_scale = 0.45
-ball_scale = 1.3
+ball_gravity_scale = 0.6
+ball_scale = 1.0
 orb_scale = 1.3
 starting_lives = 3
 permanent_life_pickups = true
 ball_slowdown_on_orb = 0.0
-ball_slowdown_duration = 0.5
+ball_slowdown_duration = 0.0
 show_landing_marker = true
