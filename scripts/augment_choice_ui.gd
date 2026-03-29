@@ -203,6 +203,10 @@ func _confirm_selection() -> void:
 	var chosen_augment: Resource = _choices[_selected_index]
 	augment_selected.emit(chosen_augment)
 	AugmentChosenEvent.invoke(chosen_augment)
+
+	# Play card select sound
+	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.CARD_SELECT)
+
 	hide_ui()
 
 	# Trigger rescue to reset ball/player to safe state

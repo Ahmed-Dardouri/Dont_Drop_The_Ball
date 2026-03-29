@@ -184,14 +184,15 @@ func start_rescue_movement(sprite_texture: Texture2D = null) -> void:
 	# Notify systems
 	BallRescueEvent.invoke(true)
 
-	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.BALL_RESCUE)
-
 
 ## Trigger life rescue when ball hits ground with a life.
 ## This consumes a life and uses life orb visual.
 func _trigger_life_rescue() -> void:
 	# Consume the life FIRST
 	_consume_life()
+
+	# Play life rescue sound (bounce sound to indicate you didn't lose)
+	SoundPlayEvent.invoke(Enums.SoundType.SFX, Enums.Sounds.BALL_RESCUE)
 
 	# Start rescue movement with life orb visual
 	start_rescue_movement(_get_life_texture())
