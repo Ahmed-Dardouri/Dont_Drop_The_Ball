@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## AugmentChoiceUI - Displays 3 augment cards for player selection.
 ## Appears when an augment orb is collected.
+## Supports keyboard navigation (arrows + jump) and mouse/touch click.
 
 #region Signals
 
@@ -13,6 +14,7 @@ signal augment_selected(augment: Resource)
 var _choices: Array = []  # Array of AugmentData resources
 var _cards: Array[Control] = []
 var _is_active: bool = false
+var _selected_index: int = 1  # Default to middle card
 
 #endregion
 
@@ -30,6 +32,22 @@ func _ready() -> void:
 	visible = false
 	# Process even when game is paused (process_mode = 3 in scene)
 	Events.add_listener(AugmentSelectionStartedEvent, _on_selection_started)
+
+
+func _input(event: InputEvent) -> void:
+	if not _is_active:
+		return
+
+	# Keyboard navigation
+	if event.is_action_pressed("Left"):
+		_select_card(_selected_index - 1)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("Right"):
+		_select_card(_selected_index + 1)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("Jump"):
+		_confirm_selection()
+		get_viewport().set_input_as_handled()
 
 #endregion
 
@@ -51,6 +69,10 @@ func show_choices(choices: Array) -> void:
 		_card_container.add_child(card)
 		_cards.append(card)
 
+	# Default selection to middle card
+	_selected_index = clamp(1, 0, _cards.size() - 1)
+	_update_card_highlights()
+
 	# Pause the game
 	PauseEvent.invoke(true)
 
@@ -68,8 +90,9 @@ func hide_ui() -> void:
 
 func _create_card(augment: Resource, index: int) -> Control:
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(250, 350)
+	panel.custom_minimum_size = Vector2(320, 450)  # Bigger cards
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	panel.gui_input.connect(_on_card_gui_input.bind(index))
 
 	# Style the panel
 	var style := StyleBoxFlat.new()
@@ -83,9 +106,16 @@ func _create_card(augment: Resource, index: int) -> Control:
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	panel.add_child(vbox)
 
+	# Add padding inside the card
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 15)
+	margin.add_theme_constant_override("margin_right", 15)
+	margin.add_theme_constant_override("margin_top", 15)
+	margin.add_theme_constant_override("margin_bottom", 15)
+
 	# Icon placeholder (shows a colored rect if no texture)
 	var icon_container := PanelContainer.new()
-	icon_container.custom_minimum_size = Vector2(100, 100)
+	icon_container.custom_minimum_size = Vector2(140, 140)  # Bigger icon
 	var icon_style := StyleBoxFlat.new()
 	icon_style.bg_color = Color(0.3, 0.3, 0.5)
 	icon_style.set_corner_radius_all(8)
@@ -95,46 +125,38 @@ func _create_card(augment: Resource, index: int) -> Control:
 	# Icon texture if available
 	if augment.icon != null:
 		var icon_rect := TextureRect.new()
-		icon_rect.custom_minimum_size = Vector2(100, 100)
+		icon_rect.custom_minimum_size = Vector2(140, 140)
 		icon_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon_rect.texture = augment.icon
 		icon_container.add_child(icon_rect)
 
+	# Spacer between icon and text
+	var spacer1 := Control.new()
+	spacer1.custom_minimum_size = Vector2(0, 20)
+	vbox.add_child(spacer1)
+
 	# Name label
 	var name_label := Label.new()
 	name_label.text = augment.display_name
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.add_theme_font_size_override("font_size", 24)
+	name_label.add_theme_font_size_override("font_size", 28)  # Bigger text
 	name_label.add_theme_color_override("font_color", Color.WHITE)
 	vbox.add_child(name_label)
+
+	# Spacer between name and description
+	var spacer2 := Control.new()
+	spacer2.custom_minimum_size = Vector2(0, 15)
+	vbox.add_child(spacer2)
 
 	# Description label
 	var desc_label := Label.new()
 	desc_label.text = augment.description
 	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	desc_label.add_theme_font_size_override("font_size", 16)
+	desc_label.add_theme_font_size_override("font_size", 18)  # Bigger text
 	desc_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
 	vbox.add_child(desc_label)
-
-	# Spacer
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	vbox.add_child(spacer)
-
-	# Select button
-	var select_btn := Button.new()
-	select_btn.text = "Select"
-	select_btn.add_theme_font_size_override("font_size", 20)
-	vbox.add_child(select_btn)
-
-	# Connect button press
-	select_btn.pressed.connect(_on_card_selected.bind(index))
-
-	# Hover effect
-	panel.mouse_entered.connect(_on_card_hover.bind(panel, true))
-	panel.mouse_exited.connect(_on_card_hover.bind(panel, false))
 
 	return panel
 
@@ -145,22 +167,40 @@ func _clear_cards() -> void:
 	_cards.clear()
 
 
-func _on_card_hover(card: Control, is_hovering: bool) -> void:
-	var style: StyleBoxFlat = card.get_theme_stylebox("panel")
-	if style:
-		if is_hovering:
-			style.border_color = Color(1.0, 0.8, 0.2)
-			style.set_border_width_all(5)
-		else:
-			style.border_color = Color(0.5, 0.5, 0.7)
-			style.set_border_width_all(3)
+func _select_card(index: int) -> void:
+	if index < 0 or index >= _cards.size():
+		return
+	_selected_index = index
+	_update_card_highlights()
 
 
-func _on_card_selected(index: int) -> void:
-	if index < 0 or index >= _choices.size():
+func _update_card_highlights() -> void:
+	for i: int in range(_cards.size()):
+		var card: Control = _cards[i]
+		var style: StyleBoxFlat = card.get_theme_stylebox("panel")
+		if style:
+			if i == _selected_index:
+				style.border_color = Color(1.0, 0.8, 0.2)  # Gold
+				style.set_border_width_all(6)
+			else:
+				style.border_color = Color(0.5, 0.5, 0.7)
+				style.set_border_width_all(3)
+
+
+func _on_card_gui_input(event: InputEvent, index: int) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_select_card(index)
+		_confirm_selection()
+	elif event is InputEventScreenTouch and event.pressed:
+		_select_card(index)
+		_confirm_selection()
+
+
+func _confirm_selection() -> void:
+	if _selected_index < 0 or _selected_index >= _choices.size():
 		return
 
-	var chosen_augment: Resource = _choices[index]
+	var chosen_augment: Resource = _choices[_selected_index]
 	augment_selected.emit(chosen_augment)
 	AugmentChosenEvent.invoke(chosen_augment)
 	hide_ui()
