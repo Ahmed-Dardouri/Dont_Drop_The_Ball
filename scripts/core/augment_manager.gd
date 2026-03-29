@@ -71,12 +71,17 @@ func _load_augments() -> void:
 		return
 
 	var files := dir.get_files()
+	print("AugmentManager: Found %d files in augments directory" % files.size())
 	for file: String in files:
 		if not file.ends_with(".tres"):
 			continue
 		var full_path := "res://resources/augments/" + file
 		var augment := load(full_path) as AugmentData
-		if augment == null or not augment.is_valid():
+		if augment == null:
+			print("AugmentManager: Failed to load %s as AugmentData" % file)
+			continue
+		if not augment.is_valid():
+			print("AugmentManager: Augment %s is not valid (id=%s name=%s icon=%s key=%s)" % [file, augment.augment_id, augment.display_name, augment.icon_key, augment.augment_key])
 			continue
 		_all_augments.append(augment)
 		_augment_cache[augment.augment_id] = augment
@@ -85,6 +90,8 @@ func _load_augments() -> void:
 		if not _augments_by_rarity.has(augment.rarity):
 			_augments_by_rarity[augment.rarity] = []
 		_augments_by_rarity[augment.rarity].append(augment)
+
+	print("AugmentManager: Loaded %d augments, rarities: %s" % [_all_augments.size(), str(_augments_by_rarity.keys())])
 
 
 ## Returns the current game phase based on elapsed time
@@ -139,6 +146,8 @@ func get_random_choices() -> Array[Resource]:
 	var phase := get_current_phase()
 	var pool := _get_pool_for_rarity_and_phase(rarity, phase)
 
+	print("AugmentManager: get_random_choices - rarity=%d phase=%d pool_size=%d" % [rarity, phase, pool.size()])
+
 	if pool.is_empty():
 		push_warning("AugmentManager: No augments available for rarity=%d phase=%d" % [rarity, phase])
 		return []
@@ -159,6 +168,7 @@ func get_random_choices() -> Array[Resource]:
 			choices.append(augment)
 			selected_ids.append(augment.augment_id)
 
+	print("AugmentManager: get_random_choices returning %d choices" % choices.size())
 	return choices
 
 

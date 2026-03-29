@@ -216,7 +216,7 @@ func _create_rescue_visual(sprite_texture: Texture2D) -> void:
 	_rescue_sprite.scale = Vector2(0.4, 0.4)
 	_rescue_sprite.modulate.a = 0.7
 	_rescue_sprite.z_index = -1  # Behind ball
-	_rescue_sprite.position = rescue_target_pos
+	_rescue_sprite.position = Vector2.ZERO  # Center on ball (local position)
 	add_child(_rescue_sprite)
 
 	# Store for reference
