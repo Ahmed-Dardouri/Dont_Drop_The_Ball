@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3 uid="uid://common_score_bonus"]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "score_bonus_small"
+display_name = "Score Boost"
+description = "+50 score immediately"
+icon_key = "score"
+augment_key = "score_bonus"
+rarity = 0
+early_weight = 10
+mid_weight = 5
+late_weight = 2

@@ -89,14 +89,15 @@ func hide_ui() -> void:
 #region Private Methods
 
 func _create_card(augment: Resource, index: int) -> Control:
+	var augment_data: AugmentData = augment as AugmentData
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = Vector2(320, 450)  # Bigger cards
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	panel.gui_input.connect(_on_card_gui_input.bind(index))
 
-	# Style the panel
+	# Style the panel with rarity-based background
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.15, 0.15, 0.25, 0.95)
+	style.bg_color = _get_rarity_bg_color(augment_data.rarity)
 	style.border_color = Color(0.5, 0.5, 0.7)
 	style.set_border_width_all(3)
 	style.set_corner_radius_all(10)
@@ -113,22 +114,23 @@ func _create_card(augment: Resource, index: int) -> Control:
 	margin.add_theme_constant_override("margin_top", 15)
 	margin.add_theme_constant_override("margin_bottom", 15)
 
-	# Icon placeholder (shows a colored rect if no texture)
+	# Icon placeholder (shows a colored rect based on icon_key)
 	var icon_container := PanelContainer.new()
 	icon_container.custom_minimum_size = Vector2(140, 140)  # Bigger icon
 	var icon_style := StyleBoxFlat.new()
-	icon_style.bg_color = Color(0.3, 0.3, 0.5)
+	icon_style.bg_color = _get_icon_key_color(augment_data.icon_key)
 	icon_style.set_corner_radius_all(8)
 	icon_container.add_theme_stylebox_override("panel", icon_style)
 	vbox.add_child(icon_container)
 
-	# Icon texture if available
-	if augment.icon != null:
+	# Try to load icon texture based on icon_key
+	var icon_texture := _get_icon_texture(augment_data.icon_key)
+	if icon_texture != null:
 		var icon_rect := TextureRect.new()
 		icon_rect.custom_minimum_size = Vector2(140, 140)
 		icon_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon_rect.texture = augment.icon
+		icon_rect.texture = icon_texture
 		icon_container.add_child(icon_rect)
 
 	# Spacer between icon and text
@@ -138,7 +140,7 @@ func _create_card(augment: Resource, index: int) -> Control:
 
 	# Name label
 	var name_label := Label.new()
-	name_label.text = augment.display_name
+	name_label.text = augment_data.display_name
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.add_theme_font_size_override("font_size", 28)  # Bigger text
 	name_label.add_theme_color_override("font_color", Color.WHITE)
@@ -151,7 +153,7 @@ func _create_card(augment: Resource, index: int) -> Control:
 
 	# Description label
 	var desc_label := Label.new()
-	desc_label.text = augment.description
+	desc_label.text = augment_data.description
 	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	desc_label.add_theme_font_size_override("font_size", 18)  # Bigger text
@@ -159,6 +161,48 @@ func _create_card(augment: Resource, index: int) -> Control:
 	vbox.add_child(desc_label)
 
 	return panel
+
+
+## Get background color based on rarity
+func _get_rarity_bg_color(rarity: int) -> Color:
+	match rarity:
+		Enums.AugmentRarity.MYTHICAL:
+			return Color(0.3, 0.1, 0.3, 0.95)  # Purple-ish
+		Enums.AugmentRarity.RARE:
+			return Color(0.1, 0.2, 0.4, 0.95)  # Blue-ish
+		_:  # COMMON
+			return Color(0.15, 0.15, 0.25, 0.95)  # Gray-ish
+
+
+## Get icon placeholder color based on icon_key
+func _get_icon_key_color(icon_key: String) -> Color:
+	match icon_key:
+		"score":
+			return Color(1.0, 0.84, 0.0)  # Gold
+		"burst":
+			return Color(1.0, 0.4, 0.1)  # Orange
+		"line":
+			return Color(0.3, 0.7, 1.0)  # Cyan
+		"vortex":
+			return Color(0.6, 0.3, 0.9)  # Purple
+		"life":
+			return Color(1.0, 0.3, 0.4)  # Pink/Red
+		"spawn":
+			return Color(0.3, 1.0, 0.5)  # Green
+		"meter":
+			return Color(0.0, 0.8, 0.8)  # Teal
+		"slowdown":
+			return Color(0.5, 0.7, 1.0)  # Light blue
+		_:
+			return Color(0.3, 0.3, 0.5)  # Default gray
+
+
+## Try to load icon texture based on icon_key
+func _get_icon_texture(icon_key: String) -> Texture2D:
+	var path := "res://sprites/augment_icons/%s.png" % icon_key
+	if ResourceLoader.exists(path):
+		return load(path)
+	return null
 
 
 func _clear_cards() -> void:

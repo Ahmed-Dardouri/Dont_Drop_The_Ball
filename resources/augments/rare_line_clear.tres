@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3 uid="uid://rare_line_clear"]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "line_clear_medium"
+display_name = "Line Extender"
+description = "Line clear range +25%"
+icon_key = "line"
+augment_key = "line_clear_up"
+rarity = 1
+early_weight = 0
+mid_weight = 8
+late_weight = 12

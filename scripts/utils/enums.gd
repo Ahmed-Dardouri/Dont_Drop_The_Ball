@@ -67,10 +67,17 @@ enum GameMode {
 	GAME_OVER
 }
 
-enum OrbRarity {
+enum AugmentRarity {
 	COMMON,
-	UNCOMMON,
-	RARE
+	RARE,
+	MYTHICAL
+}
+
+## Game phases for augment availability
+enum GamePhase {
+	EARLY,
+	MID,
+	LATE
 }
 
 ## Types of augment effects for Phase 1 prototype

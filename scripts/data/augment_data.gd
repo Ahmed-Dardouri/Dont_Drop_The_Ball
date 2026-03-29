@@ -1,6 +1,5 @@
 class_name AugmentData extends Resource
 ## Defines a single augment that can modify gameplay.
-## Phase 1: Simple data structure for prototype augments.
 
 ## Unique identifier for this augment
 @export var augment_id: String = ""
@@ -11,22 +10,21 @@ class_name AugmentData extends Resource
 ## Description shown in UI
 @export_multiline var description: String = ""
 
-## Icon texture for the card (placeholder OK)
-@export var icon: Texture2D = null
+## Icon class/family for card visual (score, burst, line, vortex, life, spawn, meter, slowdown, orb, ball)
+@export var icon_key: String = ""
 
-## Type of effect this augment applies
-@export var effect_type: int = 0  # Enums.AugmentEffect
+## Key used to apply the augment effect
+@export var augment_key: String = ""
 
-## Numeric value for the effect (meaning depends on effect_type)
-@export var effect_value: float = 1.0
+## Rarity of this augment (determines card background)
+@export var rarity: int = Enums.AugmentRarity.COMMON
 
-## Whether this augment can stack if selected multiple times
-@export var can_stack: bool = true
-
-## Maximum stacks allowed (only relevant if can_stack is true)
-@export var max_stacks: int = 10
+## Phase weight controls availability (0 = cannot appear in that phase)
+@export var early_weight: int = 0
+@export var mid_weight: int = 0
+@export var late_weight: int = 0
 
 
 ## Returns true if this augment data is valid for use
 func is_valid() -> bool:
-	return augment_id != "" and display_name != ""
+	return augment_id != "" and display_name != "" and icon_key != "" and augment_key != ""

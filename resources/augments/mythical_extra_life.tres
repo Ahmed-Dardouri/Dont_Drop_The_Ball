@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3 uid="uid://mythical_extra_life"]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "extra_life_large"
+display_name = "Second Chance"
+description = "+1 permanent life"
+icon_key = "life"
+augment_key = "max_life_plus_1"
+rarity = 2
+early_weight = 0
+mid_weight = 3
+late_weight = 8

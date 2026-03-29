@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3 uid="uid://common_burst_radius"]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "burst_radius_small"
+display_name = "Bigger Burst"
+description = "Burst orb radius +15%"
+icon_key = "burst"
+augment_key = "burst_radius_up"
+rarity = 0
+early_weight = 8
+mid_weight = 10
+late_weight = 5
