@@ -22,8 +22,8 @@ const RARITY_RARE_CHANCE: float = 0.30
 const RARITY_MYTHICAL_CHANCE: float = 0.10
 
 ## Game phase thresholds (in seconds)
-const PHASE_EARLY_THRESHOLD: float = 60.0   # 0-60 seconds
-const PHASE_MID_THRESHOLD: float = 180.0    # 60-180 seconds
+const PHASE_EARLY_THRESHOLD: float = 180.0   # 0-60 seconds
+const PHASE_MID_THRESHOLD: float = 600.0    # 60-180 seconds
 # 180+ seconds = late
 
 #endregion
@@ -146,9 +146,14 @@ func get_random_choices() -> Array[Resource]:
 	var choices: Array[Resource] = []
 	var selected_ids: Array[String] = []
 
-	while choices.size() < CHOICE_COUNT and pool.size() > 0:
-		var idx := randi_range(0, pool.size() - 1)
-		var augment := pool[idx]
+	# Make a working copy of the pool to remove picked items
+	var working_pool: Array[AugmentData] = []
+	working_pool.append_array(pool)
+
+	while choices.size() < CHOICE_COUNT and working_pool.size() > 0:
+		var idx := randi_range(0, working_pool.size() - 1)
+		var augment := working_pool[idx]
+		working_pool.remove_at(idx)  # Always remove to prevent infinite loop
 
 		if augment.augment_id not in selected_ids:
 			choices.append(augment)
