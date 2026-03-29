@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bp0vcj5imfgcb"]
+[gd_scene load_steps=20 format=3 uid="uid://bp0vcj5imfgcb"]
 
 [ext_resource type="PackedScene" uid="uid://gdpcp3xup1lv" path="res://scenes/world_builder.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bger8kqrrd0f" path="res://scripts/main.gd" id="1_sugp2"]
@@ -8,11 +8,12 @@
 [ext_resource type="Script" uid="uid://cxc7o202876wm" path="res://scripts/utils/sound_entry.gd" id="5_eb6dy"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="5_tefeu"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_o6xl0"]
-[ext_resource type="AudioStream" uid="uid://c4jcdtpsdqat8" path="res://sounds/retro-coin-4-236671.mp3" id="6_trceg"]
-[ext_resource type="AudioStream" uid="uid://ctv8diqughvc5" path="res://sounds/classic-game-action-negative-21-224579.wav" id="7_a8y0u"]
+[ext_resource type="AudioStream" uid="uid://c4jcdtpsdqat8" path="res://sounds/orb_collect.mp3" id="6_trceg"]
+[ext_resource type="AudioStream" uid="uid://ctv8diqughvc5" path="res://sounds/game_over.wav" id="7_a8y0u"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_o6xl0"]
 [ext_resource type="AudioStream" uid="uid://dwohu6objkqbi" path="res://sounds/ball_bounce_heavy.wav" id="8_jkv2x"]
 [ext_resource type="PackedScene" uid="uid://ce41746fgyld2" path="res://scenes/mode_select_menu.tscn" id="9_mode_select"]
+[ext_resource type="AudioStream" uid="uid://c7wue1dm73tr6" path="res://sounds/card_draw.wav" id="10_a8y0u"]
 
 [sub_resource type="Resource" id="Resource_u7y87"]
 script = ExtResource("5_eb6dy")
@@ -30,6 +31,12 @@ metadata/_custom_type_script = "uid://cxc7o202876wm"
 script = ExtResource("5_eb6dy")
 key = 3
 audio = ExtResource("8_jkv2x")
+metadata/_custom_type_script = "uid://cxc7o202876wm"
+
+[sub_resource type="Resource" id="Resource_jkv2x"]
+script = ExtResource("5_eb6dy")
+key = 4
+audio = ExtResource("10_a8y0u")
 metadata/_custom_type_script = "uid://cxc7o202876wm"
 
 [sub_resource type="Resource" id="Resource_o6xl0"]
@@ -56,7 +63,7 @@ offset_bottom = 540.0
 [node name="settings_menu" parent="." instance=ExtResource("3_tipki")]
 
 [node name="sound_mngr" parent="." instance=ExtResource("2_0wfyh")]
-sfx_list = Array[ExtResource("5_eb6dy")]([SubResource("Resource_u7y87"), SubResource("Resource_543au"), SubResource("Resource_jbj1t")])
+sfx_list = Array[ExtResource("5_eb6dy")]([SubResource("Resource_u7y87"), SubResource("Resource_543au"), SubResource("Resource_jbj1t"), SubResource("Resource_jkv2x")])
 
 [node name="leaderboard_mngr" type="Node2D" parent="."]
 

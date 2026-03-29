@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://symdfn7kep85" path="res://scripts/sound_mngr.gd" id="1_p1t0o"]
 [ext_resource type="Script" uid="uid://cxc7o202876wm" path="res://scripts/utils/sound_entry.gd" id="2_6r1ji"]
-[ext_resource type="AudioStream" uid="uid://c4jcdtpsdqat8" path="res://sounds/retro-coin-4-236671.mp3" id="2_jcxsx"]
+[ext_resource type="AudioStream" uid="uid://c4jcdtpsdqat8" path="res://sounds/orb_collect.mp3" id="2_jcxsx"]
 [ext_resource type="AudioStream" uid="uid://1runm4q188uu" path="res://sounds/bg_music_lofi-lofi-chill-405232.mp3" id="3_7mg1q"]
-[ext_resource type="AudioStream" uid="uid://ctv8diqughvc5" path="res://sounds/classic-game-action-negative-21-224579.wav" id="4_u7y87"]
+[ext_resource type="AudioStream" uid="uid://ctv8diqughvc5" path="res://sounds/game_over.wav" id="4_u7y87"]
 
 [sub_resource type="Resource" id="Resource_u7y87"]
 script = ExtResource("2_6r1ji")
