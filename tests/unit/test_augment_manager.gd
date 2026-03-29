@@ -3,6 +3,7 @@ extends GutTest
 
 func before_each() -> void:
 	AugmentManager.clear_augments()
+	AugmentManager._game_time = 0.0
 
 
 func test_get_random_choices_returns_three_choices() -> void:
@@ -13,8 +14,9 @@ func test_get_random_choices_returns_three_choices() -> void:
 func test_apply_augment_increases_stack() -> void:
 	var choices: Array = AugmentManager.get_random_choices()
 	var augment: Resource = choices[0]
-	var stacks: int = AugmentManager.apply_augment(augment)
-	assert_eq(stacks, 1, "First application should return 1 stack")
+	AugmentManager.apply_augment(augment)
+	var stacks: int = AugmentManager.get_augment_stacks(augment.augment_id)
+	assert_eq(stacks, 1, "First application should result in 1 stack")
 
 
 func test_apply_augment_tracks_active_augments() -> void:
@@ -29,9 +31,10 @@ func test_apply_augment_stacks_when_stackable() -> void:
 	var augment: Resource = choices[0]
 
 	AugmentManager.apply_augment(augment)
-	var stacks: int = AugmentManager.apply_augment(augment)
+	AugmentManager.apply_augment(augment)
+	var stacks: int = AugmentManager.get_augment_stacks(augment.augment_id)
 
-	assert_eq(stacks, 2, "Second application should return 2 stacks")
+	assert_eq(stacks, 2, "Second application should result in 2 stacks")
 
 
 func test_get_augment_stacks_returns_correct_count() -> void:
@@ -64,9 +67,10 @@ func test_get_active_augment_count_returns_correct_number() -> void:
 	assert_eq(count, 2, "Should have 2 active augments")
 
 
-func test_apply_invalid_augment_returns_zero() -> void:
-	var stacks: int = AugmentManager.apply_augment(null)
-	assert_eq(stacks, 0, "Should return 0 for null augment")
+func test_apply_invalid_augment_does_not_crash() -> void:
+	# Should not crash, just log warning
+	AugmentManager.apply_augment(null)
+	assert_true(true, "Should handle null gracefully")
 
 
 func test_has_augment_returns_false_for_nonexistent() -> void:

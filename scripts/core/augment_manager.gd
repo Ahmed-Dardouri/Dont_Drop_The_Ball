@@ -153,39 +153,81 @@ func get_random_choices() -> Array[Resource]:
 	if rolled_rarity >= Enums.AugmentRarity.RARE:
 		rarities_to_try.append(Enums.AugmentRarity.COMMON)
 
-	var pool: Array[AugmentData] = []
-	var actual_rarity := rolled_rarity
+	# Build unique augments with their weights (deduplicate the weighted pool)
+	var unique_augments: Array[AugmentData] = []
+	var weights: Array[int] = []
 
 	for try_rarity: int in rarities_to_try:
-		pool = _get_pool_for_rarity_and_phase(try_rarity, phase)
-		if not pool.is_empty():
-			actual_rarity = try_rarity
-			break
+		unique_augments.clear()
+		weights.clear()
 
-	print("AugmentManager: get_random_choices - rolled=%d actual=%d phase=%d pool_size=%d" % [rolled_rarity, actual_rarity, phase, pool.size()])
+		var rarity_pool: Array = _augments_by_rarity.get(try_rarity, [])
+		for augment: AugmentData in rarity_pool:
+			var weight: int = 0
+			match phase:
+				Enums.GamePhase.EARLY:
+					weight = augment.early_weight
+				Enums.GamePhase.MID:
+					weight = augment.mid_weight
+				Enums.GamePhase.LATE:
+					weight = augment.late_weight
 
-	if pool.is_empty():
+			if weight > 0:
+				unique_augments.append(augment)
+				weights.append(weight)
+
+		# Only use this rarity if it has enough augments for a full draft
+		if unique_augments.size() >= CHOICE_COUNT:
+			break  # Found enough augments at this rarity level
+
+	if unique_augments.is_empty():
 		push_warning("AugmentManager: No augments available for any rarity in phase=%d" % phase)
 		return []
 
+	# Select CHOICE_COUNT unique augments using weighted random selection
 	var choices: Array[Resource] = []
-	var selected_ids: Array[String] = []
+	var selected_indices: Array[int] = []
 
-	# Make a working copy of the pool to remove picked items
-	var working_pool: Array[AugmentData] = []
-	working_pool.append_array(pool)
+	while choices.size() < CHOICE_COUNT and selected_indices.size() < unique_augments.size():
+		# Build weight list excluding already selected indices
+		var available_weights: Array[int] = []
+		var available_indices: Array[int] = []
+		for i: int in range(unique_augments.size()):
+			if i not in selected_indices:
+				available_weights.append(weights[i])
+				available_indices.append(i)
 
-	while choices.size() < CHOICE_COUNT and working_pool.size() > 0:
-		var idx := randi_range(0, working_pool.size() - 1)
-		var augment := working_pool[idx]
-		working_pool.remove_at(idx)  # Always remove to prevent infinite loop
+		if available_weights.is_empty():
+			break
 
-		if augment.augment_id not in selected_ids:
-			choices.append(augment)
-			selected_ids.append(augment.augment_id)
+		# Weighted random selection
+		var total_weight: int = 0
+		for w: int in available_weights:
+			total_weight += w
 
-	print("AugmentManager: get_random_choices returning %d choices" % choices.size())
+		var roll := randi_range(1, total_weight)
+		var cumulative: int = 0
+		var selected_local_idx: int = 0
+
+		for i: int in range(available_weights.size()):
+			cumulative += available_weights[i]
+			if roll <= cumulative:
+				selected_local_idx = i
+				break
+
+		var actual_idx: int = available_indices[selected_local_idx]
+		selected_indices.append(actual_idx)
+		choices.append(unique_augments[actual_idx])
+
 	return choices
+
+
+## Helper to get IDs from augment array for deduplication
+func _get_ids(augments: Array[AugmentData]) -> Array[String]:
+	var ids: Array[String] = []
+	for aug: AugmentData in augments:
+		ids.append(aug.augment_id)
+	return ids
 
 
 ## Apply an augment to the current run.
