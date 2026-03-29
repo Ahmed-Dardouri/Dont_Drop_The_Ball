@@ -141,15 +141,31 @@ func _get_pool_for_rarity_and_phase(rarity: int, phase: int) -> Array[AugmentDat
 
 ## Get random augment choices for the selection UI.
 ## Returns CHOICE_COUNT unique augments from the correct pool.
+## Falls back to lower rarities if rolled rarity has no available augments.
 func get_random_choices() -> Array[Resource]:
-	var rarity := roll_draft_rarity()
+	var rolled_rarity := roll_draft_rarity()
 	var phase := get_current_phase()
-	var pool := _get_pool_for_rarity_and_phase(rarity, phase)
 
-	print("AugmentManager: get_random_choices - rarity=%d phase=%d pool_size=%d" % [rarity, phase, pool.size()])
+	# Try rarities from rolled down to COMMON until we find augments
+	var rarities_to_try := [rolled_rarity]
+	if rolled_rarity == Enums.AugmentRarity.MYTHICAL:
+		rarities_to_try.append(Enums.AugmentRarity.RARE)
+	if rolled_rarity >= Enums.AugmentRarity.RARE:
+		rarities_to_try.append(Enums.AugmentRarity.COMMON)
+
+	var pool: Array[AugmentData] = []
+	var actual_rarity := rolled_rarity
+
+	for try_rarity: int in rarities_to_try:
+		pool = _get_pool_for_rarity_and_phase(try_rarity, phase)
+		if not pool.is_empty():
+			actual_rarity = try_rarity
+			break
+
+	print("AugmentManager: get_random_choices - rolled=%d actual=%d phase=%d pool_size=%d" % [rolled_rarity, actual_rarity, phase, pool.size()])
 
 	if pool.is_empty():
-		push_warning("AugmentManager: No augments available for rarity=%d phase=%d" % [rarity, phase])
+		push_warning("AugmentManager: No augments available for any rarity in phase=%d" % phase)
 		return []
 
 	var choices: Array[Resource] = []
