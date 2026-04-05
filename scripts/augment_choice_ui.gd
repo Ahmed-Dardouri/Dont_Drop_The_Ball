@@ -223,6 +223,29 @@ func _get_rarity_bg_texture(rarity: int) -> Texture2D:
 			return _bg_common
 
 
+## Get icon placeholder color based on icon_key
+func _get_icon_key_color(icon_key: String) -> Color:
+	match icon_key:
+		"score":
+			return Color(1.0, 0.84, 0.0)  # Gold
+		"burst":
+			return Color(1.0, 0.4, 0.1)  # Orange
+		"line":
+			return Color(0.3, 0.7, 1.0)  # Cyan
+		"vortex":
+			return Color(0.6, 0.3, 0.9)  # Purple
+		"life":
+			return Color(1.0, 0.3, 0.4)  # Pink/Red
+		"spawn":
+			return Color(0.3, 1.0, 0.5)  # Green
+		"meter":
+			return Color(0.0, 0.8, 0.8)  # Teal
+		"slowdown":
+			return Color(0.5, 0.7, 1.0)  # Light blue
+		_:
+			return Color(0.3, 0.3, 0.5)  # Default gray
+
+
 ## Try to load icon texture based on icon_key
 func _get_icon_texture(icon_key: String) -> Texture2D:
 	var path := "res://sprites/augment_icons/%s.png" % icon_key

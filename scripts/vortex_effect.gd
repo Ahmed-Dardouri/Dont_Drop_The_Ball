@@ -62,6 +62,9 @@ func _process(delta: float) -> void:
 	if _visual_sprite != null:
 		_visual_sprite.rotation += rotation_speed * delta
 
+	# Check for orbs that spawned inside the vortex (area_entered doesn't fire for those)
+	_check_existing_orbs()
+
 	# Check if effect expired
 	if _time_elapsed >= duration:
 		_cleanup()
@@ -92,6 +95,29 @@ func _find_ball() -> void:
 	var balls := get_tree().get_nodes_in_group("ball")
 	if balls.size() > 0:
 		_ball = balls[0]
+
+
+## Check for orbs already inside the vortex area when created
+func _check_existing_orbs() -> void:
+	var orbs := get_tree().get_nodes_in_group("orbs")
+	for orb: Node in orbs:
+		if orb in _orbs_collected:
+			continue
+		# Check if orb's area overlaps with this vortex
+		var orb_area: Node = orb.get_node_or_null("DataOrbArea") if orb.has_node("DataOrbArea") else null
+		if orb_area == null:
+			# Try getting the area differently
+			for child: Node in orb.get_children():
+				if child is Area2D:
+					orb_area = child
+					break
+		if orb_area == null:
+			continue
+		# Check if the orb area overlaps with this vortex
+		if overlaps_area(orb_area):
+			_orbs_collected.append(orb)
+			if orb.has_method("on_orb_collected"):
+				orb.on_orb_collected()
 
 
 func _cleanup() -> void:
