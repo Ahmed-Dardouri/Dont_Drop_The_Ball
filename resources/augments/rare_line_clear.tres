@@ -10,6 +10,6 @@ description = "Line clear range +25%"
 icon_key = "line"
 augment_key = "line_clear_up"
 rarity = 1
-early_weight = 0
+early_weight = 10
 mid_weight = 8
 late_weight = 12

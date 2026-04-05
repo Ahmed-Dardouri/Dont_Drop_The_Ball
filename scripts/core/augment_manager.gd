@@ -17,9 +17,10 @@ signal augments_cleared
 const CHOICE_COUNT: int = 3
 
 ## Rarity roll chances (draft-level, not per-card)
-const RARITY_COMMON_CHANCE: float = 0.60
-const RARITY_RARE_CHANCE: float = 0.30
-const RARITY_MYTHICAL_CHANCE: float = 0.10
+## TESTING: Equal chances for all rarities
+const RARITY_COMMON_CHANCE: float = 0.33
+const RARITY_RARE_CHANCE: float = 0.33
+const RARITY_MYTHICAL_CHANCE: float = 0.34
 
 ## Game phase thresholds (in seconds)
 const PHASE_EARLY_THRESHOLD: float = 180.0   # 0-60 seconds

@@ -225,6 +225,15 @@ func reset_movement_state() -> void:
 	_targetHorizontalVelocity = 0
 	_addedHorizontalVelocity = 0
 	_frameVelocity.x = 0
+	# Reset jump state so immediate jump is allowed
+	_jumpToConsume = false
+	_JumpHeld = false
+	_JumpHeldPrev = false
+	_endedJumpEarly = false
+	_bufferedJumpUsable = true
+	_coyoteUsable = true
+	_timeJumpWasPressed = 0
+	_timeLeftGround = Time.get_ticks_msec()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Jump"):

@@ -22,10 +22,10 @@ func test_roll_draft_rarity_distribution() -> void:
 			Enums.AugmentRarity.MYTHICAL:
 				mythical_count += 1
 
-	# Check approximate distribution (60/30/10)
-	assert_true(common_count > 50, "Common should be ~60%")
-	assert_true(rare_count > 20, "Rare should be ~30%")
-	assert_true(mythical_count < 15, "Mythical should be ~10%")
+	# TESTING: Check approximate distribution (33/33/34)
+	assert_true(common_count > 20, "Common should be ~33%")
+	assert_true(rare_count > 20, "Rare should be ~33%")
+	assert_true(mythical_count > 20, "Mythical should be ~34%")
 
 
 func test_get_current_phase() -> void:

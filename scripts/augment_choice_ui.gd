@@ -12,8 +12,8 @@ signal augment_selected(augment: Resource)
 #region Configuration
 
 ## Card size settings (adjustable)
-const CARD_WIDTH: int = 320
-const CARD_HEIGHT: int = 450
+const CARD_WIDTH: int = 400
+const CARD_HEIGHT: int = 550
 
 ## Background sprite paths by rarity
 const BG_PATH_COMMON: String = "res://sprites/common_bg.png"

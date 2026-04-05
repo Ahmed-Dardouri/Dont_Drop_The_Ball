@@ -10,6 +10,6 @@ description = "+1 permanent life"
 icon_key = "life"
 augment_key = "max_life_plus_1"
 rarity = 2
-early_weight = 0
+early_weight = 10
 mid_weight = 3
 late_weight = 8

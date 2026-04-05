@@ -10,6 +10,6 @@ description = "Bonus meter fills 50% faster"
 icon_key = "meter"
 augment_key = "meter_fill_up"
 rarity = 2
-early_weight = 0
+early_weight = 10
 mid_weight = 5
 late_weight = 10
