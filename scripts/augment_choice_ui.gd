@@ -143,9 +143,9 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	var highlight := TextureRect.new()
 	highlight.name = "Highlight"
 	highlight.texture = _bg_highlight
-	highlight.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	highlight.expand_mode = TextureRect.EXPAND_KEEP_SIZE
 	highlight.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	highlight.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	highlight.set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	highlight.visible = false
 	panel.add_child(highlight)
 
