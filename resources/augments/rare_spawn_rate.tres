@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3 uid="uid://rare_spawn_rate"]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "spawn_rate_medium"
+display_name = "Quick Spawn"
+description = "Orbs spawn 25% faster"
+icon_key = "spawn"
+augment_key = "spawn_rate_up"
+rarity = 1
+early_weight = 10
+mid_weight = 8
+late_weight = 5
