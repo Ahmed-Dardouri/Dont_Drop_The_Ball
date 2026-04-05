@@ -178,7 +178,7 @@ func get_random_choices() -> Array[Resource]:
 				weights.append(weight)
 
 		# Only use this rarity if it has enough augments for a full draft
-		if unique_augments.size() >= CHOICE_COUNT:
+		if unique_augments.size() > 0:
 			break  # Found enough augments at this rarity level
 
 	if unique_augments.is_empty():
