@@ -9,19 +9,38 @@ signal augment_selected(augment: Resource)
 
 #endregion
 
+#region Configuration
+
+## Card size settings (adjustable)
+const CARD_WIDTH: int = 320
+const CARD_HEIGHT: int = 450
+
+## Background sprite paths by rarity
+const BG_PATH_COMMON: String = "res://sprites/common_bg.png"
+const BG_PATH_RARE: String = "res://sprites/rare_bg.png"
+const BG_PATH_MYTHICAL: String = "res://sprites/mythical_bg.png"
+const BG_PATH_HIGHLIGHT: String = "res://sprites/caed_overlay.png"
+
+#endregion
+
 #region Private State
 
 var _choices: Array = []  # Array of AugmentData resources
-var _cards: Array[Control] = []
+var _cards: Array[Dictionary] = []  # Array of {panel: Control, highlight: TextureRect}
 var _is_active: bool = false
 var _selected_index: int = 1  # Default to middle card
+
+## Preloaded textures
+var _bg_common: Texture2D
+var _bg_rare: Texture2D
+var _bg_mythical: Texture2D
+var _bg_highlight: Texture2D
 
 #endregion
 
 #region Node References
 
 @onready var _card_container: HBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/CardContainer
-@onready var _title_label: Label = $PanelContainer/MarginContainer/VBoxContainer/TitleLabel
 @onready var _background: ColorRect = $Background
 
 #endregion
@@ -30,8 +49,17 @@ var _selected_index: int = 1  # Default to middle card
 
 func _ready() -> void:
 	visible = false
+	# Preload textures
+	_preload_textures()
 	# Process even when game is paused (process_mode = 3 in scene)
 	Events.add_listener(AugmentSelectionStartedEvent, _on_selection_started)
+
+
+func _preload_textures() -> void:
+	_bg_common = load(BG_PATH_COMMON)
+	_bg_rare = load(BG_PATH_RARE)
+	_bg_mythical = load(BG_PATH_MYTHICAL)
+	_bg_highlight = load(BG_PATH_HIGHLIGHT)
 
 
 func _input(event: InputEvent) -> void:
@@ -65,9 +93,9 @@ func show_choices(choices: Array) -> void:
 	# Create new cards
 	for i: int in range(_choices.size()):
 		var augment: Resource = _choices[i]
-		var card: Control = _create_card(augment, i)
-		_card_container.add_child(card)
-		_cards.append(card)
+		var card_data: Dictionary = _create_card(augment, i)
+		_card_container.add_child(card_data.panel)
+		_cards.append(card_data)
 
 	# Default selection to middle card
 	_selected_index = clamp(1, 0, _cards.size() - 1)
@@ -88,23 +116,43 @@ func hide_ui() -> void:
 
 #region Private Methods
 
-func _create_card(augment: Resource, index: int) -> Control:
+func _create_card(augment: Resource, index: int) -> Dictionary:
 	var augment_data: AugmentData = augment as AugmentData
+
+	# Root container for the card
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(320, 450)  # Bigger cards
+	panel.custom_minimum_size = Vector2(CARD_WIDTH, CARD_HEIGHT)
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	panel.gui_input.connect(_on_card_gui_input.bind(index))
 
-	# Style the panel with rarity-based background
+	# Transparent style for the panel (background handled by TextureRect)
 	var style := StyleBoxFlat.new()
-	style.bg_color = _get_rarity_bg_color(augment_data.rarity)
-	style.border_color = Color(0.5, 0.5, 0.7)
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(10)
+	style.bg_color = Color(0, 0, 0, 0)  # Transparent
 	panel.add_theme_stylebox_override("panel", style)
 
+	# Background texture based on rarity
+	var bg_texture := TextureRect.new()
+	bg_texture.name = "Background"
+	bg_texture.texture = _get_rarity_bg_texture(augment_data.rarity)
+	bg_texture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	bg_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	bg_texture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.add_child(bg_texture)
+
+	# Highlight overlay (hidden by default)
+	var highlight := TextureRect.new()
+	highlight.name = "Highlight"
+	highlight.texture = _bg_highlight
+	highlight.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	highlight.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	highlight.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	highlight.visible = false
+	panel.add_child(highlight)
+
+	# Content container
 	var vbox := VBoxContainer.new()
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.add_child(vbox)
 
 	# Add padding inside the card
@@ -116,7 +164,7 @@ func _create_card(augment: Resource, index: int) -> Control:
 
 	# Icon placeholder (shows a colored rect based on icon_key)
 	var icon_container := PanelContainer.new()
-	icon_container.custom_minimum_size = Vector2(140, 140)  # Bigger icon
+	icon_container.custom_minimum_size = Vector2(140, 140)
 	var icon_style := StyleBoxFlat.new()
 	icon_style.bg_color = _get_icon_key_color(augment_data.icon_key)
 	icon_style.set_corner_radius_all(8)
@@ -142,7 +190,7 @@ func _create_card(augment: Resource, index: int) -> Control:
 	var name_label := Label.new()
 	name_label.text = augment_data.display_name
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.add_theme_font_size_override("font_size", 28)  # Bigger text
+	name_label.add_theme_font_size_override("font_size", 28)
 	name_label.add_theme_color_override("font_color", Color.WHITE)
 	vbox.add_child(name_label)
 
@@ -156,22 +204,22 @@ func _create_card(augment: Resource, index: int) -> Control:
 	desc_label.text = augment_data.description
 	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	desc_label.add_theme_font_size_override("font_size", 18)  # Bigger text
+	desc_label.add_theme_font_size_override("font_size", 18)
 	desc_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
 	vbox.add_child(desc_label)
 
-	return panel
+	return {"panel": panel, "highlight": highlight}
 
 
-## Get background color based on rarity
-func _get_rarity_bg_color(rarity: int) -> Color:
+## Get background texture based on rarity
+func _get_rarity_bg_texture(rarity: int) -> Texture2D:
 	match rarity:
 		Enums.AugmentRarity.MYTHICAL:
-			return Color(0.3, 0.1, 0.3, 0.95)  # Purple-ish
+			return _bg_mythical
 		Enums.AugmentRarity.RARE:
-			return Color(0.1, 0.2, 0.4, 0.95)  # Blue-ish
+			return _bg_rare
 		_:  # COMMON
-			return Color(0.15, 0.15, 0.25, 0.95)  # Gray-ish
+			return _bg_common
 
 
 ## Get icon placeholder color based on icon_key
@@ -206,8 +254,8 @@ func _get_icon_texture(icon_key: String) -> Texture2D:
 
 
 func _clear_cards() -> void:
-	for card: Control in _cards:
-		card.queue_free()
+	for card_data: Dictionary in _cards:
+		card_data.panel.queue_free()
 	_cards.clear()
 
 
@@ -220,15 +268,9 @@ func _select_card(index: int) -> void:
 
 func _update_card_highlights() -> void:
 	for i: int in range(_cards.size()):
-		var card: Control = _cards[i]
-		var style: StyleBoxFlat = card.get_theme_stylebox("panel")
-		if style:
-			if i == _selected_index:
-				style.border_color = Color(1.0, 0.8, 0.2)  # Gold
-				style.set_border_width_all(6)
-			else:
-				style.border_color = Color(0.5, 0.5, 0.7)
-				style.set_border_width_all(3)
+		var card_data: Dictionary = _cards[i]
+		var highlight: TextureRect = card_data.highlight
+		highlight.visible = (i == _selected_index)
 
 
 func _on_card_gui_input(event: InputEvent, index: int) -> void:

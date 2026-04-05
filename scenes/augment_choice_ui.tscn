@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://c4a577dj0am3y"]
 
-[ext_resource type="Script" path="res://scripts/augment_choice_ui.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bv11eceyg778l" path="res://scripts/augment_choice_ui.gd" id="1_script"]
 
 [node name="AugmentChoiceUI" type="CanvasLayer"]
-layer = 10
 process_mode = 3
+layer = 10
 script = ExtResource("1_script")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -38,12 +38,6 @@ theme_override_constants/margin_bottom = 30
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 30
-
-[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Choose an Augment"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="CardContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
