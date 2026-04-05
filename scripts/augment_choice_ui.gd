@@ -162,16 +162,7 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	margin.add_theme_constant_override("margin_top", 15)
 	margin.add_theme_constant_override("margin_bottom", 15)
 
-	# Icon placeholder (shows a colored rect based on icon_key)
-	var icon_container := PanelContainer.new()
-	icon_container.custom_minimum_size = Vector2(140, 140)
-	var icon_style := StyleBoxFlat.new()
-	icon_style.bg_color = _get_icon_key_color(augment_data.icon_key)
-	icon_style.set_corner_radius_all(8)
-	icon_container.add_theme_stylebox_override("panel", icon_style)
-	vbox.add_child(icon_container)
-
-	# Try to load icon texture based on icon_key
+	# Icon (loaded from sprite if available)
 	var icon_texture := _get_icon_texture(augment_data.icon_key)
 	if icon_texture != null:
 		var icon_rect := TextureRect.new()
@@ -179,7 +170,12 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 		icon_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon_rect.texture = icon_texture
-		icon_container.add_child(icon_rect)
+		vbox.add_child(icon_rect)
+	else:
+		# Spacer if no icon available
+		var icon_spacer := Control.new()
+		icon_spacer.custom_minimum_size = Vector2(140, 140)
+		vbox.add_child(icon_spacer)
 
 	# Spacer between icon and text
 	var spacer1 := Control.new()
