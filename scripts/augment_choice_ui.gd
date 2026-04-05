@@ -139,13 +139,13 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	bg_texture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	panel.add_child(bg_texture)
 
-	# Highlight overlay (hidden by default)
+	# Highlight overlay (keeps natural size, centered on card)
 	var highlight := TextureRect.new()
 	highlight.name = "Highlight"
 	highlight.texture = _bg_highlight
-	highlight.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	highlight.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	highlight.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	highlight.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	highlight.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	highlight.visible = false
 	panel.add_child(highlight)
 
