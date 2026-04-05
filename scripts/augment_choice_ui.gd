@@ -27,7 +27,7 @@ const BG_PATH_HIGHLIGHT: String = "res://sprites/caed_overlay.png"
 
 var _choices: Array = []  # Array of AugmentData resources
 var _cards: Array[Dictionary] = []  # Array of {panel: Control, highlight: TextureRect}
-var _is_active: bool = false
+var _is_active: bool = false 
 var _selected_index: int = 1  # Default to middle card
 
 ## Preloaded textures
