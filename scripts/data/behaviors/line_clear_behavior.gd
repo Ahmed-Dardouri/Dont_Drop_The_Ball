@@ -38,7 +38,10 @@ func _spawn_horizontal_wave(orb: Node) -> void:
 	var scene: PackedScene = load("res://scenes/horizontal_wave.tscn")
 	var wave: HorizontalWave = scene.instantiate()
 
-	wave.setup(wave_texture, range_distance, bonus_per_orb)
+	# Apply augment bonuses to range and bonus per orb
+	var adjusted_range: float = range_distance * (1.0 + Variables.line_clear_range_bonus)
+	var adjusted_bonus: int = bonus_per_orb + Variables.line_clear_bonus_per_orb
+	wave.setup(wave_texture, adjusted_range, adjusted_bonus)
 	wave.duration = wave_duration
 	wave.global_position = center
 

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "oops_all_orbs"
+display_name = "Oops, All Orbs"
+description = "The screen fills with noticeably more orb opportunities."
+icon_key = "spawn"
+augment_key = "oops_all_orbs"
+rarity = 2
+early_weight = 0
+mid_weight = 5
+late_weight = 9

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "kaboom_deluxe"
+display_name = "Kaboom Deluxe"
+description = "Burst orb explosions become huge."
+icon_key = "burst"
+augment_key = "kaboom_deluxe"
+rarity = 2
+early_weight = 0
+mid_weight = 3
+late_weight = 10

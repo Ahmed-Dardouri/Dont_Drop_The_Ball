@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "overcharged_meter"
+display_name = "Overcharged Meter"
+description = "Score fills the bonus meter much faster."
+icon_key = "meter"
+augment_key = "overcharged_meter"
+rarity = 1
+early_weight = 4
+mid_weight = 9
+late_weight = 8

@@ -72,8 +72,9 @@ func _process(delta: float) -> void:
 	# Check if it's time to spawn a life orb
 	if life_orb_data != null and _game_time_elapsed >= _life_orb_next_spawn_time:
 		_try_spawn_life_orb()
-		# Use += to maintain fixed intervals (60, 120, 180...) not relative to current time
-		_life_orb_next_spawn_time += life_orb_spawn_interval
+		# Use += to maintain fixed intervals, reduced by augment bonus
+		var effective_interval: float = life_orb_spawn_interval / (1.0 + Variables.life_orb_chance_bonus)
+		_life_orb_next_spawn_time += effective_interval
 
 	# Check if it's time to spawn an augment orb
 	if augment_orb_data != null and _game_time_elapsed >= _augment_orb_next_spawn_time:
@@ -98,6 +99,10 @@ func _get_current_spawn_interval() -> float:
 		var multiplier: Variant = EffectManager.get_effect_value("spawn_speedup")
 		if multiplier != null and multiplier > 0:
 			current_interval = current_interval / float(multiplier)
+
+	# Apply augment spawn rate bonus (faster spawning)
+	if Variables.orb_spawn_rate_bonus > 0.0:
+		current_interval = current_interval / (1.0 + Variables.orb_spawn_rate_bonus)
 
 	return current_interval
 
@@ -189,10 +194,14 @@ func _get_weighted_random_orb() -> OrbData:
 	if available_orbs.is_empty():
 		return null
 
-	# Calculate total weight
+	# Calculate total weight with augment bonuses
 	var total_weight: float = 0.0
 	for data: OrbData in available_orbs:
-		total_weight += data.spawn_weight
+		var weight: float = data.spawn_weight
+		# Apply special orb chance bonus to orbs with special behaviors
+		if Variables.special_orb_chance_bonus > 0.0 and _is_special_orb(data):
+			weight *= (1.0 + Variables.special_orb_chance_bonus)
+		total_weight += weight
 
 	if total_weight <= 0.0:
 		# Fallback to uniform random if all weights are 0
@@ -204,12 +213,28 @@ func _get_weighted_random_orb() -> OrbData:
 	var cumulative: float = 0.0
 
 	for data: OrbData in available_orbs:
-		cumulative += data.spawn_weight
+		var weight: float = data.spawn_weight
+		# Apply special orb chance bonus to orbs with special behaviors
+		if Variables.special_orb_chance_bonus > 0.0 and _is_special_orb(data):
+			weight *= (1.0 + Variables.special_orb_chance_bonus)
+		cumulative += weight
 		if roll <= cumulative:
 			return data
 
 	# Fallback (shouldn't reach here)
 	return available_orbs.back()
+
+
+## Check if an orb has special behaviors (burst, vortex, line clear)
+func _is_special_orb(data: OrbData) -> bool:
+	for behavior in data.behaviors:
+		var behavior_script: Script = behavior.get_script()
+		if behavior_script == null:
+			continue
+		var script_path: String = behavior_script.resource_path
+		if "burst_behavior" in script_path or "vortex_behavior" in script_path or "line_clear_behavior" in script_path:
+			return true
+	return false
 
 
 func _get_available_orbs() -> Array[OrbData]:

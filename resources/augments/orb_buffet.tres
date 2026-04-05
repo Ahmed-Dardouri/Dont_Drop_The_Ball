@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "orb_buffet"
+display_name = "Orb Buffet"
+description = "Orbs spawn a little faster."
+icon_key = "spawn"
+augment_key = "orb_buffet"
+rarity = 0
+early_weight = 7
+mid_weight = 8
+late_weight = 6

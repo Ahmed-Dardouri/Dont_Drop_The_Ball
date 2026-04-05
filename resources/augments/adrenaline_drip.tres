@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "adrenaline_drip"
+display_name = "Adrenaline Drip"
+description = "Orb spawn rate increases more aggressively."
+icon_key = "spawn"
+augment_key = "adrenaline_drip"
+rarity = 1
+early_weight = 2
+mid_weight = 8
+late_weight = 9

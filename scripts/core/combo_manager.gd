@@ -78,6 +78,9 @@ func _process(delta: float) -> void:
 	# Drain the meter continuously
 	if _meter_value > 0.0 && _drain_pause_timer == 0.0:
 		var drain_rate: float = TIER_DRAIN_RATES[_current_tier]
+		# Apply augment drain reduction (capped at 80% reduction)
+		var drain_mult: float = maxf(1.0 - Variables.meter_drain_reduction, 0.2)
+		drain_rate *= drain_mult
 		_meter_value = maxf(_meter_value - drain_rate * delta, 0.0)
 		_update_tier()
 
@@ -89,8 +92,10 @@ func _process(delta: float) -> void:
 ## Returns a dictionary with base_score, combo_bonus, tier, and total.
 ## tier is captured BEFORE the meter fills to ensure correct color matching.
 func add_orb_score(base_score: int) -> Dictionary:
+	# Apply augment score per orb bonus
+	var adjusted_base: int = base_score + Variables.score_per_orb_bonus
+
 	# Apply double value if active (doubles the score)
-	var adjusted_base: int = base_score
 	if EffectManager.has_effect("double_value"):
 		adjusted_base *= 2
 
@@ -99,11 +104,15 @@ func add_orb_score(base_score: int) -> Dictionary:
 	if multiplier != null:
 		adjusted_base = int(adjusted_base * float(multiplier))
 
+	# Apply augment score multiplier bonus
+	if Variables.score_multiplier_bonus > 0.0:
+		adjusted_base = int(adjusted_base * (1.0 + Variables.score_multiplier_bonus))
+
 	# Capture tier BEFORE any changes (for correct UI color matching)
 	var tier_at_collection: int = _current_tier
 
-	# Get current bonus tier value
-	var bonus: int = BONUS_TIERS[tier_at_collection]
+	# Get current bonus tier value + chain bonus from augments
+	var bonus: int = BONUS_TIERS[tier_at_collection] + Variables.chain_score_bonus
 	var total: int = adjusted_base + bonus
 
 	# Add to score
@@ -192,8 +201,11 @@ func _fill_meter(score_amount: float) -> void:
 	# Pause drain after orb collection
 	_drain_pause_timer = DRAIN_PAUSE_DURATION
 
+	# Apply augment fill multiplier
+	var fill_mult: float = 1.0 + Variables.meter_fill_multiplier
+
 	# Add to meter, capped at max
-	_meter_value = minf(_meter_value + score_amount * SCORE_TO_METER_RATIO, MAX_METER_VALUE)
+	_meter_value = minf(_meter_value + score_amount * SCORE_TO_METER_RATIO * fill_mult, MAX_METER_VALUE)
 
 	# Update tier based on new meter value
 	_update_tier()

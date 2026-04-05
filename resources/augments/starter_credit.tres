@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "starter_credit"
+display_name = "Starter Credit"
+description = "Gain a one-time score bonus immediately."
+icon_key = "score"
+augment_key = "starter_credit"
+rarity = 0
+early_weight = 9
+mid_weight = 4
+late_weight = 1

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "infinite_snack_glitch"
+display_name = "Infinite Snack Glitch"
+description = "The bonus meter becomes dramatically easier to keep filled."
+icon_key = "meter"
+augment_key = "infinite_snack_glitch"
+rarity = 2
+early_weight = 0
+mid_weight = 2
+late_weight = 8

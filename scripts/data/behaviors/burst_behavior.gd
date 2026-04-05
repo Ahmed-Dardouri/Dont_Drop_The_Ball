@@ -32,7 +32,9 @@ func _spawn_explosion(orb: Node, center: Vector2) -> void:
 	var scene: PackedScene = load("res://scenes/explosion_circle.tscn")
 	var explosion: ExplosionCircle = scene.instantiate()
 
-	explosion.setup(radius, explosion_texture)
+	# Apply augment bonus to radius
+	var adjusted_radius: float = radius * (1.0 + Variables.burst_radius_bonus)
+	explosion.setup(adjusted_radius, explosion_texture)
 	explosion.duration = explosion_duration
 	explosion.global_position = center
 

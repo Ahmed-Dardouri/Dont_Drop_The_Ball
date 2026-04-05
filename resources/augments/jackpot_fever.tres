@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "jackpot_fever"
+display_name = "Jackpot Fever"
+description = "The whole run becomes score-explosive."
+icon_key = "score"
+augment_key = "jackpot_fever"
+rarity = 2
+early_weight = 0
+mid_weight = 1
+late_weight = 10

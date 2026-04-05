@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "orb_storm"
+display_name = "Orb Storm"
+description = "The run floods with more orbs."
+icon_key = "spawn"
+augment_key = "orb_storm"
+rarity = 2
+early_weight = 0
+mid_weight = 2
+late_weight = 10

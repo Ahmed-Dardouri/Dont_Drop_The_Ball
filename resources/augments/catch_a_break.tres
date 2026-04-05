@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "catch_a_break"
+display_name = "Catch a Break"
+description = "The bonus meter drains a little more slowly."
+icon_key = "meter"
+augment_key = "catch_a_break"
+rarity = 0
+early_weight = 8
+mid_weight = 6
+late_weight = 3

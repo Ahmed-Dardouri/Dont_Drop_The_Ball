@@ -149,20 +149,22 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	highlight.visible = false
 	panel.add_child(highlight)
 
-	# Content container
-	var vbox := VBoxContainer.new()
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	panel.add_child(vbox)
-
-	# Add padding inside the card
+	# Content container with padding to stay inside card border
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 15)
-	margin.add_theme_constant_override("margin_right", 15)
-	margin.add_theme_constant_override("margin_top", 15)
-	margin.add_theme_constant_override("margin_bottom", 15)
+	margin.add_theme_constant_override("margin_left", 55)
+	margin.add_theme_constant_override("margin_right", 55)
+	margin.add_theme_constant_override("margin_top", 25)
+	margin.add_theme_constant_override("margin_bottom", 25)
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.add_child(margin)
 
-	# Icon (loaded from sprite if available)
+	var vbox := VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_BEGIN
+	vbox.size_flags_horizontal = Control.SIZE_FILL
+	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	margin.add_child(vbox)
+
+	# Icon sprite area at top (space reserved for augment icon)
 	var icon_texture := _get_icon_texture(augment_data.icon_key)
 	if icon_texture != null:
 		var icon_rect := TextureRect.new()
@@ -177,17 +179,19 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 		icon_spacer.custom_minimum_size = Vector2(140, 140)
 		vbox.add_child(icon_spacer)
 
-	# Spacer between icon and text
+	# Fixed spacer between icon and title (ensures title is always at same position)
 	var spacer1 := Control.new()
-	spacer1.custom_minimum_size = Vector2(0, 20)
+	spacer1.custom_minimum_size = Vector2(0, 25)
 	vbox.add_child(spacer1)
 
-	# Name label
+	# Name label - centered, fills available width
 	var name_label := Label.new()
 	name_label.text = augment_data.display_name
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	name_label.add_theme_font_size_override("font_size", 28)
 	name_label.add_theme_color_override("font_color", Color.WHITE)
+	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	vbox.add_child(name_label)
 
 	# Spacer between name and description
@@ -195,10 +199,11 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	spacer2.custom_minimum_size = Vector2(0, 15)
 	vbox.add_child(spacer2)
 
-	# Description label
+	# Description label - centered, fills available width
 	var desc_label := Label.new()
 	desc_label.text = augment_data.description
 	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 	desc_label.add_theme_font_size_override("font_size", 18)
 	desc_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
@@ -216,29 +221,6 @@ func _get_rarity_bg_texture(rarity: int) -> Texture2D:
 			return _bg_rare
 		_:  # COMMON
 			return _bg_common
-
-
-## Get icon placeholder color based on icon_key
-func _get_icon_key_color(icon_key: String) -> Color:
-	match icon_key:
-		"score":
-			return Color(1.0, 0.84, 0.0)  # Gold
-		"burst":
-			return Color(1.0, 0.4, 0.1)  # Orange
-		"line":
-			return Color(0.3, 0.7, 1.0)  # Cyan
-		"vortex":
-			return Color(0.6, 0.3, 0.9)  # Purple
-		"life":
-			return Color(1.0, 0.3, 0.4)  # Pink/Red
-		"spawn":
-			return Color(0.3, 1.0, 0.5)  # Green
-		"meter":
-			return Color(0.0, 0.8, 0.8)  # Teal
-		"slowdown":
-			return Color(0.5, 0.7, 1.0)  # Light blue
-		_:
-			return Color(0.3, 0.3, 0.5)  # Default gray
 
 
 ## Try to load icon texture based on icon_key

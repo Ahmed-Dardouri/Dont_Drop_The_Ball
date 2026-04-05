@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "greedy_little_hands"
+display_name = "Greedy Little Hands"
+description = "Orb effects collect more generously."
+icon_key = "orb"
+augment_key = "greedy_little_hands"
+rarity = 1
+early_weight = 3
+mid_weight = 7
+late_weight = 8

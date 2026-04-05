@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "extra_pocket"
+display_name = "Extra Pocket"
+description = "Gain +1 life and improve your odds of finding more."
+icon_key = "life"
+augment_key = "extra_pocket"
+rarity = 1
+early_weight = 6
+mid_weight = 7
+late_weight = 5
