@@ -154,16 +154,18 @@ func get_random_choices() -> Array[Resource]:
 	if rolled_rarity >= Enums.AugmentRarity.RARE:
 		rarities_to_try.append(Enums.AugmentRarity.COMMON)
 
-	# Build unique augments with their weights (deduplicate the weighted pool)
+	# Accumulate unique augments from multiple rarities until we have enough
 	var unique_augments: Array[AugmentData] = []
 	var weights: Array[int] = []
+	var seen_ids: Dictionary = {}  # Avoid duplicates across rarities
 
 	for try_rarity: int in rarities_to_try:
-		unique_augments.clear()
-		weights.clear()
-
 		var rarity_pool: Array = _augments_by_rarity.get(try_rarity, [])
 		for augment: AugmentData in rarity_pool:
+			# Skip if already added from another rarity
+			if seen_ids.has(augment.augment_id):
+				continue
+
 			var weight: int = 0
 			match phase:
 				Enums.GamePhase.EARLY:
@@ -176,10 +178,11 @@ func get_random_choices() -> Array[Resource]:
 			if weight > 0:
 				unique_augments.append(augment)
 				weights.append(weight)
+				seen_ids[augment.augment_id] = true
 
-		# Only use this rarity if it has enough augments for a full draft
-		if unique_augments.size() > 0:
-			break  # Found enough augments at this rarity level
+		# Stop if we have enough augments for a full draft
+		if unique_augments.size() >= CHOICE_COUNT:
+			break
 
 	if unique_augments.is_empty():
 		push_warning("AugmentManager: No augments available for any rarity in phase=%d" % phase)
