@@ -49,7 +49,7 @@ func test_get_current_phase() -> void:
 
 
 func test_pool_for_rarity_and_phase() -> void:
-	var pool := AugmentManager._get_pool_for_rarity_and_phase(Enums.AugmentRarity.COMMON, Enums.GamePhase.EARLY)
+	var pool: Array = AugmentManager._get_pool_for_rarity_and_phase(Enums.AugmentRarity.COMMON, Enums.GamePhase.EARLY)
 	assert_not_null(pool, "Pool should not be null")
 
 	# Check that all augments in pool have valid weights
