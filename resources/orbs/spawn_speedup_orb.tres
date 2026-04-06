@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d3egcko71acf0" path="res://scripts/data/behaviors/orb_behavior.gd" id="1_behavior"]
 [ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="1_orbdata"]
-[ext_resource type="Script" path="res://scripts/data/behaviors/spawn_speedup_behavior.gd" id="2_speedupbehavior"]
+[ext_resource type="Script" uid="uid://4r0h3xs50h1e" path="res://scripts/data/behaviors/spawn_speedup_behavior.gd" id="2_speedupbehavior"]
 [ext_resource type="Script" uid="uid://bk0sdde0ofy4b" path="res://scripts/data/behaviors/score_behavior.gd" id="3_ie8ub"]
 [ext_resource type="Texture2D" uid="uid://d2koxxjlwafl5" path="res://sprites/spawn_speedup_orb.png" id="3_texture"]
 
