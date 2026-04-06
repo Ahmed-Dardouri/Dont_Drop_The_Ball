@@ -6,6 +6,7 @@ func before_each() -> void:
 	ComboManager.reset_combo()
 	ScoreManager.reset_score()
 	EffectManager.clear_all_effects()
+	Variables.reset_augment_modifiers()
 
 
 func test_meter_starts_at_zero() -> void:

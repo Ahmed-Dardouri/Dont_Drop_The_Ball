@@ -2,6 +2,7 @@ extends Node
 ## AugmentManager - Manages augments for the current run.
 ## Phase 2: Rarity system + phase-weighted pools.
 ## Supports UNIQUE (one per run) and REPEATABLE (stackable) augments.
+## Repeatable augments use tuned progression tables for meaningful stacking.
 
 ## All 3 cards in a draft share the same rolled rarity.
 
@@ -27,6 +28,40 @@ const RARITY_MYTHICAL_CHANCE: float = 0.34
 const PHASE_EARLY_THRESHOLD: float = 180.0   # 0-60 seconds
 const PHASE_MID_THRESHOLD: float = 600.0    # 60-180 seconds
 # 180+ seconds = late
+
+## Maximum practical stack cap for repeatable augments
+const MAX_STACK_CAP: int = 5
+
+## Progression tables for repeatable augments.
+## Each entry is: stack -> value applied at THAT stack level.
+## Stack 1 = base. Higher stacks give increasingly better but controlled values.
+## Values beyond MAX_STACK_CAP repeat the last entry.
+const STACK_TABLES: Dictionary = {
+	# Score family
+	"pocket_change": [0, 3, 5, 7, 8, 9],
+	"payroll_upgrade": [0, 5, 8, 11, 13, 14],
+	"side_hustle_score": [0, 0.15, 0.25, 0.35, 0.40, 0.45],
+	# Meter family
+	"easy_money": [0, 0.20, 0.30, 0.40, 0.45, 0.50],
+	"overcharged_meter": [0, 0.40, 0.55, 0.65, 0.70, 0.75],
+	"catch_a_break": [0, 0.15, 0.25, 0.35, 0.40, 0.45],
+	# Spawn family
+	"orb_buffet": [0, 0.15, 0.20, 0.25, 0.28, 0.30],
+	"adrenaline_drip": [0, 0.30, 0.40, 0.50, 0.55, 0.60],
+	"shiny_problem": [0, 0.20, 0.30, 0.40, 0.45, 0.50],
+	# Life family
+	"just_one_more": [0, 1, 1, 1, 1, 1],
+	"lucky_bounce": [0, 0.15, 0.20, 0.25, 0.28, 0.30],
+	# Hybrid family
+	"extra_hands": [0, 0.25, 0.35, 0.45, 0.50, 0.55],
+	# Vortex family
+	"bigger_vacuum": [0, 0.25, 0.42, 0.55, 0.63, 0.68],
+	"long_lunch": [0, 0.25, 0.42, 0.55, 0.63, 0.68],
+	# Line family
+	"wide_sweep": [0, 0.20, 0.35, 0.50, 0.60, 0.65],
+	# Burst family
+	"snack_sized_boom": [0, 0.20, 0.35, 0.50, 0.60, 0.65],
+}
 
 #endregion
 
@@ -231,7 +266,7 @@ func apply_augment(augment: Resource) -> void:
 	var new_stacks: int = current_stacks + 1
 	_active_augments[augment_data.augment_id] = new_stacks
 
-	_apply_augment_effect(augment_data)
+	_apply_augment_effect(augment_data, new_stacks)
 
 	augment_added.emit(augment, new_stacks)
 	AugmentAppliedEvent.invoke(augment_data)
@@ -251,35 +286,52 @@ func get_selection_label(augment_data: AugmentData) -> String:
 	return "x%d" % stacks
 
 
+#region Stack Progression
+
+## Look up the tuned value for a given augment table key at the given stack level.
+## Returns the value from the progression table, clamped to MAX_STACK_CAP.
+## For stacks beyond the table, returns the last entry (soft cap).
+static func get_stack_value(table_key: String, stack: int) -> float:
+	var table: Array = STACK_TABLES.get(table_key, [])
+	if table.is_empty():
+		return 0.0
+	var idx: int = mini(stack, table.size() - 1)
+	if idx < 0:
+		idx = 0
+	return table[idx]
+
+#endregion
+
 #region Effect Application
 
 ## Apply the actual effect of an augment, dispatched by category helpers.
-func _apply_augment_effect(augment: AugmentData) -> void:
+## stack: the NEW stack count after this application (1 for first pick).
+func _apply_augment_effect(augment: AugmentData, stack: int) -> void:
 	match augment.augment_key:
 		# Score
 		"pocket_change", "collectors_habit", "starter_credit", "main_score_augment", "lucky_penny", "side_hustle", "payroll_upgrade", "rent_was_due", "top_shelf", "rich_get_richer", "big_bank_energy", "jackpot_fever", "golden_ticket", "special_delivery", "jackpot_bonus", "chain_appetite", "greedy_little_hands":
-			_apply_score_effect(augment.augment_key)
+			_apply_score_effect(augment.augment_key, stack)
 		# Life
 		"just_one_more", "safety_net", "lucky_bounce", "extra_pocket", "more_lives_more_problems", "plot_armor", "second_wallet", "life_insurance":
-			_apply_life_effect(augment.augment_key)
+			_apply_life_effect(augment.augment_key, stack)
 		# Meter
 		"easy_money", "paper_trail", "catch_a_break", "room_to_breathe", "overcharged_meter", "bigger_bank", "savings_account", "steady_pressure", "infinite_snack_glitch", "over_the_limit":
-			_apply_meter_effect(augment.augment_key)
+			_apply_meter_effect(augment.augment_key, stack)
 		# Burst
 		"snack_sized_boom", "soft_fuse", "boom_goes_the_neighborhood", "aftershock", "kaboom_deluxe", "boom_tax_refund":
-			_apply_burst_effect(augment.augment_key)
+			_apply_burst_effect(augment.augment_key, stack)
 		# Vortex
 		"bigger_vacuum", "long_lunch", "long_reach", "industrial_strength", "black_hole_budget_cut", "vacuum_maxxed":
-			_apply_vortex_effect(augment.augment_key)
+			_apply_vortex_effect(augment.augment_key, stack)
 		# Line
 		"wide_sweep", "sharp_line", "full_screen_insurance", "sweep_account", "line_em_up", "laser_but_horizontal", "laser_show":
-			_apply_line_effect(augment.augment_key)
+			_apply_line_effect(augment.augment_key, stack)
 		# Spawn
 		"orb_buffet", "shiny_problem", "adrenaline_drip", "fast_lane", "more_where_that_came_from", "orb_storm", "oops_all_orbs", "rainmaker", "lucky_universe":
-			_apply_spawn_effect(augment.augment_key)
+			_apply_spawn_effect(augment.augment_key, stack)
 		# Multi-category
 		"king_sized", "extra_hands":
-			_apply_hybrid_effect(augment.augment_key)
+			_apply_hybrid_effect(augment.augment_key, stack)
 		# Legacy
 		"score_bonus", "max_life_plus_1", "burst_radius_up", "spawn_rate_up", "line_clear_up", "vortex_radius_up", "meter_fill_up":
 			_apply_legacy_effect(augment.augment_key)
@@ -287,10 +339,10 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 			print("AugmentManager: Unknown augment key '%s'" % augment.augment_key)
 
 
-func _apply_score_effect(key: String) -> void:
+func _apply_score_effect(key: String, stack: int) -> void:
 	match key:
 		"pocket_change":
-			Variables.score_per_orb_bonus += 3
+			Variables.score_per_orb_bonus += int(get_stack_value("pocket_change", stack))
 		"collectors_habit":
 			Variables.score_per_orb_bonus += 2
 		"starter_credit":
@@ -300,9 +352,9 @@ func _apply_score_effect(key: String) -> void:
 		"lucky_penny":
 			ScoreManager.add_score(75)
 		"side_hustle":
-			Variables.special_orb_score_bonus += 0.15
+			Variables.special_orb_score_bonus += get_stack_value("side_hustle_score", stack)
 		"payroll_upgrade":
-			Variables.score_per_orb_bonus += 5
+			Variables.score_per_orb_bonus += int(get_stack_value("payroll_upgrade", stack))
 		"rent_was_due":
 			Variables.score_per_orb_bonus += 4
 		"top_shelf":
@@ -330,16 +382,18 @@ func _apply_score_effect(key: String) -> void:
 			Variables.special_orb_score_bonus += 0.1
 
 
-func _apply_life_effect(key: String) -> void:
+func _apply_life_effect(key: String, stack: int) -> void:
 	match key:
 		"just_one_more":
-			Variables.permanent_lives += 1
-			LifeChangedEvent.invoke(true)
+			# Always +1 life per stack, but capped at MAX_STACK_CAP stacks total
+			if stack <= MAX_STACK_CAP:
+				Variables.permanent_lives += 1
+				LifeChangedEvent.invoke(true)
 		"safety_net":
 			Variables.permanent_lives += 1
 			LifeChangedEvent.invoke(true)
 		"lucky_bounce":
-			Variables.life_orb_chance_bonus += 0.15
+			Variables.life_orb_chance_bonus += get_stack_value("lucky_bounce", stack)
 		"extra_pocket":
 			Variables.permanent_lives += 1
 			Variables.life_orb_chance_bonus += 0.25
@@ -360,18 +414,18 @@ func _apply_life_effect(key: String) -> void:
 			Variables.life_orb_chance_bonus += 0.4
 
 
-func _apply_meter_effect(key: String) -> void:
+func _apply_meter_effect(key: String, stack: int) -> void:
 	match key:
 		"easy_money":
-			Variables.meter_fill_multiplier += 0.2
+			Variables.meter_fill_multiplier += get_stack_value("easy_money", stack)
 		"paper_trail":
 			Variables.meter_fill_multiplier += 0.15
 		"catch_a_break":
-			Variables.meter_drain_reduction += 0.15
+			Variables.meter_drain_reduction += get_stack_value("catch_a_break", stack)
 		"room_to_breathe":
 			Variables.meter_drain_reduction += 0.1
 		"overcharged_meter":
-			Variables.meter_fill_multiplier += 0.4
+			Variables.meter_fill_multiplier += get_stack_value("overcharged_meter", stack)
 		"bigger_bank":
 			Variables.meter_fill_multiplier += 0.3
 			Variables.meter_drain_reduction += 0.2
@@ -388,10 +442,10 @@ func _apply_meter_effect(key: String) -> void:
 			Variables.meter_drain_reduction += 0.3
 
 
-func _apply_burst_effect(key: String) -> void:
+func _apply_burst_effect(key: String, stack: int) -> void:
 	match key:
 		"snack_sized_boom":
-			Variables.burst_radius_bonus += 0.2
+			Variables.burst_radius_bonus += get_stack_value("snack_sized_boom", stack)
 		"soft_fuse":
 			Variables.burst_radius_bonus += 0.15
 		"boom_goes_the_neighborhood":
@@ -406,12 +460,12 @@ func _apply_burst_effect(key: String) -> void:
 			Variables.chain_score_bonus += 5
 
 
-func _apply_vortex_effect(key: String) -> void:
+func _apply_vortex_effect(key: String, stack: int) -> void:
 	match key:
 		"bigger_vacuum":
-			Variables.vortex_radius_bonus += 0.25
+			Variables.vortex_radius_bonus += get_stack_value("bigger_vacuum", stack)
 		"long_lunch":
-			Variables.vortex_duration_bonus += 0.25
+			Variables.vortex_duration_bonus += get_stack_value("long_lunch", stack)
 		"long_reach":
 			Variables.vortex_radius_bonus += 0.4
 		"industrial_strength":
@@ -422,10 +476,10 @@ func _apply_vortex_effect(key: String) -> void:
 			Variables.vortex_radius_bonus += 1.2
 
 
-func _apply_line_effect(key: String) -> void:
+func _apply_line_effect(key: String, stack: int) -> void:
 	match key:
 		"wide_sweep":
-			Variables.line_clear_range_bonus += 0.2
+			Variables.line_clear_range_bonus += get_stack_value("wide_sweep", stack)
 		"sharp_line":
 			Variables.line_clear_range_bonus += 0.15
 		"full_screen_insurance":
@@ -442,14 +496,14 @@ func _apply_line_effect(key: String) -> void:
 			Variables.line_clear_bonus_per_orb += 3
 
 
-func _apply_spawn_effect(key: String) -> void:
+func _apply_spawn_effect(key: String, stack: int) -> void:
 	match key:
 		"orb_buffet":
-			Variables.orb_spawn_rate_bonus += 0.15
+			Variables.orb_spawn_rate_bonus += get_stack_value("orb_buffet", stack)
 		"shiny_problem":
-			Variables.special_orb_chance_bonus += 0.2
+			Variables.special_orb_chance_bonus += get_stack_value("shiny_problem", stack)
 		"adrenaline_drip":
-			Variables.orb_spawn_rate_bonus += 0.3
+			Variables.orb_spawn_rate_bonus += get_stack_value("adrenaline_drip", stack)
 		"fast_lane":
 			Variables.orb_spawn_rate_bonus += 0.2
 		"more_where_that_came_from":
@@ -466,14 +520,14 @@ func _apply_spawn_effect(key: String) -> void:
 			Variables.special_orb_chance_bonus += 0.25
 
 
-func _apply_hybrid_effect(key: String) -> void:
+func _apply_hybrid_effect(key: String, stack: int) -> void:
 	match key:
 		"king_sized":
 			Variables.burst_radius_bonus += 0.3
 			Variables.line_clear_range_bonus += 0.3
 			Variables.vortex_radius_bonus += 0.3
 		"extra_hands":
-			Variables.collection_range_bonus += 0.25
+			Variables.collection_range_bonus += get_stack_value("extra_hands", stack)
 
 
 func _apply_legacy_effect(key: String) -> void:
