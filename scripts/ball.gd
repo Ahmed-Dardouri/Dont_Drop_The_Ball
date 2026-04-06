@@ -58,6 +58,11 @@ func _process(delta: float) -> void:
 	if _is_rescuing:
 		_update_rescue(delta)
 
+	# Safety: clean up orphaned rescue sprite if not rescuing
+	if not _is_rescuing and _rescue_sprite != null:
+		_rescue_sprite.queue_free()
+		_rescue_sprite = null
+
 	# Handle slowdown timer
 	if _slowdown_timer > 0.0:
 		_slowdown_timer -= delta

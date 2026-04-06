@@ -40,8 +40,9 @@ func add_score(amount: int) -> int:
 
 
 ## Reset current score to zero. High score is preserved.
+## Applies debug_start_score override if set in Variables.
 func reset_score() -> void:
-	_current_score = 0
+	_current_score = Variables.debug_start_score
 	score_changed.emit(_current_score)
 
 

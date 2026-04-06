@@ -211,6 +211,17 @@ func get_visual_sprite() -> Sprite2D:
 	return _visual_sprite
 
 
+## Returns the effective collision radius for distance-based checks.
+func _get_collision_radius() -> float:
+	if _orb_data == null:
+		return 20.0
+	var radius: float = _orb_data.collision_radius
+	var mode_scale: float = GameRules.get_orb_scale()
+	if mode_scale > 0.0:
+		radius *= mode_scale
+	return radius
+
+
 ## Returns the spawn animation duration from OrbData.
 func get_spawn_animation_duration() -> float:
 	if _orb_data != null:
@@ -261,27 +272,35 @@ func _enable_collision() -> void:
 	_check_overlapping_bodies()
 
 
-## Checks for bodies already overlapping when spawn completes.
+## Checks for bodies/areas already overlapping when spawn completes.
+## Uses distance checks instead of physics overlaps because get_overlapping_bodies/areas
+## returns empty in the same frame that monitoring is enabled.
 func _check_overlapping_bodies() -> void:
 	if data_orb_area == null:
 		return
 
-	# Check for ball overlapping
-	var overlapping_bodies: Array[Node2D] = data_orb_area.get_overlapping_bodies()
-	for body: Node2D in overlapping_bodies:
-		if body.is_in_group("ball"):
-			# Check if ball is rescuing
-			if body.has_method("is_rescuing") and body.is_rescuing():
-				continue
-			# Ball is already touching - collect immediately
+	# Check for ball overlapping via distance
+	var balls := get_tree().get_nodes_in_group("ball")
+	for ball: Node2D in balls:
+		if ball.has_method("is_rescuing") and ball.is_rescuing():
+			continue
+		var ball_radius: float = 20.0
+		var ball_shape: CollisionShape2D = ball.get_node_or_null("CollisionShape2D")
+		if ball_shape != null and ball_shape.shape != null:
+			ball_radius = ball_shape.shape.get_rect().size.x / 2.0
+		var distance: float = global_position.distance_to(ball.global_position)
+		if distance <= _get_collision_radius() + ball_radius:
 			on_orb_collected()
 			return
 
-	# Check for vortex effect overlapping (vortex uses Area2D)
-	var overlapping_areas: Array[Area2D] = data_orb_area.get_overlapping_areas()
-	for area: Area2D in overlapping_areas:
-		if area.is_in_group("vortex_effect"):
-			# Vortex is already touching - collect immediately
+	# Check for vortex effect overlapping via distance
+	var vortex_effects := get_tree().get_nodes_in_group("vortex_effect")
+	for vortex: Node2D in vortex_effects:
+		var vortex_radius: float = 150.0
+		if vortex.has_method("get") and vortex.get("vortex_radius") != null:
+			vortex_radius = float(vortex.get("vortex_radius"))
+		var distance: float = global_position.distance_to(vortex.global_position)
+		if distance <= _get_collision_radius() + vortex_radius:
 			on_orb_collected()
 			return
 

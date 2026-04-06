@@ -3,6 +3,9 @@ extends Node
 #region game_variables
 var current_score: int = 0
 
+## Debug: set this to a non-zero value to start each run with that score (testing only)
+@export var debug_start_score: int = 0
+
 #endregion
 
 #region permanent_lives

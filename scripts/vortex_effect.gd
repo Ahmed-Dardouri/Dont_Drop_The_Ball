@@ -97,27 +97,28 @@ func _find_ball() -> void:
 		_ball = balls[0]
 
 
+## Check if an orb is within the vortex collection range using distance.
+## Works regardless of physics server state (unlike overlaps_area).
+func _is_within_range(orb: Node2D) -> bool:
+	if orb == null or not is_instance_valid(orb):
+		return false
+	var distance: float = global_position.distance_to(orb.global_position)
+	return distance <= vortex_radius
+
+
 ## Check for orbs already inside the vortex area when created
 func _check_existing_orbs() -> void:
 	var orbs := get_tree().get_nodes_in_group("orbs")
 	for orb: Node in orbs:
 		if orb in _orbs_collected:
 			continue
-		# Check if orb's area overlaps with this vortex
-		var orb_area: Node = orb.get_node_or_null("DataOrbArea") if orb.has_node("DataOrbArea") else null
-		if orb_area == null:
-			# Try getting the area differently
-			for child: Node in orb.get_children():
-				if child is Area2D:
-					orb_area = child
-					break
-		if orb_area == null:
+		if not orb.has_method("on_orb_collected"):
 			continue
-		# Check if the orb area overlaps with this vortex
-		if overlaps_area(orb_area):
+		# Use distance check instead of overlaps_area() because
+		# overlaps_area() fails when orb's area is not monitorable (during spawn animation)
+		if _is_within_range(orb):
 			_orbs_collected.append(orb)
-			if orb.has_method("on_orb_collected"):
-				orb.on_orb_collected()
+			orb.on_orb_collected()
 
 
 func _cleanup() -> void:
