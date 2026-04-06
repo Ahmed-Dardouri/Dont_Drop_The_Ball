@@ -156,11 +156,14 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	badge.text = AugmentManager.get_selection_label(augment_data)
 	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	badge.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-	badge.add_theme_font_size_override("font_size", 16)
+	badge.add_theme_font_size_override("font_size", 20)
+	var bold_font := load("res://addons/phantom_camera/fonts/Nunito-Black.ttf")
+	if bold_font != null:
+		badge.add_theme_font_override("font", bold_font)
 	badge.add_theme_color_override("font_color", Color(1, 1, 1, 0.85))
 	badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	badge.offset_left = 12
-	badge.offset_top = 8
+	badge.offset_left = 52
+	badge.offset_top = 48
 	badge.z_index = 10
 	bg_texture.add_child(badge)
 
