@@ -124,9 +124,9 @@ func _build_cards() -> void:
 
 		# Content margin
 		var margin := MarginContainer.new()
-		margin.add_theme_constant_override("margin_left", 45)
-		margin.add_theme_constant_override("margin_right", 45)
-		margin.add_theme_constant_override("margin_top", 20)
+		margin.add_theme_constant_override("margin_left", 55)
+		margin.add_theme_constant_override("margin_right", 55)
+		margin.add_theme_constant_override("margin_top", 90)
 		margin.add_theme_constant_override("margin_bottom", 20)
 		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		panel.add_child(margin)
@@ -153,7 +153,7 @@ func _build_cards() -> void:
 		var name_label := Label.new()
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-		name_label.add_theme_font_size_override("font_size", 24)
+		name_label.add_theme_font_size_override("font_size", 28)
 		name_label.add_theme_color_override("font_color", Color.WHITE)
 		name_label.autowrap_mode = TextServer.AUTOWRAP_WORD
 		vbox.add_child(name_label)
@@ -168,7 +168,7 @@ func _build_cards() -> void:
 		desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		desc_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 		desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-		desc_label.add_theme_font_size_override("font_size", 16)
+		desc_label.add_theme_font_size_override("font_size", 20)
 		desc_label.add_theme_color_override("font_color", Color.LIGHT_GRAY)
 		vbox.add_child(desc_label)
 		_card_descs.append(desc_label)
@@ -203,9 +203,9 @@ func show_choices(choices: Array) -> void:
 	var vp_size: Vector2 = get_viewport().get_visible_rect().size
 
 	# Card layout from viewport
-	var card_gap: float = vp_size.x * 0.012
-	var card_w: float = (vp_size.x * 0.56 - card_gap * 2.0) / 3.0
-	var card_h: float = card_w * 1.375
+	var card_gap: float = vp_size.x * 0.032
+	var card_w: float = (vp_size.x * 0.64 - card_gap * 2.0) / 3.0
+	var card_h: float = card_w * 1.55
 	var total_w: float = card_w * 3.0 + card_gap * 2.0
 	var start_x: float = (vp_size.x - total_w) / 2.0
 	var start_y: float = (vp_size.y - card_h) / 2.0
