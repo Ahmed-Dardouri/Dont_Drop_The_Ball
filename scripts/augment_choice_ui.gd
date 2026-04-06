@@ -85,7 +85,7 @@ func _build_cards() -> void:
 		panel.gui_input.connect(_on_card_gui_input.bind(i))
 
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color(0.12, 0.12, 0.12, 0.95)
+		style.bg_color = Color(0.12, 0.12, 0.12, 0.0)
 		style.set_corner_radius_all(8)
 		panel.add_theme_stylebox_override("panel", style)
 
