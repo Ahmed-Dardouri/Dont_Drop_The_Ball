@@ -8,25 +8,33 @@ var selected_mode_id: String = "beginner"
 @onready var beginner_button: Button = $PanelContainer/VBoxContainer/beginner_button
 @onready var back_button: Button = $PanelContainer/VBoxContainer/back_button
 
+## Guard against re-entrant calls when setting button_pressed triggers pressed signal
+var _updating_selection: bool = false
+
 
 func _ready() -> void:
 	_update_button_selection()
 
 
 func _update_button_selection() -> void:
-	# Update button appearance based on selection
+	_updating_selection = true
 	if endless_button != null:
 		endless_button.button_pressed = (selected_mode_id == "endless")
 	if beginner_button != null:
 		beginner_button.button_pressed = (selected_mode_id == "beginner")
+	_updating_selection = false
 
 
 func _on_endless_button_pressed() -> void:
+	if _updating_selection:
+		return
 	selected_mode_id = "endless"
 	_update_button_selection()
 
 
 func _on_beginner_button_pressed() -> void:
+	if _updating_selection:
+		return
 	selected_mode_id = "beginner"
 	_update_button_selection()
 
