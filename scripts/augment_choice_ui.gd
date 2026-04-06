@@ -45,6 +45,9 @@ const ICONS: Dictionary = {
 var _choices: Array = []
 var _is_active: bool = false
 var _selected_index: int = 1
+var _lockout_timer: float = 0.0
+
+const INPUT_LOCKOUT: float = 0.4
 
 # Pre-built card nodes (created in _ready, always in tree)
 var _card_panels: Array[PanelContainer] = []
@@ -74,6 +77,11 @@ func _ready() -> void:
 
 	_build_cards()
 	Events.add_listener(AugmentSelectionStartedEvent, _on_selection_started)
+
+
+func _process(delta: float) -> void:
+	if _lockout_timer > 0.0:
+		_lockout_timer -= delta
 
 
 func _build_cards() -> void:
@@ -179,7 +187,7 @@ func _build_cards() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not _is_active:
+	if not _is_active or _lockout_timer > 0.0:
 		return
 
 	if event.is_action_pressed("Left"):
@@ -199,6 +207,7 @@ func _input(event: InputEvent) -> void:
 func show_choices(choices: Array) -> void:
 	_choices = choices
 	_is_active = true
+	_lockout_timer = INPUT_LOCKOUT
 
 	var vp_size: Vector2 = get_viewport().get_visible_rect().size
 
