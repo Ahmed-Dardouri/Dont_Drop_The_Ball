@@ -34,7 +34,9 @@ func _spawn_vortex(orb: Node) -> void:
 	for vortex in existing_vortexes:
 		vortex.queue_free()
 
-	var scene: PackedScene = load("res://scenes/vortex_effect.tscn")
+	const VORTEX_EFFECT_SCENE: PackedScene = preload("res://scenes/vortex_effect.tscn")
+
+	var scene: PackedScene = VORTEX_EFFECT_SCENE
 	var vortex: VortexEffect = scene.instantiate()
 
 	# Apply augment bonuses to radius and duration

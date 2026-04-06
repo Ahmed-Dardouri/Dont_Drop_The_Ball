@@ -35,7 +35,9 @@ func execute(context: Dictionary) -> void:
 func _spawn_horizontal_wave(orb: Node) -> void:
 	var center: Vector2 = orb.global_position if orb.has_method("get") else Vector2.ZERO
 
-	var scene: PackedScene = load("res://scenes/horizontal_wave.tscn")
+	const HORIZONTAL_WAVE_SCENE: PackedScene = preload("res://scenes/horizontal_wave.tscn")
+
+	var scene: PackedScene = HORIZONTAL_WAVE_SCENE
 	var wave: HorizontalWave = scene.instantiate()
 
 	# Apply augment bonuses to range and bonus per orb

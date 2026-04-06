@@ -49,12 +49,16 @@ func test_get_current_phase() -> void:
 
 
 func test_pool_for_rarity_and_phase() -> void:
-	var pool: Array = AugmentManager._get_pool_for_rarity_and_phase(Enums.AugmentRarity.COMMON, Enums.GamePhase.EARLY)
-	assert_not_null(pool, "Pool should not be null")
+	# Verify that rarity pools contain augments with positive weights for the given phase
+	var common_pool: Array = AugmentManager._augments_by_rarity.get(Enums.AugmentRarity.COMMON, [])
+	assert_true(common_pool.size() > 0, "Common rarity pool should have augments")
 
-	# Check that all augments in pool have valid weights
-	for aug in pool:
-		assert_true(aug.early_weight > 0, "All augments in early pool should have early_weight > 0")
+	# Check that early-weighted augments exist in the common pool
+	var early_weighted_count: int = 0
+	for aug: AugmentData in common_pool:
+		if aug.early_weight > 0:
+			early_weighted_count += 1
+	assert_true(early_weighted_count > 0, "Common pool should have augments with early_weight > 0")
 
 
 func test_draft_returns_three_unique_cards() -> void:

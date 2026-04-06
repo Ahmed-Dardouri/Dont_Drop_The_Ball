@@ -8,7 +8,7 @@ extends Node2D
 @onready var camera_2d: Camera2D = $Camera2D
 
 var _index : int = 0
-var _scene_path := "res://scenes/world_builder.tscn"
+const _WORLD_BUILDER_SCENE: PackedScene = preload("res://scenes/world_builder.tscn")
 var _current_scene : Enums.MainScene = Enums.MainScene.MAIN_MENU
 
 ## Hard-coded to beginner mode. Endless mode exists in project but is not accessible.
@@ -31,7 +31,7 @@ func get_world_builder():
 
 func _reload_world():
 	# Load and instance a new copy
-	var new_scene = load(_scene_path).instantiate()
+	var new_scene = _WORLD_BUILDER_SCENE.instantiate()
 
 	# get old scene
 	get_world_builder()

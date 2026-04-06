@@ -29,7 +29,9 @@ func execute(context: Dictionary) -> void:
 
 
 func _spawn_explosion(orb: Node, center: Vector2) -> void:
-	var scene: PackedScene = load("res://scenes/explosion_circle.tscn")
+	const EXPLOSION_CIRCLE_SCENE: PackedScene = preload("res://scenes/explosion_circle.tscn")
+
+	var scene: PackedScene = EXPLOSION_CIRCLE_SCENE
 	var explosion: ExplosionCircle = scene.instantiate()
 
 	# Apply augment bonus to radius

@@ -96,29 +96,65 @@ func _process(delta: float) -> void:
 	_game_time += delta
 
 
-## Load all augment definitions from resources/augments/
+## Export-safe registry of all augment resources.
+## Uses preload() so resources are always available on mobile/exported builds.
+const _AUGMENT_REGISTRY: Array[AugmentData] = [
+	preload("res://resources/augments/adrenaline_drip.tres"),
+	preload("res://resources/augments/aftershock.tres"),
+	preload("res://resources/augments/big_bank_energy.tres"),
+	preload("res://resources/augments/bigger_bank.tres"),
+	preload("res://resources/augments/bigger_vacuum.tres"),
+	preload("res://resources/augments/boom_goes_the_neighborhood.tres"),
+	preload("res://resources/augments/boom_tax_refund.tres"),
+	preload("res://resources/augments/catch_a_break.tres"),
+	preload("res://resources/augments/chain_appetite.tres"),
+	preload("res://resources/augments/easy_money.tres"),
+	preload("res://resources/augments/extra_hands.tres"),
+	preload("res://resources/augments/extra_pocket.tres"),
+	preload("res://resources/augments/golden_ticket.tres"),
+	preload("res://resources/augments/greedy_little_hands.tres"),
+	preload("res://resources/augments/industrial_strength.tres"),
+	preload("res://resources/augments/infinite_snack_glitch.tres"),
+	preload("res://resources/augments/jackpot_fever.tres"),
+	preload("res://resources/augments/just_one_more.tres"),
+	preload("res://resources/augments/king_sized.tres"),
+	preload("res://resources/augments/laser_show.tres"),
+	preload("res://resources/augments/long_lunch.tres"),
+	preload("res://resources/augments/lucky_bounce.tres"),
+	preload("res://resources/augments/lucky_universe.tres"),
+	preload("res://resources/augments/more_where_that_came_from.tres"),
+	preload("res://resources/augments/oops_all_orbs.tres"),
+	preload("res://resources/augments/orb_buffet.tres"),
+	preload("res://resources/augments/orb_storm.tres"),
+	preload("res://resources/augments/overcharged_meter.tres"),
+	preload("res://resources/augments/over_the_limit.tres"),
+	preload("res://resources/augments/payroll_upgrade.tres"),
+	preload("res://resources/augments/plot_armor.tres"),
+	preload("res://resources/augments/pocket_change.tres"),
+	preload("res://resources/augments/rich_get_richer.tres"),
+	preload("res://resources/augments/second_wallet.tres"),
+	preload("res://resources/augments/shiny_problem.tres"),
+	preload("res://resources/augments/side_hustle.tres"),
+	preload("res://resources/augments/snack_sized_boom.tres"),
+	preload("res://resources/augments/starter_credit.tres"),
+	preload("res://resources/augments/steady_pressure.tres"),
+	preload("res://resources/augments/sweep_account.tres"),
+	preload("res://resources/augments/vacuum_maxxed.tres"),
+	preload("res://resources/augments/wide_sweep.tres"),
+]
+
+## Load all augment definitions from the preload registry.
 func _load_augments() -> void:
 	_all_augments.clear()
 	_augments_by_rarity.clear()
 	_augment_cache.clear()
 
-	var dir := DirAccess.open("res://resources/augments/")
-	if dir == null:
-		push_warning("AugmentManager: Could not open resources/augments/ directory")
-		return
-
-	var files := dir.get_files()
-	print("AugmentManager: Found %d files in augments directory" % files.size())
-	for file: String in files:
-		if not file.ends_with(".tres"):
-			continue
-		var full_path := "res://resources/augments/" + file
-		var augment := load(full_path) as AugmentData
+	for augment: AugmentData in _AUGMENT_REGISTRY:
 		if augment == null:
-			print("AugmentManager: Failed to load %s as AugmentData" % file)
+			push_warning("AugmentManager: Null entry in augment registry")
 			continue
 		if not augment.is_valid():
-			print("AugmentManager: Augment %s is not valid (id=%s name=%s icon=%s key=%s)" % [file, augment.augment_id, augment.display_name, augment.icon_key, augment.augment_key])
+			push_warning("AugmentManager: Augment not valid (id=%s name=%s icon=%s key=%s)" % [augment.augment_id, augment.display_name, augment.icon_key, augment.augment_key])
 			continue
 		_all_augments.append(augment)
 		_augment_cache[augment.augment_id] = augment

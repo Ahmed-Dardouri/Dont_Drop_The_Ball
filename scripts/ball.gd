@@ -36,6 +36,9 @@ var _rescue_progress: float = 0.0
 var _rescue_sprite: Sprite2D = null
 var _rescue_visual_texture: Texture2D = null
 
+# Preloaded resource for rescue texture (export-safe)
+const _LIFE_ORB_DATA: OrbData = preload("res://resources/orbs/life_orb.tres")
+
 # Player reference for rescue
 var _player: Node2D = null
 var _player_collision: CollisionPolygon2D = null
@@ -229,8 +232,7 @@ func _create_rescue_visual(sprite_texture: Texture2D) -> void:
 
 
 func _get_life_texture() -> Texture2D:
-	# Load the life orb texture
-	return load("res://resources/orbs/life_orb.tres").texture
+	return _LIFE_ORB_DATA.texture
 
 
 func _update_rescue(delta: float) -> void:

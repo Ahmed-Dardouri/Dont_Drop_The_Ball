@@ -23,28 +23,30 @@ func _ready() -> void:
 	_update_speedup_indicator(EffectManager.has_effect("spawn_speedup"))
 
 
+const _LIFE_ORB_DATA: OrbData = preload("res://resources/orbs/life_orb.tres")
+const _VORTEX_ORB_DATA: OrbData = preload("res://resources/orbs/vortex_orb.tres")
+const _SPEEDUP_ORB_DATA: OrbData = preload("res://resources/orbs/spawn_speedup_orb.tres")
+
+
 func _load_life_texture() -> void:
 	if life_icon == null:
 		return
-	var life_orb_data: Resource = load("res://resources/orbs/life_orb.tres")
-	if life_orb_data != null and life_orb_data is OrbData:
-		life_icon.texture = life_orb_data.texture
+	if _LIFE_ORB_DATA != null:
+		life_icon.texture = _LIFE_ORB_DATA.texture
 
 
 func _load_vortex_texture() -> void:
 	if vortex_indicator == null:
 		return
-	var vortex_orb_data: Resource = load("res://resources/orbs/vortex_orb.tres")
-	if vortex_orb_data != null and vortex_orb_data is OrbData:
-		vortex_indicator.texture = vortex_orb_data.texture
+	if _VORTEX_ORB_DATA != null:
+		vortex_indicator.texture = _VORTEX_ORB_DATA.texture
 
 
 func _load_speedup_texture() -> void:
 	if speedup_indicator == null:
 		return
-	var speedup_orb_data: Resource = load("res://resources/orbs/spawn_speedup_orb.tres")
-	if speedup_orb_data != null and speedup_orb_data is OrbData:
-		speedup_indicator.texture = speedup_orb_data.texture
+	if _SPEEDUP_ORB_DATA != null:
+		speedup_indicator.texture = _SPEEDUP_ORB_DATA.texture
 
 
 func _process(_delta: float) -> void:

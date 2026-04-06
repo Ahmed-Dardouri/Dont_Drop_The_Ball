@@ -28,7 +28,9 @@ func execute(context: Dictionary) -> void:
 func _spawn_effect(orb: Node) -> void:
 	var center: Vector2 = orb.global_position if orb.has_method("get") else Vector2.ZERO
 
-	var scene: PackedScene = load("res://scenes/life_orb_effect.tscn")
+	const LIFE_ORB_EFFECT_SCENE: PackedScene = preload("res://scenes/life_orb_effect.tscn")
+
+	var scene: PackedScene = LIFE_ORB_EFFECT_SCENE
 	var effect: LifeOrbEffect = scene.instantiate()
 
 	effect.setup(effect_texture)

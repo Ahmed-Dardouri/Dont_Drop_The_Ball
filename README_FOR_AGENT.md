@@ -317,6 +317,47 @@ SAFETY BOUNDARIES (MUST NOT DO)
 - Do not leave files uncommitted after making changes.
 
 ================================================================================
+EXPORT/MOBILE RESOURCE LOADING (CRITICAL)
+================================================================================
+
+**Exported/mobile builds do NOT have the same filesystem as the editor.**
+Resources that load fine on desktop will silently fail on Android/iOS if
+discovered or loaded via unsafe patterns.
+
+**NEVER use these patterns for gameplay-critical resources:**
+
+1. `DirAccess.open("res://...") + get_files()` — directory contents are NOT
+   reliable on export. Files may be remapped, renamed, or bundled differently.
+
+2. Filtering by extension (`.tres`, `.png`) and then `load(path)` — the
+   extension may change on export (e.g., `.tres` → `.tres.remap`).
+
+3. Dynamic `load(string_path)` where the path is built at runtime — if the
+   path is known at authoring time, use `preload()` instead.
+
+**ALWAYS use these export-safe patterns instead:**
+
+- `preload("res://path/to/resource.tres")` — resolved at parse time, always works.
+- `const MY_RESOURCE: ResourceType = preload(...)` — class-level const with preload.
+- Explicit registries: a `const` array of preloaded resources instead of scanning.
+- `@export` direct resource references in the editor for scene-assigned resources.
+
+**Rules of thumb:**
+
+- If a resource must exist in exported builds, it MUST be strongly referenced
+  (preload, @export, or ext_resource in .tscn).
+- Desktop success is NOT sufficient — always use export-safe patterns.
+- When adding new resources (orbs, augments, etc.), add them to the relevant
+  const registry rather than relying on directory scanning.
+
+**Examples in this project:**
+
+- `AugmentManager._AUGMENT_REGISTRY` — const array of preloaded AugmentData
+- `AugmentChoiceUI.ICONS` — const dict of preloaded icon textures
+- `HUD._LIFE_ORB_DATA` — const preload for orb texture lookup
+- Behavior scripts use const preloaded PackedScene references
+
+================================================================================
 WORKING STYLE
 ================================================================================
 
