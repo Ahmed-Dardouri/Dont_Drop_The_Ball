@@ -9,7 +9,7 @@
 [sub_resource type="Resource" id="SpawnSpeedupBehavior_1"]
 script = ExtResource("2_speedupbehavior")
 speedup_duration = 30.0
-speed_multiplier = 2.0
+speed_multiplier = 1.5
 behavior_id = ""
 
 [sub_resource type="Resource" id="Resource_cbrun"]

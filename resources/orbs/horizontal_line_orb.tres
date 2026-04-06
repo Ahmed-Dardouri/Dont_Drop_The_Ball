@@ -11,7 +11,7 @@ load_path = "res://.godot/imported/horizontal_wave.png-b1437dd79399d9c0b91daf0b9
 [sub_resource type="Resource" id="LineClearBehavior_1"]
 script = ExtResource("2_lineclearbehavior")
 direction = "horizontal"
-range_distance = 500.0
+range_distance = 300.0
 bonus_per_orb = 4
 wave_texture = SubResource("CompressedTexture2D_x8s7b")
 wave_duration = 0.5

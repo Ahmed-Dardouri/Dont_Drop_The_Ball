@@ -7,7 +7,7 @@ class_name HorizontalWave extends Area2D
 @export var duration: float = 0.5
 
 ## How far the wave travels in each direction (total width = range * 2)
-@export var wave_range: float = 500.0
+@export var wave_range: float = 300.0
 
 ## Bonus score per orb collected
 @export var bonus_per_orb: int = 4
@@ -89,7 +89,7 @@ func _on_area_entered(area: Area2D) -> void:
 
 
 ## Initializes the wave with texture and parameters.
-func setup(texture: Texture2D, range_dist: float = 500.0, bonus: int = 4) -> void:
+func setup(texture: Texture2D, range_dist: float = 300.0, bonus: int = 4) -> void:
 	wave_range = range_dist
 	bonus_per_orb = bonus
 

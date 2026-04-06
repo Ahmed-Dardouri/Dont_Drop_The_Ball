@@ -8,7 +8,7 @@ class_name SpawnSpeedupBehavior extends OrbBehavior
 @export var speedup_duration: float = 30.0
 
 ## Speed multiplier (2.0 = double speed, halved interval)
-@export var speed_multiplier: float = 2.0
+@export var speed_multiplier: float = 1.5
 
 #endregion
 

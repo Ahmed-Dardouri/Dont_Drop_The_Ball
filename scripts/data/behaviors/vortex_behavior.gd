@@ -8,7 +8,7 @@ class_name VortexBehavior extends OrbBehavior
 @export var vortex_duration: float = 30
 
 ## Radius of the vortex collection area
-@export var vortex_radius: float = 100.0
+@export var vortex_radius: float = 65.0
 
 ## Scale multiplier for the vortex visual (final size)
 @export var vortex_scale: float = 1.0

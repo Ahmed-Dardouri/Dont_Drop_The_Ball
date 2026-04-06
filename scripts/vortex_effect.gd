@@ -8,7 +8,7 @@ class_name VortexEffect extends Area2D
 @export var duration: float = 45.0
 
 ## Radius of the vortex collection area
-@export var vortex_radius: float = 150.0
+@export var vortex_radius: float = 65.0
 
 ## Scale multiplier for the vortex visual (final size)
 @export var vortex_scale: float = 1.0
@@ -128,7 +128,7 @@ func _cleanup() -> void:
 
 
 ## Initializes the vortex with texture and parameters.
-func setup(texture: Texture2D, radius: float = 150.0, effect_duration: float = 45.0, scale_mult: float = 1.0) -> void:
+func setup(texture: Texture2D, radius: float = 65.0, effect_duration: float = 45.0, scale_mult: float = 1.0) -> void:
 	vortex_radius = radius
 	duration = effect_duration
 	vortex_scale = scale_mult

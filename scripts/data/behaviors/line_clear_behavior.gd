@@ -8,7 +8,7 @@ class_name LineClearBehavior extends OrbBehavior
 @export var direction: String = "horizontal"
 
 ## How far the wave travels in each direction (pixels from center).
-@export var range_distance: float = 500.0
+@export var range_distance: float = 300.0
 
 ## Bonus score per orb collected by the wave.
 @export var bonus_per_orb: int = 4

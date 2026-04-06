@@ -5,7 +5,7 @@ class_name BurstBehavior extends OrbBehavior
 #region Properties
 
 ## Radius in pixels for the explosion circle.
-@export var radius: float = 150.0
+@export var radius: float = 100.0
 
 ## Texture for the explosion circle visual.
 @export var explosion_texture: Texture2D

@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="LineClearBehavior_1"]
 script = ExtResource("2_lineclearbehavior")
 direction = "vertical"
-range_distance = 500.0
+range_distance = 300.0
 bonus_per_orb = 4
 behavior_id = ""
 

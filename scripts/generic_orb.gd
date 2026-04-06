@@ -299,7 +299,7 @@ func _check_overlapping_bodies() -> void:
 	# Check for vortex effect overlapping via distance
 	var vortex_effects := get_tree().get_nodes_in_group("vortex_effect")
 	for vortex: Node2D in vortex_effects:
-		var vortex_radius: float = 150.0
+		var vortex_radius: float = 65.0
 		if vortex.has_method("get") and vortex.get("vortex_radius") != null:
 			vortex_radius = float(vortex.get("vortex_radius"))
 		var distance: float = global_position.distance_to(vortex.global_position)
