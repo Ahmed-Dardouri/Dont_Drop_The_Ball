@@ -4,7 +4,6 @@ extends Node2D
 @onready var phantom_camera_2d: PhantomCamera2D = $PhantomCamera2D
 @onready var main_menu: Control = $main_menu
 @onready var settings_menu: Control = $settings_menu
-@onready var mode_select_menu: Control = $mode_select_menu
 
 @onready var camera_2d: Camera2D = $Camera2D
 
@@ -12,8 +11,8 @@ var _index : int = 0
 var _scene_path := "res://scenes/world_builder.tscn"
 var _current_scene : Enums.MainScene = Enums.MainScene.MAIN_MENU
 
-## Currently selected game mode ID (default to beginner)
-var _selected_mode_id: String = "beginner"
+## Hard-coded to beginner mode. Endless mode exists in project but is not accessible.
+const _selected_mode_id: String = "beginner"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -69,8 +68,6 @@ func handle_buttons(event: ButtonEvent):
 			play_button_handle()
 		Enums.MainButtonType.SETTINGS:
 			settings_button_handle()
-		Enums.MainButtonType.MODE_SELECT:
-			mode_select_button_handle()
 		Enums.MainButtonType.BACK:
 			back_button_handle()
 		Enums.MainButtonType.EXIT:
@@ -80,11 +77,6 @@ func handle_buttons(event: ButtonEvent):
 
 
 func play_button_handle():
-	# Get selected mode from mode_select_menu if available
-	if mode_select_menu != null and mode_select_menu.has_method("get_selected_mode"):
-		_selected_mode_id = mode_select_menu.get_selected_mode()
-
-	# Start the selected game mode
 	ModeManager.start_mode(_selected_mode_id)
 
 	ScoreManager.reset_score()
@@ -98,10 +90,6 @@ func settings_button_handle():
 	switch_scene(Enums.MainScene.SETTINGS_MENU)
 
 
-func mode_select_button_handle():
-	switch_scene(Enums.MainScene.MODE_SELECT_MENU)
-
-
 func back_button_handle():
 	match _current_scene:
 		Enums.MainScene.WORLD_BUILDER:
@@ -111,14 +99,11 @@ func back_button_handle():
 			switch_scene(Enums.MainScene.MAIN_MENU)
 		Enums.MainScene.SETTINGS_MENU:
 			switch_scene(Enums.MainScene.MAIN_MENU)
-		Enums.MainScene.MODE_SELECT_MENU:
-			switch_scene(Enums.MainScene.MAIN_MENU)
 		Enums.MainScene.MAIN_MENU:
 			switch_scene(Enums.MainScene.MAIN_MENU)
 
 func exit_button_handle():
 	exit_game()
-
 
 
 
@@ -144,15 +129,12 @@ func switch_scene(scene: Enums.MainScene):
 			main_menu.visible = true
 		Enums.MainScene.SETTINGS_MENU:
 			settings_menu.visible = true
-		Enums.MainScene.MODE_SELECT_MENU:
-			mode_select_menu.visible = true
 
 
 func hide_scenes():
 	world_builder.visible = false
 	main_menu.visible = false
 	settings_menu.visible = false
-	mode_select_menu.visible = false
 
 func exit_game():
 	get_tree().quit()
