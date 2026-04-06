@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "steady_pressure"
+display_name = "Steady Pressure"
+description = "Improves both bonus meter fill and meter retention slightly."
+icon_key = "meter"
+augment_key = "steady_pressure"
+rarity = 1
+early_weight = 5
+mid_weight = 7
+late_weight = 7

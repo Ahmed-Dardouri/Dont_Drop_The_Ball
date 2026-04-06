@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "king_sized"
+display_name = "King Sized"
+description = "Burst, line, and vortex all get a noticeable boost together."
+icon_key = "orb"
+augment_key = "king_sized"
+rarity = 2
+early_weight = 4
+mid_weight = 4
+late_weight = 4

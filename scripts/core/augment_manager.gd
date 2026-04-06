@@ -258,161 +258,204 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 	match augment.augment_key:
 		# === COMMON SCORE AUGMENTS ===
 		"pocket_change":
-			# +3 score per orb per stack
 			Variables.score_per_orb_bonus += 3
 		"collectors_habit":
-			# +2 base orb score per stack
 			Variables.score_per_orb_bonus += 2
 		"starter_credit":
-			# One-time +100 score
 			ScoreManager.add_score(100)
+		"main_score_augment":
+			ScoreManager.add_score(100)
+		"lucky_penny":
+			ScoreManager.add_score(75)
+		"side_hustle":
+			Variables.special_orb_score_bonus += 0.15
 
 		# === COMMON LIFE AUGMENTS ===
 		"just_one_more":
-			# +1 permanent life
 			Variables.permanent_lives += 1
 			LifeChangedEvent.invoke(true)
 		"lucky_bounce":
-			# +15% life orb chance per stack
 			Variables.life_orb_chance_bonus += 0.15
+		"safety_net":
+			Variables.permanent_lives += 1
+			LifeChangedEvent.invoke(true)
 
 		# === COMMON METER AUGMENTS ===
 		"easy_money":
-			# +20% meter fill rate per stack
 			Variables.meter_fill_multiplier += 0.2
 		"catch_a_break":
-			# -15% meter drain rate per stack
 			Variables.meter_drain_reduction += 0.15
+		"paper_trail":
+			Variables.meter_fill_multiplier += 0.15
+		"room_to_breathe":
+			Variables.meter_drain_reduction += 0.1
 
 		# === COMMON BURST AUGMENTS ===
 		"snack_sized_boom":
-			# +20% burst radius per stack
 			Variables.burst_radius_bonus += 0.2
+		"soft_fuse":
+			Variables.burst_radius_bonus += 0.15
 
 		# === COMMON VORTEX AUGMENTS ===
 		"bigger_vacuum":
-			# +25% vortex radius per stack
 			Variables.vortex_radius_bonus += 0.25
+		"long_lunch":
+			Variables.vortex_duration_bonus += 0.25
 
 		# === COMMON LINE AUGMENTS ===
 		"wide_sweep":
-			# +20% line clear range per stack
 			Variables.line_clear_range_bonus += 0.2
+		"sharp_line":
+			Variables.line_clear_range_bonus += 0.15
 
 		# === COMMON SPAWN AUGMENTS ===
 		"orb_buffet":
-			# +15% orb spawn rate per stack
 			Variables.orb_spawn_rate_bonus += 0.15
 		"shiny_problem":
-			# +20% special orb chance per stack
 			Variables.special_orb_chance_bonus += 0.2
+		"extra_hands":
+			Variables.orb_spawn_rate_bonus += 0.1
 
 		# === RARE SCORE AUGMENTS ===
 		"payroll_upgrade":
-			# +5 score per orb (stronger than common)
 			Variables.score_per_orb_bonus += 5
 		"rent_was_due":
-			# +4 score per orb
 			Variables.score_per_orb_bonus += 4
 		"chain_appetite":
-			# +2 chain score bonus per stack
 			Variables.chain_score_bonus += 2
 		"greedy_little_hands":
-			# +3 score per orb, +10% special orb bonus
 			Variables.score_per_orb_bonus += 3
 			Variables.special_orb_chance_bonus += 0.1
+			Variables.special_orb_score_bonus += 0.1
+		"top_shelf":
+			Variables.score_per_orb_bonus += 4
+		"rich_get_richer":
+			Variables.chain_score_bonus += 3
+			Variables.score_multiplier_bonus += 0.1
 
 		# === RARE LIFE AUGMENTS ===
 		"extra_pocket":
-			# +1 life, +25% life orb chance
 			Variables.permanent_lives += 1
 			Variables.life_orb_chance_bonus += 0.25
+			LifeChangedEvent.invoke(true)
+		"more_lives_more_problems":
+			Variables.permanent_lives += 1
+			Variables.life_orb_chance_bonus += 0.1
 			LifeChangedEvent.invoke(true)
 
 		# === RARE METER AUGMENTS ===
 		"overcharged_meter":
-			# +40% meter fill rate per stack
 			Variables.meter_fill_multiplier += 0.4
 		"bigger_bank":
-			# +30% meter fill, -20% drain
 			Variables.meter_fill_multiplier += 0.3
 			Variables.meter_drain_reduction += 0.2
+		"savings_account":
+			Variables.meter_fill_multiplier += 0.25
+		"steady_pressure":
+			Variables.meter_fill_multiplier += 0.15
+			Variables.meter_drain_reduction += 0.1
 
 		# === RARE BURST AUGMENTS ===
 		"boom_goes_the_neighborhood":
-			# +50% burst radius per stack
 			Variables.burst_radius_bonus += 0.5
+		"aftershock":
+			Variables.burst_radius_bonus += 0.35
+			Variables.chain_score_bonus += 2
 
 		# === RARE VORTEX AUGMENTS ===
 		"industrial_strength":
-			# +60% vortex radius per stack
 			Variables.vortex_radius_bonus += 0.6
+		"long_reach":
+			Variables.vortex_radius_bonus += 0.4
 
 		# === RARE LINE AUGMENTS ===
 		"full_screen_insurance":
-			# +50% line clear range per stack
 			Variables.line_clear_range_bonus += 0.5
+		"sweep_account":
+			Variables.line_clear_range_bonus += 0.35
+			Variables.line_clear_bonus_per_orb += 1
 
 		# === RARE SPAWN AUGMENTS ===
 		"adrenaline_drip":
-			# +30% orb spawn rate per stack
 			Variables.orb_spawn_rate_bonus += 0.3
+		"fast_lane":
+			Variables.orb_spawn_rate_bonus += 0.2
+		"more_where_that_came_from":
+			Variables.special_orb_chance_bonus += 0.15
 
 		# === MYTHICAL SCORE AUGMENTS ===
 		"big_bank_energy":
-			# +10 score per orb (massive)
 			Variables.score_per_orb_bonus += 10
 		"jackpot_fever":
-			# +15 score per orb, +0.3 score multiplier
 			Variables.score_per_orb_bonus += 15
 			Variables.score_multiplier_bonus += 0.3
+		"golden_ticket":
+			ScoreManager.add_score(500)
+		"special_delivery":
+			Variables.special_orb_score_bonus += 0.3
+		"jackpot_bonus":
+			ScoreManager.add_score(300)
+			Variables.score_multiplier_bonus += 0.15
 
 		# === MYTHICAL LIFE AUGMENTS ===
 		"plot_armor":
-			# +2 lives, +30% life orb chance
 			Variables.permanent_lives += 2
 			Variables.life_orb_chance_bonus += 0.3
 			LifeChangedEvent.invoke(true)
+		"second_wallet":
+			Variables.permanent_lives += 2
+			Variables.score_per_orb_bonus += 5
+			LifeChangedEvent.invoke(true)
+		"life_insurance":
+			Variables.life_orb_chance_bonus += 0.4
 
 		# === MYTHICAL METER AUGMENTS ===
 		"infinite_snack_glitch":
-			# +80% meter fill, -40% drain
 			Variables.meter_fill_multiplier += 0.8
 			Variables.meter_drain_reduction += 0.4
+		"over_the_limit":
+			Variables.meter_fill_multiplier += 0.5
+			Variables.meter_drain_reduction += 0.3
 
 		# === MYTHICAL BURST AUGMENTS ===
 		"kaboom_deluxe":
-			# +100% burst radius
 			Variables.burst_radius_bonus += 1.0
 		"boom_tax_refund":
-			# +80% burst radius, +5 chain bonus
 			Variables.burst_radius_bonus += 0.8
 			Variables.chain_score_bonus += 5
 
 		# === MYTHICAL VORTEX AUGMENTS ===
 		"black_hole_budget_cut":
-			# +100% vortex radius
 			Variables.vortex_radius_bonus += 1.0
 		"vacuum_maxxed":
-			# +120% vortex radius
 			Variables.vortex_radius_bonus += 1.2
 
 		# === MYTHICAL LINE AUGMENTS ===
 		"line_em_up":
-			# +100% line clear range
 			Variables.line_clear_range_bonus += 1.0
 		"laser_but_horizontal":
-			# +120% line clear range
 			Variables.line_clear_range_bonus += 1.2
+		"laser_show":
+			Variables.line_clear_range_bonus += 0.8
+			Variables.line_clear_bonus_per_orb += 3
 
 		# === MYTHICAL SPAWN AUGMENTS ===
 		"orb_storm":
-			# +60% orb spawn rate
 			Variables.orb_spawn_rate_bonus += 0.6
 		"oops_all_orbs":
-			# +50% orb spawn rate, +40% special orb chance
 			Variables.orb_spawn_rate_bonus += 0.5
 			Variables.special_orb_chance_bonus += 0.4
+		"rainmaker":
+			Variables.orb_spawn_rate_bonus += 0.45
+		"lucky_universe":
+			Variables.life_orb_chance_bonus += 0.25
+			Variables.special_orb_chance_bonus += 0.25
+
+		# === MYTHICAL MULTI-CATEGORY ===
+		"king_sized":
+			Variables.burst_radius_bonus += 0.3
+			Variables.line_clear_range_bonus += 0.3
+			Variables.vortex_radius_bonus += 0.3
 
 		# === LEGACY PLACEHOLDERS (for backwards compatibility) ===
 		"score_bonus":

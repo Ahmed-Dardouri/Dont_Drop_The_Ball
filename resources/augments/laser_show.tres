@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "laser_show"
+display_name = "Laser Show"
+description = "Horizontal line clear orbs become extraordinarily powerful."
+icon_key = "line"
+augment_key = "laser_show"
+rarity = 2
+early_weight = 2
+mid_weight = 3
+late_weight = 5

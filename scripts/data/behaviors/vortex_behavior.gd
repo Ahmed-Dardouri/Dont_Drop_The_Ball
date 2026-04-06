@@ -37,10 +37,11 @@ func _spawn_vortex(orb: Node) -> void:
 	var scene: PackedScene = load("res://scenes/vortex_effect.tscn")
 	var vortex: VortexEffect = scene.instantiate()
 
-	# Apply augment bonus to radius
+	# Apply augment bonuses to radius and duration
 	var adjusted_radius: float = vortex_radius * (1.0 + Variables.vortex_radius_bonus)
+	var adjusted_duration: float = vortex_duration * (1.0 + Variables.vortex_duration_bonus)
 	vortex.add_to_group("vortex_effect")
-	vortex.setup(vortex_texture, adjusted_radius, vortex_duration, vortex_scale)
+	vortex.setup(vortex_texture, adjusted_radius, adjusted_duration, vortex_scale)
 
 	# Find the ball and add vortex to scene
 	var balls := orb.get_tree().get_nodes_in_group("ball")

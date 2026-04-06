@@ -34,6 +34,10 @@ var line_clear_bonus_per_orb: int = 0
 var orb_spawn_rate_bonus: float = 0.0
 var life_orb_chance_bonus: float = 0.0
 var special_orb_chance_bonus: float = 0.0
+var special_orb_score_bonus: float = 0.0
+
+## Vortex modifiers
+var vortex_duration_bonus: float = 0.0
 
 ## Reset all augment modifiers (call on game over / new run)
 func reset_augment_modifiers() -> void:
@@ -44,9 +48,11 @@ func reset_augment_modifiers() -> void:
 	meter_drain_reduction = 0.0
 	burst_radius_bonus = 0.0
 	vortex_radius_bonus = 0.0
+	vortex_duration_bonus = 0.0
 	line_clear_range_bonus = 0.0
 	line_clear_bonus_per_orb = 0
 	orb_spawn_rate_bonus = 0.0
 	life_orb_chance_bonus = 0.0
 	special_orb_chance_bonus = 0.0
+	special_orb_score_bonus = 0.0
 #endregion

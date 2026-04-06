@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "second_wallet"
+display_name = "Second Wallet"
+description = "Gain +2 lives and make every orb pickup more valuable."
+icon_key = "life"
+augment_key = "second_wallet"
+rarity = 2
+early_weight = 3
+mid_weight = 4
+late_weight = 6

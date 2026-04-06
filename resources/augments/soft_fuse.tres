@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "soft_fuse"
+display_name = "Soft Fuse"
+description = "Burst orb explosion radius gets a small increase."
+icon_key = "burst"
+augment_key = "soft_fuse"
+rarity = 0
+early_weight = 6
+mid_weight = 7
+late_weight = 8

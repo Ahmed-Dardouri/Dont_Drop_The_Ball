@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "aftershock"
+display_name = "Aftershock"
+description = "Burst orb effects become much larger and more rewarding."
+icon_key = "burst"
+augment_key = "aftershock"
+rarity = 1
+early_weight = 3
+mid_weight = 7
+late_weight = 9

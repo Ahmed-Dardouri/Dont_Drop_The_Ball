@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AugmentData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/augment_data.gd" id="1_augmentdata"]
+
+[resource]
+script = ExtResource("1_augmentdata")
+augment_id = "special_delivery"
+display_name = "Special Delivery"
+description = "Special orbs are worth significantly more score."
+icon_key = "score"
+augment_key = "special_delivery"
+rarity = 2
+early_weight = 3
+mid_weight = 2
+late_weight = 1
