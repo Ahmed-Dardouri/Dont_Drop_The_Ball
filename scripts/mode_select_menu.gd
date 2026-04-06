@@ -2,7 +2,7 @@ extends Control
 ## Mode selection menu - allows player to choose between game modes.
 
 ## Currently selected mode ID (default to beginner for easier experience)
-var selected_mode_id: String = "beginner"
+var selected_mode_id: int = Enums.PlayMode.BEGINNER
 
 @onready var endless_button: Button = $PanelContainer/VBoxContainer/endless_button
 @onready var beginner_button: Button = $PanelContainer/VBoxContainer/beginner_button
@@ -19,23 +19,23 @@ func _ready() -> void:
 func _update_button_selection() -> void:
 	_updating_selection = true
 	if endless_button != null:
-		endless_button.button_pressed = (selected_mode_id == "endless")
+		endless_button.button_pressed = (selected_mode_id == Enums.PlayMode.ENDLESS)
 	if beginner_button != null:
-		beginner_button.button_pressed = (selected_mode_id == "beginner")
+		beginner_button.button_pressed = (selected_mode_id == Enums.PlayMode.BEGINNER)
 	_updating_selection = false
 
 
 func _on_endless_button_pressed() -> void:
 	if _updating_selection:
 		return
-	selected_mode_id = "endless"
+	selected_mode_id = Enums.PlayMode.ENDLESS
 	_update_button_selection()
 
 
 func _on_beginner_button_pressed() -> void:
 	if _updating_selection:
 		return
-	selected_mode_id = "beginner"
+	selected_mode_id = Enums.PlayMode.BEGINNER
 	_update_button_selection()
 
 
@@ -44,5 +44,5 @@ func _on_back_button_pressed() -> void:
 
 
 ## Get the currently selected mode ID.
-func get_selected_mode() -> String:
+func get_selected_mode() -> int:
 	return selected_mode_id

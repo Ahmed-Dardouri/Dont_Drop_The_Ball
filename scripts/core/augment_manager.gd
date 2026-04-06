@@ -403,7 +403,7 @@ func _apply_life_effect(key: String, stack: int) -> void:
 			Variables.life_orb_chance_bonus += 0.1
 			LifeChangedEvent.invoke(true)
 		"plot_armor":
-			Variables.permanent_lives += 2
+			Variables.permanent_lives += 2 
 			Variables.life_orb_chance_bonus += 0.3
 			LifeChangedEvent.invoke(true)
 		"second_wallet":

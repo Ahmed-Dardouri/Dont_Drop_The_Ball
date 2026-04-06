@@ -67,6 +67,11 @@ enum GameMode {
 	GAME_OVER
 }
 
+enum PlayMode {
+	BEGINNER,
+	ENDLESS,
+}
+
 enum AugmentRarity {
 	COMMON,
 	RARE,

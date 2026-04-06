@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://dssdy2rpeogek"]
+
+[ext_resource type="Script" uid="uid://bjnj7pydiuu6o" path="res://scripts/core/mode_manager.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://buenqmwkdgvf1" path="res://resources/modes/beginner_mode.tres" id="2_beginner"]
+[ext_resource type="Script" uid="uid://r1kmlgt48ydm" path="res://scripts/data/mode_config.gd" id="2_j05ll"]
+
+[node name="ModeManager" type="Node"]
+script = ExtResource("1_script")
+modes = Array[ExtResource("2_j05ll")]([ExtResource("2_beginner")])

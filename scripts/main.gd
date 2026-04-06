@@ -12,7 +12,7 @@ var _scene_path := "res://scenes/world_builder.tscn"
 var _current_scene : Enums.MainScene = Enums.MainScene.MAIN_MENU
 
 ## Hard-coded to beginner mode. Endless mode exists in project but is not accessible.
-const _selected_mode_id: String = "beginner"
+const _selected_mode_id: int = Enums.PlayMode.BEGINNER
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

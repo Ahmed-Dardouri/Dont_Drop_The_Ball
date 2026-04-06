@@ -5,8 +5,8 @@ class_name ModeConfig extends Resource
 
 #region Identity Properties
 
-## Unique identifier for the mode (e.g., "endless", "time_attack")
-@export var mode_id: String = ""
+## Unique identifier for the mode (Enums.PlayMode value)
+@export var mode_id: int = -1
 
 ## Human-readable name displayed in UI
 @export var display_name: String = ""
@@ -96,6 +96,6 @@ class_name ModeConfig extends Resource
 
 ## Returns true if required fields are populated
 func is_valid() -> bool:
-	return not mode_id.strip_edges().is_empty() and not display_name.strip_edges().is_empty()
+	return mode_id >= 0 and not display_name.strip_edges().is_empty()
 
 #endregion

@@ -9,7 +9,7 @@
 
 [resource]
 script = ExtResource("1_modeconfig")
-mode_id = "beginner"
+mode_id = 0
 display_name = "Beginner"
 description = "An easier mode for learning the basics. Slower ball, higher jumps, gentler progression."
 implementation = ExtResource("2_beginner_mode")

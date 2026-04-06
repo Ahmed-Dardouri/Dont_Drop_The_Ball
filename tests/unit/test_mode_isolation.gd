@@ -23,8 +23,8 @@ func after_each() -> void:
 
 func _reset_mode_configs() -> void:
 	# Reset the mode configs to their default null state
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	if endless_config != null:
 		endless_config.ball_physics_config = null
@@ -38,8 +38,8 @@ func _reset_mode_configs() -> void:
 #region Mode Config Separation Tests
 
 func test_mode_configs_are_separate_resources() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	assert_not_null(endless_config, "Endless config should exist")
 	assert_not_null(beginner_config, "Beginner config should exist")
@@ -47,16 +47,16 @@ func test_mode_configs_are_separate_resources() -> void:
 
 
 func test_mode_ids_are_different() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
-	assert_eq(endless_config.mode_id, "endless", "Endless mode_id should be 'endless'")
-	assert_eq(beginner_config.mode_id, "beginner", "Beginner mode_id should be 'beginner'")
+	assert_eq(endless_config.mode_id, Enums.PlayMode.ENDLESS, "Endless mode_id should be ENDLESS")
+	assert_eq(beginner_config.mode_id, Enums.PlayMode.BEGINNER, "Beginner mode_id should be BEGINNER")
 
 
 func test_mode_display_names_are_different() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	assert_eq(endless_config.display_name, "Endless", "Endless display_name should be 'Endless'")
 	assert_eq(beginner_config.display_name, "Beginner", "Beginner display_name should be 'Beginner'")
@@ -67,7 +67,7 @@ func test_mode_display_names_are_different() -> void:
 #region Mode Implementation Separation Tests
 
 func test_beginner_mode_implementation_is_separate_class() -> void:
-	ModeManager.start_mode("beginner")
+	ModeManager.start_mode(Enums.PlayMode.BEGINNER)
 	var impl: ModeBase = ModeManager.get_mode_implementation()
 
 	assert_not_null(impl, "Beginner mode should have implementation")
@@ -76,7 +76,7 @@ func test_beginner_mode_implementation_is_separate_class() -> void:
 
 
 func test_endless_mode_implementation_is_correct_class() -> void:
-	ModeManager.start_mode("endless")
+	ModeManager.start_mode(Enums.PlayMode.ENDLESS)
 	var impl: ModeBase = ModeManager.get_mode_implementation()
 
 	assert_not_null(impl, "Endless mode should have implementation")
@@ -84,8 +84,8 @@ func test_endless_mode_implementation_is_correct_class() -> void:
 
 
 func test_both_modes_can_be_loaded() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	assert_not_null(endless_config.implementation, "Endless should have implementation script")
 	assert_not_null(beginner_config.implementation, "Beginner should have implementation script")
@@ -97,21 +97,21 @@ func test_both_modes_can_be_loaded() -> void:
 #region Ball Physics Isolation Tests
 
 func test_mode_config_has_ball_physics_field() -> void:
-	var config: ModeConfig = ModeManager.get_mode_config("endless")
+	var config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
 	assert_true("ball_physics_config" in config, "ModeConfig should have ball_physics_config field")
 
 
 func test_ball_physics_configs_default_to_null() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	assert_null(endless_config.ball_physics_config, "Endless ball_physics_config should default to null")
 	assert_null(beginner_config.ball_physics_config, "Beginner ball_physics_config should default to null")
 
 
 func test_changing_beginner_ball_physics_does_not_affect_endless() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	# Set beginner mode's ball physics
 	var custom_physics: BallPhysicsConfig = BallPhysicsConfig.new()
@@ -130,21 +130,21 @@ func test_changing_beginner_ball_physics_does_not_affect_endless() -> void:
 #region Progression Config Isolation Tests
 
 func test_mode_config_has_progression_field() -> void:
-	var config: ModeConfig = ModeManager.get_mode_config("endless")
+	var config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
 	assert_true("progression_config" in config, "ModeConfig should have progression_config field")
 
 
 func test_progression_configs_default_to_null() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	assert_null(endless_config.progression_config, "Endless progression_config should default to null")
 	assert_null(beginner_config.progression_config, "Beginner progression_config should default to null")
 
 
 func test_changing_beginner_progression_does_not_affect_endless() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	# Set beginner mode's progression
 	var custom_progression: ProgressionConfig = ProgressionConfig.new()
@@ -177,7 +177,7 @@ func test_game_rules_returns_defaults_when_no_mode_active() -> void:
 
 func test_game_rules_returns_mode_values_when_set() -> void:
 	# Set up a mode with custom physics
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 	var custom_physics: BallPhysicsConfig = BallPhysicsConfig.new()
 	custom_physics.max_speed = 700.0
 	custom_physics.max_fall_speed = 350.0
@@ -185,7 +185,7 @@ func test_game_rules_returns_mode_values_when_set() -> void:
 	beginner_config.ball_physics_config = custom_physics
 
 	# Start the mode
-	ModeManager.start_mode("beginner")
+	ModeManager.start_mode(Enums.PlayMode.BEGINNER)
 
 	var max_speed: float = GameRules.get_ball_max_speed()
 	var fall_speed: float = GameRules.get_ball_fall_speed()
@@ -203,11 +203,11 @@ func test_game_rules_returns_null_progression_when_not_set() -> void:
 
 
 func test_game_rules_returns_mode_progression_when_set() -> void:
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 	var custom_progression: ProgressionConfig = ProgressionConfig.new()
 	beginner_config.progression_config = custom_progression
 
-	ModeManager.start_mode("beginner")
+	ModeManager.start_mode(Enums.PlayMode.BEGINNER)
 	var progression: ProgressionConfig = GameRules.get_progression_config()
 
 	assert_not_null(progression, "Should return mode's progression config")
@@ -220,8 +220,8 @@ func test_game_rules_returns_mode_progression_when_set() -> void:
 
 func test_switching_modes_updates_game_rules() -> void:
 	# Set up both modes with different physics
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	var endless_physics: BallPhysicsConfig = BallPhysicsConfig.new()
 	endless_physics.max_speed = 900.0
@@ -232,18 +232,18 @@ func test_switching_modes_updates_game_rules() -> void:
 	beginner_config.ball_physics_config = beginner_physics
 
 	# Start endless mode
-	ModeManager.start_mode("endless")
+	ModeManager.start_mode(Enums.PlayMode.ENDLESS)
 	assert_eq(GameRules.get_ball_max_speed(), 900.0, "Endless mode should have 900 max_speed")
 
 	# Switch to beginner mode
 	ModeManager.end_mode({"win": false})
-	ModeManager.start_mode("beginner")
+	ModeManager.start_mode(Enums.PlayMode.BEGINNER)
 	assert_eq(GameRules.get_ball_max_speed(), 600.0, "Beginner mode should have 600 max_speed")
 
 
 func test_endless_mode_values_unchanged_after_beginner_modified() -> void:
-	var endless_config: ModeConfig = ModeManager.get_mode_config("endless")
-	var beginner_config: ModeConfig = ModeManager.get_mode_config("beginner")
+	var endless_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.ENDLESS)
+	var beginner_config: ModeConfig = ModeManager.get_mode_config(Enums.PlayMode.BEGINNER)
 
 	# Store original endless values
 	var original_endless_ball: BallPhysicsConfig = endless_config.ball_physics_config

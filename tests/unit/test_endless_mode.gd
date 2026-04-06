@@ -147,10 +147,10 @@ func test_endless_mode_get_final_score_returns_score() -> void:
 func test_endless_mode_can_hold_config() -> void:
 	var mode := EndlessMode.new()
 	var config := ModeConfig.new()
-	config.mode_id = "endless"
+	config.mode_id = Enums.PlayMode.ENDLESS
 	config.display_name = "Endless"
 	mode.config = config
-	assert_eq(mode.config.mode_id, "endless", "EndlessMode should hold config reference")
+	assert_eq(mode.config.mode_id, Enums.PlayMode.ENDLESS, "EndlessMode should hold config reference")
 
 
 #endregion
@@ -159,7 +159,7 @@ func test_endless_mode_can_hold_config() -> void:
 
 func test_mode_manager_can_instantiate_endless_mode() -> void:
 	# Start endless mode via ModeManager
-	ModeManager.start_mode("endless")
+	ModeManager.start_mode(Enums.PlayMode.ENDLESS)
 
 	# Verify mode implementation is an EndlessMode instance
 	var impl := ModeManager.get_mode_implementation()
@@ -171,10 +171,10 @@ func test_mode_manager_can_instantiate_endless_mode() -> void:
 
 
 func test_mode_manager_endless_mode_has_config() -> void:
-	ModeManager.start_mode("endless")
+	ModeManager.start_mode(Enums.PlayMode.ENDLESS)
 	var impl := ModeManager.get_mode_implementation()
 	assert_not_null(impl.config, "EndlessMode instance should have config set")
-	assert_eq(impl.config.mode_id, "endless", "Config should be the endless mode config")
+	assert_eq(impl.config.mode_id, Enums.PlayMode.ENDLESS, "Config should be the endless mode config")
 	ModeManager.end_mode({"win": false})
 
 

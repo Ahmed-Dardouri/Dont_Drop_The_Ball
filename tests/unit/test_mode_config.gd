@@ -7,7 +7,7 @@ extends GutTest
 
 func test_mode_config_default_mode_id() -> void:
 	var config := ModeConfig.new()
-	assert_eq(config.mode_id, "", "Default mode_id should be empty string")
+	assert_eq(config.mode_id, -1, "Default mode_id should be -1")
 
 
 func test_mode_config_default_display_name() -> void:
@@ -61,30 +61,23 @@ func test_mode_config_default_has_win() -> void:
 
 func test_mode_config_validation_valid() -> void:
 	var config := ModeConfig.new()
-	config.mode_id = "endless"
+	config.mode_id = Enums.PlayMode.ENDLESS
 	config.display_name = "Endless"
 	assert_true(config.is_valid(), "Config with mode_id and display_name should be valid")
 
 
-func test_mode_config_validation_empty_mode_id() -> void:
+func test_mode_config_validation_invalid_mode_id() -> void:
 	var config := ModeConfig.new()
-	config.mode_id = ""
+	config.mode_id = -1
 	config.display_name = "Test"
-	assert_false(config.is_valid(), "Config with empty mode_id should be invalid")
+	assert_false(config.is_valid(), "Config with invalid mode_id should be invalid")
 
 
 func test_mode_config_validation_empty_display_name() -> void:
 	var config := ModeConfig.new()
-	config.mode_id = "test"
+	config.mode_id = Enums.PlayMode.ENDLESS
 	config.display_name = ""
 	assert_false(config.is_valid(), "Config with empty display_name should be invalid")
-
-
-func test_mode_config_validation_whitespace_only() -> void:
-	var config := ModeConfig.new()
-	config.mode_id = "   "
-	config.display_name = "Test"
-	assert_false(config.is_valid(), "Config with whitespace-only mode_id should be invalid")
 
 
 #endregion
@@ -98,14 +91,14 @@ func test_mode_config_is_resource() -> void:
 
 func test_mode_config_can_be_duplicated() -> void:
 	var original := ModeConfig.new()
-	original.mode_id = "test_mode"
+	original.mode_id = Enums.PlayMode.BEGINNER
 	original.display_name = "Test Mode"
 	original.spawn_interval = 1.5
 	original.max_orbs = 15
 	original.has_win = true
 
 	var copy := original.duplicate()
-	assert_eq(copy.mode_id, "test_mode", "Duplicated config should have same mode_id")
+	assert_eq(copy.mode_id, Enums.PlayMode.BEGINNER, "Duplicated config should have same mode_id")
 	assert_eq(copy.display_name, "Test Mode", "Duplicated config should have same display_name")
 	assert_eq(copy.spawn_interval, 1.5, "Duplicated config should have same spawn_interval")
 	assert_eq(copy.max_orbs, 15, "Duplicated config should have same max_orbs")
@@ -115,7 +108,7 @@ func test_mode_config_can_be_duplicated() -> void:
 func test_mode_config_load_endless_mode_resource() -> void:
 	var config := load("res://resources/modes/endless_mode.tres") as ModeConfig
 	assert_not_null(config, "Should be able to load endless_mode.tres")
-	assert_eq(config.mode_id, "endless", "Loaded config should have mode_id 'endless'")
+	assert_eq(config.mode_id, Enums.PlayMode.ENDLESS, "Loaded config should have ENDLESS mode_id")
 	assert_eq(config.display_name, "Endless", "Loaded config should have display_name 'Endless'")
 
 

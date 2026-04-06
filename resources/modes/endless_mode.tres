@@ -1,22 +1,27 @@
-[gd_resource type="Resource" script_class="ModeConfig" load_steps=3 format=3 uid="uid://cendlessmode0001"]
+[gd_resource type="Resource" script_class="ModeConfig" load_steps=4 format=3 uid="uid://bna0kkkl34bx5"]
 
-[ext_resource type="Script" path="res://scripts/data/mode_config.gd" id="1_modeconfig"]
-[ext_resource type="GDScript" path="res://scripts/modes/endless_mode.gd" id="2_endless_mode"]
+[ext_resource type="Script" uid="uid://r1kmlgt48ydm" path="res://scripts/data/mode_config.gd" id="1_modeconfig"]
+[ext_resource type="Script" uid="uid://65qxodo2hmsy" path="res://scripts/modes/endless_mode.gd" id="2_endless_mode"]
+[ext_resource type="Script" uid="uid://dn517qqfx0k6s" path="res://scripts/data/orb_data.gd" id="2_ffsak"]
 
 [resource]
 script = ExtResource("1_modeconfig")
-mode_id = "endless"
+mode_id = 1
 display_name = "Endless"
 description = "Classic endless mode. Keep the ball up as long as you can!"
-icon = null
 implementation = ExtResource("2_endless_mode")
-orb_pool = []
+orb_pool = Array[ExtResource("2_ffsak")]([])
 spawn_interval = 0.0
 max_orbs = 0
 hud_metric = "score"
 has_win = false
-ball_physics_config = null
-player_physics_config = null
-progression_config = null
 background_color = Color(0, 0, 0, 0)
 show_parallax_background = true
+ball_gravity_scale = 0.0
+ball_scale = 0.0
+orb_scale = 0.0
+starting_lives = 0
+permanent_life_pickups = false
+ball_slowdown_on_orb = 0.0
+ball_slowdown_duration = 0.5
+show_landing_marker = false

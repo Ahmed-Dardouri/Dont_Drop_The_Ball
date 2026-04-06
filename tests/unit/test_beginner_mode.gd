@@ -123,10 +123,10 @@ func test_beginner_mode_get_final_score_returns_score() -> void:
 func test_beginner_mode_can_hold_config() -> void:
 	var mode := BeginnerMode.new()
 	var config := ModeConfig.new()
-	config.mode_id = "beginner"
+	config.mode_id = Enums.PlayMode.BEGINNER
 	config.display_name = "Beginner"
 	mode.config = config
-	assert_eq(mode.config.mode_id, "beginner", "BeginnerMode should hold config reference")
+	assert_eq(mode.config.mode_id, Enums.PlayMode.BEGINNER, "BeginnerMode should hold config reference")
 
 
 #endregion
@@ -135,7 +135,7 @@ func test_beginner_mode_can_hold_config() -> void:
 
 func test_mode_manager_can_instantiate_beginner_mode() -> void:
 	# Start beginner mode via ModeManager
-	ModeManager.start_mode("beginner")
+	ModeManager.start_mode(Enums.PlayMode.BEGINNER)
 
 	# Verify mode implementation is a BeginnerMode instance
 	var impl := ModeManager.get_mode_implementation()
@@ -147,10 +147,10 @@ func test_mode_manager_can_instantiate_beginner_mode() -> void:
 
 
 func test_mode_manager_beginner_mode_has_config() -> void:
-	ModeManager.start_mode("beginner")
+	ModeManager.start_mode(Enums.PlayMode.BEGINNER)
 	var impl := ModeManager.get_mode_implementation()
 	assert_not_null(impl.config, "BeginnerMode instance should have config set")
-	assert_eq(impl.config.mode_id, "beginner", "Config should be the beginner mode config")
+	assert_eq(impl.config.mode_id, Enums.PlayMode.BEGINNER, "Config should be the beginner mode config")
 	ModeManager.end_mode({"win": false})
 
 
