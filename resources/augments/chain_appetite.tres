@@ -10,6 +10,7 @@ description = "Multi-orb effects become much more rewarding."
 icon_key = "score"
 augment_key = "chain_appetite"
 rarity = 1
+selection_mode = 0
 early_weight = 1
 mid_weight = 7
 late_weight = 9

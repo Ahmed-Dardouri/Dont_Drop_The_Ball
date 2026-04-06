@@ -10,6 +10,7 @@ description = "Special orbs appear a little more often."
 icon_key = "orb"
 augment_key = "shiny_problem"
 rarity = 0
+selection_mode = 1
 early_weight = 6
 mid_weight = 7
 late_weight = 6

@@ -10,6 +10,7 @@ description = "Gain a very large one-time score bonus immediately."
 icon_key = "score"
 augment_key = "golden_ticket"
 rarity = 2
+selection_mode = 0
 early_weight = 3
 mid_weight = 2
 late_weight = 2

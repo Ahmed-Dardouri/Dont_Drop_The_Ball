@@ -10,6 +10,7 @@ description = "Burst effects become even more rewarding."
 icon_key = "burst"
 augment_key = "boom_tax_refund"
 rarity = 2
+selection_mode = 0
 early_weight = 0
 mid_weight = 3
 late_weight = 8

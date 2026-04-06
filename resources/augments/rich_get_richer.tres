@@ -10,6 +10,7 @@ description = "Multi-orb collection effects become much more valuable."
 icon_key = "score"
 augment_key = "rich_get_richer"
 rarity = 1
+selection_mode = 0
 early_weight = 4
 mid_weight = 7
 late_weight = 8

@@ -10,6 +10,7 @@ description = "Special orbs appear a little more often."
 icon_key = "spawn"
 augment_key = "more_where_that_came_from"
 rarity = 1
+selection_mode = 0
 early_weight = 5
 mid_weight = 7
 late_weight = 8

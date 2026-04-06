@@ -10,6 +10,7 @@ description = "Burst orb explosions get a little bigger."
 icon_key = "burst"
 augment_key = "snack_sized_boom"
 rarity = 0
+selection_mode = 1
 early_weight = 8
 mid_weight = 6
 late_weight = 2

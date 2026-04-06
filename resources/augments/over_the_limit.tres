@@ -10,6 +10,7 @@ description = "The bonus meter becomes dramatically easier to fill and sustain."
 icon_key = "meter"
 augment_key = "over_the_limit"
 rarity = 2
+selection_mode = 0
 early_weight = 2
 mid_weight = 5
 late_weight = 8

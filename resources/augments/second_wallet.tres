@@ -10,6 +10,7 @@ description = "Gain +2 lives and make every orb pickup more valuable."
 icon_key = "life"
 augment_key = "second_wallet"
 rarity = 2
+selection_mode = 0
 early_weight = 3
 mid_weight = 4
 late_weight = 6

@@ -10,6 +10,7 @@ description = "Score fills the bonus meter much faster."
 icon_key = "meter"
 augment_key = "overcharged_meter"
 rarity = 1
+selection_mode = 1
 early_weight = 4
 mid_weight = 9
 late_weight = 8

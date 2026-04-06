@@ -10,6 +10,7 @@ description = "Gain a small score bonus whenever you collect any orb."
 icon_key = "score"
 augment_key = "pocket_change"
 rarity = 0
+selection_mode = 1
 early_weight = 10
 mid_weight = 7
 late_weight = 4

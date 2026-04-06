@@ -10,6 +10,7 @@ description = "Burst orb explosions get much bigger."
 icon_key = "burst"
 augment_key = "boom_goes_the_neighborhood"
 rarity = 1
+selection_mode = 0
 early_weight = 2
 mid_weight = 8
 late_weight = 7

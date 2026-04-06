@@ -10,6 +10,7 @@ description = "Vortex collection reach becomes enormous."
 icon_key = "vortex"
 augment_key = "vacuum_maxxed"
 rarity = 2
+selection_mode = 0
 early_weight = 0
 mid_weight = 2
 late_weight = 9

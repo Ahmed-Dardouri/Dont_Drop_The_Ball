@@ -19,6 +19,9 @@ class_name AugmentData extends Resource
 ## Rarity of this augment (determines card background)
 @export var rarity: int = Enums.AugmentRarity.COMMON
 
+## Selection mode: UNIQUE = one per run, REPEATABLE = can stack
+@export var selection_mode: int = Enums.AugmentSelectionMode.UNIQUE
+
 ## Phase weight controls availability (0 = cannot appear in that phase)
 @export var early_weight: int = 0
 @export var mid_weight: int = 0

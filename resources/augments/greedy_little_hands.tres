@@ -10,6 +10,7 @@ description = "Orb effects collect more generously."
 icon_key = "orb"
 augment_key = "greedy_little_hands"
 rarity = 1
+selection_mode = 0
 early_weight = 3
 mid_weight = 7
 late_weight = 8

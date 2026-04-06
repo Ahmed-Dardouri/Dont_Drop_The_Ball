@@ -10,6 +10,7 @@ description = "The whole run becomes score-explosive."
 icon_key = "score"
 augment_key = "jackpot_fever"
 rarity = 2
+selection_mode = 0
 early_weight = 0
 mid_weight = 1
 late_weight = 10

@@ -10,6 +10,7 @@ description = "Improves both bonus meter fill and meter retention slightly."
 icon_key = "meter"
 augment_key = "steady_pressure"
 rarity = 1
+selection_mode = 0
 early_weight = 5
 mid_weight = 7
 late_weight = 7

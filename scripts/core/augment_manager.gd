@@ -1,6 +1,7 @@
 extends Node
 ## AugmentManager - Manages augments for the current run.
 ## Phase 2: Rarity system + phase-weighted pools.
+## Supports UNIQUE (one per run) and REPEATABLE (stackable) augments.
 
 ## All 3 cards in a draft share the same rolled rarity.
 
@@ -117,31 +118,9 @@ func roll_draft_rarity() -> int:
 		return Enums.AugmentRarity.COMMON
 
 
-## Get augments available for a specific rarity and phase
-func _get_pool_for_rarity_and_phase(rarity: int, phase: int) -> Array[AugmentData]:
-	var pool: Array[AugmentData] = []
-	var rarity_pool: Array = _augments_by_rarity.get(rarity, [])
-
-	for augment: AugmentData in rarity_pool:
-		var weight: int = 0
-		match phase:
-			Enums.GamePhase.EARLY:
-				weight = augment.early_weight
-			Enums.GamePhase.MID:
-				weight = augment.mid_weight
-			Enums.GamePhase.LATE:
-				weight = augment.late_weight
-
-		if weight > 0:
-			# Add to pool multiple times based on weight
-			for i: int in range(weight):
-				pool.append(augment)
-
-	return pool
-
-
 ## Get random augment choices for the selection UI.
 ## Returns CHOICE_COUNT unique augments from the correct pool.
+## Excludes unique augments already chosen in this run.
 ## Falls back to lower rarities if rolled rarity has no available augments.
 func get_random_choices() -> Array[Resource]:
 	var rolled_rarity := roll_draft_rarity()
@@ -154,7 +133,7 @@ func get_random_choices() -> Array[Resource]:
 	if rolled_rarity >= Enums.AugmentRarity.RARE:
 		rarities_to_try.append(Enums.AugmentRarity.COMMON)
 
-	# Build unique augments with their weights (deduplicate the weighted pool)
+	# Build unique augments with their weights, excluding chosen uniques
 	var unique_augments: Array[AugmentData] = []
 	var weights: Array[int] = []
 
@@ -164,6 +143,10 @@ func get_random_choices() -> Array[Resource]:
 
 		var rarity_pool: Array = _augments_by_rarity.get(try_rarity, [])
 		for augment: AugmentData in rarity_pool:
+			# Skip unique augments already chosen in this run
+			if augment.selection_mode == Enums.AugmentSelectionMode.UNIQUE and has_augment(augment.augment_id):
+				continue
+
 			var weight: int = 0
 			match phase:
 				Enums.GamePhase.EARLY:
@@ -238,9 +221,13 @@ func apply_augment(augment: Resource) -> void:
 		return
 
 	var augment_data: AugmentData = augment as AugmentData
-	var current_stacks: int = _active_augments.get(augment_data.augment_id, 0)
 
-	# For Phase 2: simple single-selection (no stacking yet)
+	# Block if unique already chosen
+	if augment_data.selection_mode == Enums.AugmentSelectionMode.UNIQUE and has_augment(augment_data.augment_id):
+		push_warning("AugmentManager: Tried to apply unique augment '%s' that was already chosen" % augment_data.augment_id)
+		return
+
+	var current_stacks: int = _active_augments.get(augment_data.augment_id, 0)
 	var new_stacks: int = current_stacks + 1
 	_active_augments[augment_data.augment_id] = new_stacks
 
@@ -250,13 +237,58 @@ func apply_augment(augment: Resource) -> void:
 	AugmentAppliedEvent.invoke(augment_data)
 
 
-## Apply the actual effect of an augment
-func _apply_augment_effect(augment: AugmentData) -> void:
-	var stacks: int = get_augment_stacks(augment.augment_id)
+## Get the current stack count for a repeatable augment (0 if not picked yet).
+func get_augment_stacks(augment_id: String) -> int:
+	return _active_augments.get(augment_id, 0)
 
-	# Handle specific augment keys
+
+## Get the selection label text for an augment card.
+## Returns "Unique" for unique augments, "x0"/"x1"/"x2" for repeatable.
+func get_selection_label(augment_data: AugmentData) -> String:
+	if augment_data.selection_mode == Enums.AugmentSelectionMode.UNIQUE:
+		return "Unique"
+	var stacks: int = get_augment_stacks(augment_data.augment_id)
+	return "x%d" % stacks
+
+
+#region Effect Application
+
+## Apply the actual effect of an augment, dispatched by category helpers.
+func _apply_augment_effect(augment: AugmentData) -> void:
 	match augment.augment_key:
-		# === COMMON SCORE AUGMENTS ===
+		# Score
+		"pocket_change", "collectors_habit", "starter_credit", "main_score_augment", "lucky_penny", "side_hustle", "payroll_upgrade", "rent_was_due", "top_shelf", "rich_get_richer", "big_bank_energy", "jackpot_fever", "golden_ticket", "special_delivery", "jackpot_bonus", "chain_appetite", "greedy_little_hands":
+			_apply_score_effect(augment.augment_key)
+		# Life
+		"just_one_more", "safety_net", "lucky_bounce", "extra_pocket", "more_lives_more_problems", "plot_armor", "second_wallet", "life_insurance":
+			_apply_life_effect(augment.augment_key)
+		# Meter
+		"easy_money", "paper_trail", "catch_a_break", "room_to_breathe", "overcharged_meter", "bigger_bank", "savings_account", "steady_pressure", "infinite_snack_glitch", "over_the_limit":
+			_apply_meter_effect(augment.augment_key)
+		# Burst
+		"snack_sized_boom", "soft_fuse", "boom_goes_the_neighborhood", "aftershock", "kaboom_deluxe", "boom_tax_refund":
+			_apply_burst_effect(augment.augment_key)
+		# Vortex
+		"bigger_vacuum", "long_lunch", "long_reach", "industrial_strength", "black_hole_budget_cut", "vacuum_maxxed":
+			_apply_vortex_effect(augment.augment_key)
+		# Line
+		"wide_sweep", "sharp_line", "full_screen_insurance", "sweep_account", "line_em_up", "laser_but_horizontal", "laser_show":
+			_apply_line_effect(augment.augment_key)
+		# Spawn
+		"orb_buffet", "shiny_problem", "adrenaline_drip", "fast_lane", "more_where_that_came_from", "orb_storm", "oops_all_orbs", "rainmaker", "lucky_universe":
+			_apply_spawn_effect(augment.augment_key)
+		# Multi-category
+		"king_sized", "extra_hands":
+			_apply_hybrid_effect(augment.augment_key)
+		# Legacy
+		"score_bonus", "max_life_plus_1", "burst_radius_up", "spawn_rate_up", "line_clear_up", "vortex_radius_up", "meter_fill_up":
+			_apply_legacy_effect(augment.augment_key)
+		_:
+			print("AugmentManager: Unknown augment key '%s'" % augment.augment_key)
+
+
+func _apply_score_effect(key: String) -> void:
+	match key:
 		"pocket_change":
 			Variables.score_per_orb_bonus += 3
 		"collectors_habit":
@@ -269,121 +301,15 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 			ScoreManager.add_score(75)
 		"side_hustle":
 			Variables.special_orb_score_bonus += 0.15
-
-		# === COMMON LIFE AUGMENTS ===
-		"just_one_more":
-			Variables.permanent_lives += 1
-			LifeChangedEvent.invoke(true)
-		"lucky_bounce":
-			Variables.life_orb_chance_bonus += 0.15
-		"safety_net":
-			Variables.permanent_lives += 1
-			LifeChangedEvent.invoke(true)
-
-		# === COMMON METER AUGMENTS ===
-		"easy_money":
-			Variables.meter_fill_multiplier += 0.2
-		"catch_a_break":
-			Variables.meter_drain_reduction += 0.15
-		"paper_trail":
-			Variables.meter_fill_multiplier += 0.15
-		"room_to_breathe":
-			Variables.meter_drain_reduction += 0.1
-
-		# === COMMON BURST AUGMENTS ===
-		"snack_sized_boom":
-			Variables.burst_radius_bonus += 0.2
-		"soft_fuse":
-			Variables.burst_radius_bonus += 0.15
-
-		# === COMMON VORTEX AUGMENTS ===
-		"bigger_vacuum":
-			Variables.vortex_radius_bonus += 0.25
-		"long_lunch":
-			Variables.vortex_duration_bonus += 0.25
-
-		# === COMMON LINE AUGMENTS ===
-		"wide_sweep":
-			Variables.line_clear_range_bonus += 0.2
-		"sharp_line":
-			Variables.line_clear_range_bonus += 0.15
-
-		# === COMMON SPAWN AUGMENTS ===
-		"orb_buffet":
-			Variables.orb_spawn_rate_bonus += 0.15
-		"shiny_problem":
-			Variables.special_orb_chance_bonus += 0.2
-		"extra_hands":
-			Variables.orb_spawn_rate_bonus += 0.1
-
-		# === RARE SCORE AUGMENTS ===
 		"payroll_upgrade":
 			Variables.score_per_orb_bonus += 5
 		"rent_was_due":
 			Variables.score_per_orb_bonus += 4
-		"chain_appetite":
-			Variables.chain_score_bonus += 2
-		"greedy_little_hands":
-			Variables.score_per_orb_bonus += 3
-			Variables.special_orb_chance_bonus += 0.1
-			Variables.special_orb_score_bonus += 0.1
 		"top_shelf":
 			Variables.score_per_orb_bonus += 4
 		"rich_get_richer":
 			Variables.chain_score_bonus += 3
 			Variables.score_multiplier_bonus += 0.1
-
-		# === RARE LIFE AUGMENTS ===
-		"extra_pocket":
-			Variables.permanent_lives += 1
-			Variables.life_orb_chance_bonus += 0.25
-			LifeChangedEvent.invoke(true)
-		"more_lives_more_problems":
-			Variables.permanent_lives += 1
-			Variables.life_orb_chance_bonus += 0.1
-			LifeChangedEvent.invoke(true)
-
-		# === RARE METER AUGMENTS ===
-		"overcharged_meter":
-			Variables.meter_fill_multiplier += 0.4
-		"bigger_bank":
-			Variables.meter_fill_multiplier += 0.3
-			Variables.meter_drain_reduction += 0.2
-		"savings_account":
-			Variables.meter_fill_multiplier += 0.25
-		"steady_pressure":
-			Variables.meter_fill_multiplier += 0.15
-			Variables.meter_drain_reduction += 0.1
-
-		# === RARE BURST AUGMENTS ===
-		"boom_goes_the_neighborhood":
-			Variables.burst_radius_bonus += 0.5
-		"aftershock":
-			Variables.burst_radius_bonus += 0.35
-			Variables.chain_score_bonus += 2
-
-		# === RARE VORTEX AUGMENTS ===
-		"industrial_strength":
-			Variables.vortex_radius_bonus += 0.6
-		"long_reach":
-			Variables.vortex_radius_bonus += 0.4
-
-		# === RARE LINE AUGMENTS ===
-		"full_screen_insurance":
-			Variables.line_clear_range_bonus += 0.5
-		"sweep_account":
-			Variables.line_clear_range_bonus += 0.35
-			Variables.line_clear_bonus_per_orb += 1
-
-		# === RARE SPAWN AUGMENTS ===
-		"adrenaline_drip":
-			Variables.orb_spawn_rate_bonus += 0.3
-		"fast_lane":
-			Variables.orb_spawn_rate_bonus += 0.2
-		"more_where_that_came_from":
-			Variables.special_orb_chance_bonus += 0.15
-
-		# === MYTHICAL SCORE AUGMENTS ===
 		"big_bank_energy":
 			Variables.score_per_orb_bonus += 10
 		"jackpot_fever":
@@ -396,8 +322,32 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 		"jackpot_bonus":
 			ScoreManager.add_score(300)
 			Variables.score_multiplier_bonus += 0.15
+		"chain_appetite":
+			Variables.chain_score_bonus += 2
+		"greedy_little_hands":
+			Variables.score_per_orb_bonus += 3
+			Variables.special_orb_chance_bonus += 0.1
+			Variables.special_orb_score_bonus += 0.1
 
-		# === MYTHICAL LIFE AUGMENTS ===
+
+func _apply_life_effect(key: String) -> void:
+	match key:
+		"just_one_more":
+			Variables.permanent_lives += 1
+			LifeChangedEvent.invoke(true)
+		"safety_net":
+			Variables.permanent_lives += 1
+			LifeChangedEvent.invoke(true)
+		"lucky_bounce":
+			Variables.life_orb_chance_bonus += 0.15
+		"extra_pocket":
+			Variables.permanent_lives += 1
+			Variables.life_orb_chance_bonus += 0.25
+			LifeChangedEvent.invoke(true)
+		"more_lives_more_problems":
+			Variables.permanent_lives += 1
+			Variables.life_orb_chance_bonus += 0.1
+			LifeChangedEvent.invoke(true)
 		"plot_armor":
 			Variables.permanent_lives += 2
 			Variables.life_orb_chance_bonus += 0.3
@@ -409,7 +359,27 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 		"life_insurance":
 			Variables.life_orb_chance_bonus += 0.4
 
-		# === MYTHICAL METER AUGMENTS ===
+
+func _apply_meter_effect(key: String) -> void:
+	match key:
+		"easy_money":
+			Variables.meter_fill_multiplier += 0.2
+		"paper_trail":
+			Variables.meter_fill_multiplier += 0.15
+		"catch_a_break":
+			Variables.meter_drain_reduction += 0.15
+		"room_to_breathe":
+			Variables.meter_drain_reduction += 0.1
+		"overcharged_meter":
+			Variables.meter_fill_multiplier += 0.4
+		"bigger_bank":
+			Variables.meter_fill_multiplier += 0.3
+			Variables.meter_drain_reduction += 0.2
+		"savings_account":
+			Variables.meter_fill_multiplier += 0.25
+		"steady_pressure":
+			Variables.meter_fill_multiplier += 0.15
+			Variables.meter_drain_reduction += 0.1
 		"infinite_snack_glitch":
 			Variables.meter_fill_multiplier += 0.8
 			Variables.meter_drain_reduction += 0.4
@@ -417,20 +387,52 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 			Variables.meter_fill_multiplier += 0.5
 			Variables.meter_drain_reduction += 0.3
 
-		# === MYTHICAL BURST AUGMENTS ===
+
+func _apply_burst_effect(key: String) -> void:
+	match key:
+		"snack_sized_boom":
+			Variables.burst_radius_bonus += 0.2
+		"soft_fuse":
+			Variables.burst_radius_bonus += 0.15
+		"boom_goes_the_neighborhood":
+			Variables.burst_radius_bonus += 0.5
+		"aftershock":
+			Variables.burst_radius_bonus += 0.35
+			Variables.chain_score_bonus += 2
 		"kaboom_deluxe":
 			Variables.burst_radius_bonus += 1.0
 		"boom_tax_refund":
 			Variables.burst_radius_bonus += 0.8
 			Variables.chain_score_bonus += 5
 
-		# === MYTHICAL VORTEX AUGMENTS ===
+
+func _apply_vortex_effect(key: String) -> void:
+	match key:
+		"bigger_vacuum":
+			Variables.vortex_radius_bonus += 0.25
+		"long_lunch":
+			Variables.vortex_duration_bonus += 0.25
+		"long_reach":
+			Variables.vortex_radius_bonus += 0.4
+		"industrial_strength":
+			Variables.vortex_radius_bonus += 0.6
 		"black_hole_budget_cut":
 			Variables.vortex_radius_bonus += 1.0
 		"vacuum_maxxed":
 			Variables.vortex_radius_bonus += 1.2
 
-		# === MYTHICAL LINE AUGMENTS ===
+
+func _apply_line_effect(key: String) -> void:
+	match key:
+		"wide_sweep":
+			Variables.line_clear_range_bonus += 0.2
+		"sharp_line":
+			Variables.line_clear_range_bonus += 0.15
+		"full_screen_insurance":
+			Variables.line_clear_range_bonus += 0.5
+		"sweep_account":
+			Variables.line_clear_range_bonus += 0.35
+			Variables.line_clear_bonus_per_orb += 1
 		"line_em_up":
 			Variables.line_clear_range_bonus += 1.0
 		"laser_but_horizontal":
@@ -439,7 +441,19 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 			Variables.line_clear_range_bonus += 0.8
 			Variables.line_clear_bonus_per_orb += 3
 
-		# === MYTHICAL SPAWN AUGMENTS ===
+
+func _apply_spawn_effect(key: String) -> void:
+	match key:
+		"orb_buffet":
+			Variables.orb_spawn_rate_bonus += 0.15
+		"shiny_problem":
+			Variables.special_orb_chance_bonus += 0.2
+		"adrenaline_drip":
+			Variables.orb_spawn_rate_bonus += 0.3
+		"fast_lane":
+			Variables.orb_spawn_rate_bonus += 0.2
+		"more_where_that_came_from":
+			Variables.special_orb_chance_bonus += 0.15
 		"orb_storm":
 			Variables.orb_spawn_rate_bonus += 0.6
 		"oops_all_orbs":
@@ -451,13 +465,19 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 			Variables.life_orb_chance_bonus += 0.25
 			Variables.special_orb_chance_bonus += 0.25
 
-		# === MYTHICAL MULTI-CATEGORY ===
+
+func _apply_hybrid_effect(key: String) -> void:
+	match key:
 		"king_sized":
 			Variables.burst_radius_bonus += 0.3
 			Variables.line_clear_range_bonus += 0.3
 			Variables.vortex_radius_bonus += 0.3
+		"extra_hands":
+			Variables.collection_range_bonus += 0.25
 
-		# === LEGACY PLACEHOLDERS (for backwards compatibility) ===
+
+func _apply_legacy_effect(key: String) -> void:
+	match key:
 		"score_bonus":
 			ScoreManager.add_score(50)
 		"max_life_plus_1":
@@ -474,18 +494,14 @@ func _apply_augment_effect(augment: AugmentData) -> void:
 		"meter_fill_up":
 			Variables.meter_fill_multiplier += 0.2
 
-		_:
-			print("AugmentManager: Unknown augment key '%s'" % augment.augment_key)
+#endregion
 
+
+#region Query
 
 ## Check if an augment is active
 func has_augment(augment_id: String) -> bool:
 	return _active_augments.get(augment_id, 0) > 0
-
-
-## Get the stack count for an augment
-func get_augment_stacks(augment_id: String) -> int:
-	return _active_augments.get(augment_id, 0)
 
 
 ## Get all active augments

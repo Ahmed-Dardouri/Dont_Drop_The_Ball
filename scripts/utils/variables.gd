@@ -39,6 +39,9 @@ var life_orb_chance_bonus: float = 0.0
 var special_orb_chance_bonus: float = 0.0
 var special_orb_score_bonus: float = 0.0
 
+## Collection modifiers
+var collection_range_bonus: float = 0.0
+
 ## Vortex modifiers
 var vortex_duration_bonus: float = 0.0
 
@@ -58,4 +61,5 @@ func reset_augment_modifiers() -> void:
 	life_orb_chance_bonus = 0.0
 	special_orb_chance_bonus = 0.0
 	special_orb_score_bonus = 0.0
+	collection_range_bonus = 0.0
 #endregion

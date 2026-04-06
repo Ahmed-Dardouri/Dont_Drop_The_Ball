@@ -10,6 +10,7 @@ description = "Life orbs and special orbs appear more often together."
 icon_key = "spawn"
 augment_key = "lucky_universe"
 rarity = 2
+selection_mode = 0
 early_weight = 4
 mid_weight = 5
 late_weight = 6

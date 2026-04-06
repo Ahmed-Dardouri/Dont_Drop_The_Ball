@@ -10,6 +10,7 @@ description = "The bonus meter becomes dramatically easier to keep filled."
 icon_key = "meter"
 augment_key = "infinite_snack_glitch"
 rarity = 2
+selection_mode = 0
 early_weight = 0
 mid_weight = 2
 late_weight = 8

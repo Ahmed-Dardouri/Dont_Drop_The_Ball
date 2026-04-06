@@ -10,6 +10,7 @@ description = "The run floods with more orbs."
 icon_key = "spawn"
 augment_key = "orb_storm"
 rarity = 2
+selection_mode = 0
 early_weight = 0
 mid_weight = 2
 late_weight = 10

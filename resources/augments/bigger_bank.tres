@@ -10,6 +10,7 @@ description = "The bonus meter becomes easier to sustain."
 icon_key = "meter"
 augment_key = "bigger_bank"
 rarity = 1
+selection_mode = 0
 early_weight = 2
 mid_weight = 8
 late_weight = 7

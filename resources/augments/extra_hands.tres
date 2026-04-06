@@ -10,6 +10,7 @@ description = "Increase the effective orb collection reach of the slightly."
 icon_key = "orb"
 augment_key = "extra_hands"
 rarity = 0
+selection_mode = 1
 early_weight = 5
 mid_weight = 7
 late_weight = 9

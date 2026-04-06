@@ -10,6 +10,7 @@ description = "Every orb pickup pays noticeably more score."
 icon_key = "score"
 augment_key = "payroll_upgrade"
 rarity = 1
+selection_mode = 1
 early_weight = 4
 mid_weight = 8
 late_weight = 8

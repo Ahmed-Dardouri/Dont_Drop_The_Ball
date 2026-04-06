@@ -10,6 +10,7 @@ description = "Life orbs appear a little more often."
 icon_key = "life"
 augment_key = "lucky_bounce"
 rarity = 0
+selection_mode = 1
 early_weight = 6
 mid_weight = 6
 late_weight = 4

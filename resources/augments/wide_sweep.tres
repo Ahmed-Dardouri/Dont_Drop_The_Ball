@@ -10,6 +10,7 @@ description = "Horizontal line orbs clear a slightly wider area."
 icon_key = "line"
 augment_key = "wide_sweep"
 rarity = 0
+selection_mode = 1
 early_weight = 4
 mid_weight = 7
 late_weight = 7

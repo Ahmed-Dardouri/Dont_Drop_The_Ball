@@ -10,6 +10,7 @@ description = "Gain +2 lives and become much safer for the rest of the run."
 icon_key = "life"
 augment_key = "plot_armor"
 rarity = 2
+selection_mode = 0
 early_weight = 1
 mid_weight = 3
 late_weight = 7

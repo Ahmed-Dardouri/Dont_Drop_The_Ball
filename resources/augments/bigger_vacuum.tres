@@ -10,6 +10,7 @@ description = "Vortex orbs increase the ball's orb collection reach."
 icon_key = "vortex"
 augment_key = "bigger_vacuum"
 rarity = 0
+selection_mode = 1
 early_weight = 5
 mid_weight = 8
 late_weight = 6

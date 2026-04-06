@@ -10,6 +10,7 @@ description = "Burst, line, and vortex all get a noticeable boost together."
 icon_key = "orb"
 augment_key = "king_sized"
 rarity = 2
+selection_mode = 0
 early_weight = 4
 mid_weight = 4
 late_weight = 4

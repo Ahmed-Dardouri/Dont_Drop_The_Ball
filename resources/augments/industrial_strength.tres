@@ -10,6 +10,7 @@ description = "Vortex orbs gain a much larger collection reach."
 icon_key = "vortex"
 augment_key = "industrial_strength"
 rarity = 1
+selection_mode = 0
 early_weight = 1
 mid_weight = 7
 late_weight = 8

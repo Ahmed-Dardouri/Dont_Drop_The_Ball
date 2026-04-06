@@ -80,6 +80,12 @@ enum GamePhase {
 	LATE
 }
 
+## Augment selection mode: UNIQUE = one per run, REPEATABLE = can stack
+enum AugmentSelectionMode {
+	UNIQUE,
+	REPEATABLE
+}
+
 ## Types of augment effects for Phase 1 prototype
 enum AugmentEffect {
 	FLAT_SCORE_BONUS,        ## +X score per orb collected

@@ -111,6 +111,8 @@ func _setup_orb_data_collision() -> void:
 	var radius: float = _orb_data.collision_radius
 	if mode_scale > 0.0:
 		radius *= mode_scale
+	# Apply augment collection range bonus
+	radius *= (1.0 + Variables.collection_range_bonus)
 
 	if _orb_data.is_half_solid:
 		# For half-solid orbs, use a semi-circle polygon for BOTTOM half (collectible)
@@ -219,6 +221,7 @@ func _get_collision_radius() -> float:
 	var mode_scale: float = GameRules.get_orb_scale()
 	if mode_scale > 0.0:
 		radius *= mode_scale
+	radius *= (1.0 + Variables.collection_range_bonus)
 	return radius
 
 

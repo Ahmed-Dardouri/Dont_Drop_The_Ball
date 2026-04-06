@@ -10,6 +10,7 @@ description = "The screen fills with noticeably more orb opportunities."
 icon_key = "spawn"
 augment_key = "oops_all_orbs"
 rarity = 2
+selection_mode = 0
 early_weight = 0
 mid_weight = 5
 late_weight = 9

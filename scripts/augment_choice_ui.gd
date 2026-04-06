@@ -149,6 +149,20 @@ func _create_card(augment: Resource, index: int) -> Dictionary:
 	highlight.visible = false
 	panel.add_child(highlight)
 
+	# Top-left badge: "Unique" or "x0"/"x1"/"x2" for stack count
+	var badge := Label.new()
+	badge.name = "SelectionBadge"
+	badge.text = AugmentManager.get_selection_label(augment_data)
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	badge.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	badge.add_theme_font_size_override("font_size", 16)
+	badge.add_theme_color_override("font_color", Color(1, 1, 1, 0.85))
+	# Position in top-left corner of the card
+	badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	badge.position = Vector2(12, 8)
+	badge.z_index = 10
+	panel.add_child(badge)
+
 	# Content container with padding to stay inside card border
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 55)

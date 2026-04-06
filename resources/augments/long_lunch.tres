@@ -10,6 +10,7 @@ description = "Vortex orb duration lasts a little longer."
 icon_key = "vortex"
 augment_key = "long_lunch"
 rarity = 0
+selection_mode = 1
 early_weight = 5
 mid_weight = 7
 late_weight = 9
